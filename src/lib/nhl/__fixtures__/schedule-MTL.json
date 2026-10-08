@@ -45,7 +45,9 @@
 },
 "gameOutcome": {
 "lastPeriodType": "REG"
-}
+},
+"condensedGame": "/video/mtl-at-tor-condensed-game-6405317607112",
+"gameCenterLink": "/gamecenter/mtl-vs-tor/2026/09/19/2026010006"
 },
 {
 "id": 2026010007,
@@ -90,7 +92,10 @@
 },
 "gameOutcome": {
 "lastPeriodType": "OT"
-}
+},
+"threeMinRecap": "/video/tor-at-mtl-recap-6405318397112",
+"condensedGame": "/video/tor-at-mtl-condensed-game-6405316740112",
+"gameCenterLink": "/gamecenter/tor-vs-mtl/2026/09/19/2026010007"
 },
 {
 "id": 2026010022,
@@ -137,7 +142,10 @@
 },
 "gameOutcome": {
 "lastPeriodType": "OT"
-}
+},
+"threeMinRecap": "/video/ott-at-mtl-recap-6405395071112",
+"condensedGame": "/video/ott-at-mtl-condensed-game-6405395070112",
+"gameCenterLink": "/gamecenter/ott-vs-mtl/2026/09/21/2026010022"
 },
 {
 "id": 2026010064,
@@ -184,7 +192,8 @@
 },
 "gameOutcome": {
 "lastPeriodType": "REG"
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-ott/2026/09/26/2026010064"
 },
 {
 "id": 2026010065,
@@ -230,7 +239,10 @@
 },
 "gameOutcome": {
 "lastPeriodType": "REG"
-}
+},
+"threeMinRecap": "/video/ott-at-mtl-recap-6405686118112",
+"condensedGame": "/video/ott-at-mtl-condensed-game-6405687500112",
+"gameCenterLink": "/gamecenter/ott-vs-mtl/2026/09/26/2026010065"
 },
 {
 "id": 2026020002,
@@ -275,7 +287,9 @@
 },
 "gameOutcome": {
 "lastPeriodType": "REG"
-}
+},
+"condensedGame": "/video/mtl-at-tor-condensed-game-6405934025112",
+"gameCenterLink": "/gamecenter/mtl-vs-tor/2026/09/29/2026020002"
 },
 {
 "id": 2026020026,
@@ -320,7 +334,10 @@
 },
 "gameOutcome": {
 "lastPeriodType": "OT"
-}
+},
+"threeMinRecap": "/video/mtl-at-pit-recap-6406194502112",
+"condensedGame": "/video/mtl-at-pit-condensed-game-6406193454112",
+"gameCenterLink": "/gamecenter/mtl-vs-pit/2026/10/03/2026020026"
 },
 {
 "id": 2026020045,
@@ -366,7 +383,10 @@
 },
 "gameOutcome": {
 "lastPeriodType": "REG"
-}
+},
+"threeMinRecap": "/video/car-at-mtl-recap-6406391553112",
+"condensedGame": "/video/car-at-mtl-condensed-game-6406392435112",
+"gameCenterLink": "/gamecenter/car-vs-mtl/2026/10/06/2026020045"
 },
 {
 "id": 2026020058,
@@ -406,7 +426,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/nsh-vs-mtl/2026/10/08/2026020058"
 },
 {
 "id": 2026020075,
@@ -446,7 +467,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/det-vs-mtl/2026/10/10/2026020075"
 },
 {
 "id": 2026020092,
@@ -486,7 +508,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/buf-vs-mtl/2026/10/13/2026020092"
 },
 {
 "id": 2026020106,
@@ -526,7 +549,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-wsh/2026/10/14/2026020106"
 },
 {
 "id": 2026020126,
@@ -566,7 +590,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/buf-vs-mtl/2026/10/17/2026020126"
 },
 {
 "id": 2026020141,
@@ -606,7 +631,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/sjs-vs-mtl/2026/10/20/2026020141"
 },
 {
 "id": 2026020166,
@@ -646,7 +672,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-chi/2026/10/23/2026020166"
 },
 {
 "id": 2026020182,
@@ -686,7 +713,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-wpg/2026/10/25/2026020182"
 },
 {
 "id": 2026020191,
@@ -726,7 +754,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-stl/2026/10/27/2026020191"
 },
 {
 "id": 2026020209,
@@ -766,7 +795,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-dal/2026/10/29/2026020209"
 },
 {
 "id": 2026020223,
@@ -806,7 +836,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/pit-vs-mtl/2026/10/31/2026020223"
 },
 {
 "id": 2026020237,
@@ -846,7 +877,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/wpg-vs-mtl/2026/11/03/2026020237"
 },
 {
 "id": 2026020251,
@@ -886,7 +918,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/uta-vs-mtl/2026/11/05/2026020251"
 },
 {
 "id": 2026020268,
@@ -926,7 +959,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-tor/2026/11/07/2026020268"
 },
 {
 "id": 2026020287,
@@ -966,7 +1000,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/min-vs-mtl/2026/11/10/2026020287"
 },
 {
 "id": 2026020299,
@@ -1006,7 +1041,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-bos/2026/11/12/2026020299"
 },
 {
 "id": 2026020315,
@@ -1046,7 +1082,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/col-vs-mtl/2026/11/14/2026020315"
 },
 {
 "id": 2026020331,
@@ -1086,7 +1123,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-nyr/2026/11/16/2026020331"
 },
 {
 "id": 2026020345,
@@ -1126,7 +1164,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-njd/2026/11/18/2026020345"
 },
 {
 "id": 2026020352,
@@ -1167,7 +1206,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-car/2026/11/19/2026020352"
 },
 {
 "id": 2026020365,
@@ -1208,7 +1248,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/phi-vs-mtl/2026/11/21/2026020365"
 },
 {
 "id": 2026020379,
@@ -1248,7 +1289,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/lak-vs-mtl/2026/11/23/2026020379"
 },
 {
 "id": 2026020397,
@@ -1288,7 +1330,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-col/2026/11/25/2026020397"
 },
 {
 "id": 2026020415,
@@ -1328,7 +1371,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-vgk/2026/11/28/2026020415"
 },
 {
 "id": 2026020435,
@@ -1368,7 +1412,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-uta/2026/11/30/2026020435"
 },
 {
 "id": 2026020445,
@@ -1408,7 +1453,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/tbl-vs-mtl/2026/12/02/2026020445"
 },
 {
 "id": 2026020465,
@@ -1449,7 +1495,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/fla-vs-mtl/2026/12/05/2026020465"
 },
 {
 "id": 2026020478,
@@ -1490,7 +1537,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/ott-vs-mtl/2026/12/06/2026020478"
 },
 {
 "id": 2026020486,
@@ -1530,7 +1578,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/vgk-vs-mtl/2026/12/08/2026020486"
 },
 {
 "id": 2026020500,
@@ -1570,7 +1619,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/ana-vs-mtl/2026/12/10/2026020500"
 },
 {
 "id": 2026020515,
@@ -1610,7 +1660,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-cbj/2026/12/12/2026020515"
 },
 {
 "id": 2026020533,
@@ -1650,7 +1701,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/edm-vs-mtl/2026/12/14/2026020533"
 },
 {
 "id": 2026020559,
@@ -1690,7 +1742,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-buf/2026/12/18/2026020559"
 },
 {
 "id": 2026020573,
@@ -1730,7 +1783,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-min/2026/12/19/2026020573"
 },
 {
 "id": 2026020594,
@@ -1770,7 +1824,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-cbj/2026/12/22/2026020594"
 },
 {
 "id": 2026020604,
@@ -1810,7 +1865,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/tor-vs-mtl/2026/12/26/2026020604"
 },
 {
 "id": 2026020615,
@@ -1850,7 +1906,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/dal-vs-mtl/2026/12/27/2026020615"
 },
 {
 "id": 2026020626,
@@ -1890,7 +1947,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/cbj-vs-mtl/2026/12/29/2026020626"
 },
 {
 "id": 2026020644,
@@ -1930,7 +1988,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-tbl/2026/12/31/2026020644"
 },
 {
 "id": 2026020656,
@@ -1971,7 +2030,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-fla/2027/01/02/2026020656"
 },
 {
 "id": 2026020675,
@@ -2011,7 +2071,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/chi-vs-mtl/2027/01/04/2026020675"
 },
 {
 "id": 2026020690,
@@ -2051,7 +2112,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/bos-vs-mtl/2027/01/06/2026020690"
 },
 {
 "id": 2026020714,
@@ -2091,7 +2153,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/pit-vs-mtl/2027/01/09/2026020714"
 },
 {
 "id": 2026020738,
@@ -2131,7 +2194,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/njd-vs-mtl/2027/01/13/2026020738"
 },
 {
 "id": 2026020749,
@@ -2171,7 +2235,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-nsh/2027/01/14/2026020749"
 },
 {
 "id": 2026020764,
@@ -2212,7 +2277,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-phi/2027/01/16/2026020764"
 },
 {
 "id": 2026020776,
@@ -2252,7 +2318,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-buf/2027/01/18/2026020776"
 },
 {
 "id": 2026020789,
@@ -2292,7 +2359,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-wsh/2027/01/19/2026020789"
 },
 {
 "id": 2026020799,
@@ -2332,7 +2400,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/stl-vs-mtl/2027/01/21/2026020799"
 },
 {
 "id": 2026020815,
@@ -2372,7 +2441,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/cgy-vs-mtl/2027/01/23/2026020815"
 },
 {
 "id": 2026020836,
@@ -2413,7 +2483,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/car-vs-mtl/2027/01/26/2026020836"
 },
 {
 "id": 2026020855,
@@ -2453,7 +2524,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-cgy/2027/01/28/2026020855"
 },
 {
 "id": 2026020874,
@@ -2493,7 +2565,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-edm/2027/01/30/2026020874"
 },
 {
 "id": 2026020883,
@@ -2533,7 +2606,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-van/2027/02/01/2026020883"
 },
 {
 "id": 2026020894,
@@ -2573,7 +2647,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-sea/2027/02/03/2026020894"
 },
 {
 "id": 2026020912,
@@ -2613,7 +2688,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/wsh-vs-mtl/2027/02/13/2026020912"
 },
 {
 "id": 2026020927,
@@ -2653,7 +2729,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/nyr-vs-mtl/2027/02/14/2026020927"
 },
 {
 "id": 2026020952,
@@ -2693,7 +2770,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-det/2027/02/18/2026020952"
 },
 {
 "id": 2026020972,
@@ -2733,7 +2811,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/nyi-vs-mtl/2027/02/20/2026020972"
 },
 {
 "id": 2026020986,
@@ -2774,7 +2853,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-phi/2027/02/22/2026020986"
 },
 {
 "id": 2026021003,
@@ -2814,7 +2894,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-lak/2027/02/24/2026021003"
 },
 {
 "id": 2026021027,
@@ -2854,7 +2935,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-ana/2027/02/27/2026021027"
 },
 {
 "id": 2026021042,
@@ -2896,7 +2978,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-sjs/2027/03/01/2026021042"
 },
 {
 "id": 2026021057,
@@ -2936,7 +3019,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/sea-vs-mtl/2027/03/04/2026021057"
 },
 {
 "id": 2026021074,
@@ -2976,7 +3060,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/van-vs-mtl/2027/03/06/2026021074"
 },
 {
 "id": 2026021094,
@@ -3016,7 +3101,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-nyi/2027/03/09/2026021094"
 },
 {
 "id": 2026021104,
@@ -3056,7 +3142,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/bos-vs-mtl/2027/03/10/2026021104"
 },
 {
 "id": 2026021126,
@@ -3098,7 +3185,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-ott/2027/03/13/2026021126"
 },
 {
 "id": 2026021147,
@@ -3139,7 +3227,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/fla-vs-mtl/2027/03/16/2026021147"
 },
 {
 "id": 2026021161,
@@ -3179,7 +3268,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/tbl-vs-mtl/2027/03/18/2026021161"
 },
 {
 "id": 2026021175,
@@ -3219,7 +3309,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-det/2027/03/20/2026021175"
 },
 {
 "id": 2026021194,
@@ -3259,7 +3350,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/tor-vs-mtl/2027/03/22/2026021194"
 },
 {
 "id": 2026021208,
@@ -3300,7 +3392,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/ott-vs-mtl/2027/03/24/2026021208"
 },
 {
 "id": 2026021232,
@@ -3340,7 +3433,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/njd-vs-mtl/2027/03/27/2026021232"
 },
 {
 "id": 2026021242,
@@ -3380,7 +3474,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/det-vs-mtl/2027/03/28/2026021242"
 },
 {
 "id": 2026021248,
@@ -3420,7 +3515,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-bos/2027/03/30/2026021248"
 },
 {
 "id": 2026021263,
@@ -3460,7 +3556,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/nyr-vs-mtl/2027/04/01/2026021263"
 },
 {
 "id": 2026021294,
@@ -3500,7 +3597,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-nyi/2027/04/04/2026021294"
 },
 {
 "id": 2026021302,
@@ -3541,7 +3639,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-fla/2027/04/06/2026021302"
 },
 {
 "id": 2026021317,
@@ -3581,7 +3680,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-tbl/2027/04/08/2026021317"
 },
 {
 "id": 2026021338,
@@ -3623,7 +3723,8 @@
 "number": 1,
 "periodType": "REG",
 "maxRegulationPeriods": 3
-}
+},
+"gameCenterLink": "/gamecenter/mtl-vs-ott/2027/04/10/2026021338"
 }
 ]
 }

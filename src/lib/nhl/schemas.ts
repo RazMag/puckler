@@ -61,6 +61,10 @@ export const scheduleGameSchema = z.object({
   homeTeam: scheduleTeamSchema,
   periodDescriptor: z.object({ number: z.number(), periodType: z.string() }).optional(),
   gameOutcome: z.object({ lastPeriodType: z.string() }).optional(),
+  // nhl.com paths, e.g. "/video/nsh-at-tor-recap-…". Videos appear a few hours after the final horn.
+  threeMinRecap: z.string().optional(),
+  condensedGame: z.string().optional(),
+  gameCenterLink: z.string().optional(),
 });
 
 export const clubScheduleResponseSchema = z.object({

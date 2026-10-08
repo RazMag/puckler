@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import standingsJson from "@/lib/nhl/__fixtures__/standings.json";
 import torJson from "@/lib/nhl/__fixtures__/schedule-TOR.json";
 import mtlJson from "@/lib/nhl/__fixtures__/schedule-MTL.json";
-import { normalizeSchedule, normalizeStandings } from "@/lib/nhl/normalize";
+import { normalizeGame, normalizeSchedule, normalizeStandings } from "@/lib/nhl/normalize";
 import { clubScheduleResponseSchema, standingsResponseSchema } from "@/lib/nhl/schemas";
 import type { CrewMember } from "@/lib/crew/types";
 import type { Game } from "@/lib/nhl/types";
@@ -10,6 +10,7 @@ import { SEASON_GAMES } from "@/lib/nhl/league";
 import { initials, rankCrew } from "./crew-standings";
 import { conferenceTables, playoffStatus } from "./division";
 import { benchReports, resultFor, rivalries } from "./faceoffs";
+import { highlightsFor } from "@/lib/nhl/highlights";
 
 const { teams } = normalizeStandings(standingsResponseSchema.parse(standingsJson));
 const schedules = new Map([
@@ -96,6 +97,7 @@ describe("faceoffs", () => {
       home: { abbrev: "TOR", score: 2 },
       away: { abbrev: "MTL", score: 3 },
       periodType: "OT",
+      links: { recap: null, condensed: null, gameCenter: null },
     };
     expect(resultFor(game, "MTL")).toBe("W");
     expect(resultFor(game, "TOR")).toBe("OTL");
@@ -140,5 +142,44 @@ describe("format", async () => {
     expect(signed(3)).toBe("+3");
     expect(signed(-2)).toBe("−2");
     expect(pct(0.8)).toBe(".800");
+  });
+});
+
+describe("highlights", () => {
+  const games = schedules.get("TOR")!;
+  const finals = games.filter((g) => g.phase === "final");
+
+  it("turns nhl.com paths into absolute links", () => {
+    const withRecap = finals.find((g) => g.links.recap)!;
+    expect(withRecap.links.recap).toMatch(/^https:\/\/www\.nhl\.com\/video\//);
+    expect(withRecap.links.gameCenter).toMatch(/^https:\/\/www\.nhl\.com\/gamecenter\//);
+  });
+
+  it("offers recap, then condensed game, then game center", () => {
+    const withRecap = finals.find((g) => g.links.recap && g.links.condensed)!;
+    expect(highlightsFor(withRecap).map((h) => h.kind)).toEqual(["recap", "condensed", "gameCenter"]);
+
+    const noRecap = finals.find((g) => !g.links.recap)!;
+    expect(highlightsFor(noRecap)[0]?.kind).toBe("condensed");
+
+    const bare = { ...noRecap, links: { recap: null, condensed: null, gameCenter: noRecap.links.gameCenter } };
+    expect(highlightsFor(bare).map((h) => h.kind)).toEqual(["gameCenter"]);
+  });
+
+  it("ignores anything that isn't an nhl.com path", () => {
+    const raw = clubScheduleResponseSchema.parse(torJson).games[0]!;
+    const game = normalizeGame({
+      ...raw,
+      threeMinRecap: "https://evil.example/video",
+      condensedGame: "//evil.example/video",
+      gameCenterLink: "javascript:alert(1)",
+    });
+    expect(game.links).toEqual({ recap: null, condensed: null, gameCenter: null });
+  });
+
+  it("has nothing for games that haven't been played", () => {
+    const upcoming = games.find((g) => g.phase === "upcoming")!;
+    expect(upcoming.links.gameCenter).not.toBeNull();
+    expect(highlightsFor(upcoming)).toEqual([]);
   });
 });
