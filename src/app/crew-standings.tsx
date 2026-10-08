@@ -120,7 +120,6 @@ function Podium({ rows }: { rows: CrewRow[] }) {
               team={row.team.abbrev}
               name={row.member.name}
               number={row.rank}
-              patch={first ? "C" : "A"}
               className="w-full drop-shadow-[0_12px_10px_rgb(9_14_26/0.3)]"
             />
             <figcaption className="mt-2">

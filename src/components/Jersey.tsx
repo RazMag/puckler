@@ -5,8 +5,6 @@ type Props = {
   team: string;
   name: string;
   number: number | string;
-  /** Captain "C" or alternate "A" patch. */
-  patch?: "C" | "A";
   className?: string;
 };
 
@@ -17,7 +15,7 @@ const RIGHT_CUFF = "M108.5 23.3 L112.8 26.6 L104.1 55.4 L101.6 54.0 Z";
 const LEFT_CUFF = "M11.5 23.3 L7.2 26.6 L15.9 55.4 L18.4 54.0 Z";
 
 /** The back of a jersey in team colors with a name bar and number. */
-export function Jersey({ team, name, number, patch, className }: Props) {
+export function Jersey({ team, name, number, className }: Props) {
   const { primary, secondary } = teamMeta(team);
   const ink = inkOn(primary);
   const label = name.toUpperCase();
@@ -77,15 +75,6 @@ export function Jersey({ team, name, number, patch, className }: Props) {
       >
         {number}
       </text>
-
-      {patch && (
-        <g transform="translate(96 17) rotate(12)">
-          <circle r="10.5" fill="#f2c14e" stroke="#000" strokeWidth="1.5" />
-          <text y="5" textAnchor="middle" fontFamily="var(--font-varsity)" fontSize="15" fill="#000">
-            {patch}
-          </text>
-        </g>
-      )}
     </svg>
   );
 }
