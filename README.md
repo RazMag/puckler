@@ -43,13 +43,25 @@ Without `just`: copy `.env.example` to `.env.local`, fill in `CREW_PASSWORD` and
 
 ## Run with Podman (Quadlet)
 
-Build the image:
+CI (`.github/workflows/ci.yml`) runs the checks and publishes the image to GitHub Container Registry:
+
+| Tag                                    | When                                              |
+| -------------------------------------- | ------------------------------------------------- |
+| `ghcr.io/razmag/puckler:latest`        | every push to `main` (what the Quadlet unit runs) |
+| `ghcr.io/razmag/puckler:sha-<commit>`  | every push to `main`, for pinning or rolling back |
+| `ghcr.io/razmag/puckler:1.2.3`, `:1.2` | pushing a `v1.2.3` git tag                        |
+
+Pull requests build the image too, without pushing it.
+
+### One-time setup on the server
+
+The repository is private, so its image is too. Create a [personal access token](https://github.com/settings/tokens) with only the `read:packages` scope, and log in. Save the login under `~/.config` so it survives reboots:
 
 ```bash
-podman build -t puckler -f Containerfile .
+podman login ghcr.io --username <github-user> --authfile ~/.config/containers/auth.json
 ```
 
-Create the two secrets once:
+Create the two secrets:
 
 ```bash
 printf '%s' 'your crew password' | podman secret create puckler-password -
@@ -63,11 +75,28 @@ mkdir -p ~/.config/containers/systemd
 cp deploy/puckler.container deploy/puckler-data.volume ~/.config/containers/systemd/
 systemctl --user daemon-reload
 systemctl --user start puckler
+loginctl enable-linger $USER   # start at boot without anyone logged in
 ```
 
-The site is on port 3000. Picks live in the `puckler-data` volume, so they survive rebuilds. To ship a new version, rebuild the image and run `systemctl --user restart puckler`.
+The site is on port 3000. Picks live in the `puckler-data` volume, so they survive updates.
 
-For a rootless service to start at boot without anyone logged in, run `loginctl enable-linger $USER`.
+### Updates
+
+The unit has `AutoUpdate=registry`, so Podman can pull a newer `:latest` and restart the service on its own. Turn on the daily timer:
+
+```bash
+systemctl --user enable --now podman-auto-update.timer
+```
+
+Or update by hand with `podman auto-update`. If a new image fails to start, Podman rolls back to the previous one. To pin a version, set `Image=ghcr.io/razmag/puckler:sha-<commit>` (or a release tag) and remove `AutoUpdate`.
+
+### Building locally instead
+
+```bash
+just image   # podman build -t puckler -f Containerfile .
+```
+
+Then set `Image=localhost/puckler:latest` in the unit, remove `AutoUpdate=registry`, and restart with `systemctl --user restart puckler` after each rebuild.
 
 ### Notes
 

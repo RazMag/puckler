@@ -8,7 +8,11 @@ After=network-online.target
 
 [Container]
 ContainerName=puckler
-Image=localhost/puckler:latest
+# Published by CI on every push to main. For a local build instead, use
+# Image=localhost/puckler:latest and drop AutoUpdate (see README).
+Image=ghcr.io/razmag/puckler:latest
+# `podman auto-update` (podman-auto-update.timer) pulls a newer :latest and restarts.
+AutoUpdate=registry
 PublishPort=3000:3000
 Volume=puckler-data.volume:/data:Z
 # Created with `podman secret create` — see README.
