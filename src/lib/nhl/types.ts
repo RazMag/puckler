@@ -38,6 +38,13 @@ export type GamePhase = "upcoming" | "live" | "final";
 
 export type GameSide = { abbrev: string; score: number | null };
 
+/** Absolute nhl.com URLs; null until the NHL publishes them. */
+export type GameLinks = {
+  recap: string | null;
+  condensed: string | null;
+  gameCenter: string | null;
+};
+
 export type Game = {
   id: number;
   /** 1 preseason, 2 regular season, 3 playoffs. */
@@ -50,4 +57,5 @@ export type Game = {
   /** REG, OT or SO once decided; current period type while live. */
   periodType: string | null;
   period: number | null;
+  links: GameLinks;
 };

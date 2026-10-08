@@ -1,6 +1,8 @@
 import type { ClubScheduleResponse, StandingsResponse } from "./schemas";
 import type { Game, GamePhase, Standings, TeamStanding } from "./types";
 
+const NHL_SITE = "https://www.nhl.com";
+
 type RawStanding = StandingsResponse["standings"][number];
 type RawGame = ClubScheduleResponse["games"][number];
 
@@ -46,6 +48,11 @@ export function normalizeStandings(raw: StandingsResponse): Standings {
   };
 }
 
+/** Site-relative nhl.com path → absolute URL; anything else is ignored. */
+function nhlUrl(path: string | undefined): string | null {
+  return path?.startsWith("/") && !path.startsWith("//") ? `${NHL_SITE}${path}` : null;
+}
+
 const PHASES: Record<string, GamePhase> = {
   FUT: "upcoming",
   PRE: "upcoming",
@@ -68,6 +75,11 @@ export function normalizeGame(raw: RawGame): Game {
     periodType:
       raw.gameOutcome?.lastPeriodType ?? (phase === "live" ? (raw.periodDescriptor?.periodType ?? null) : null),
     period: phase === "live" ? (raw.periodDescriptor?.number ?? null) : null,
+    links: {
+      recap: nhlUrl(raw.threeMinRecap),
+      condensed: nhlUrl(raw.condensedGame),
+      gameCenter: nhlUrl(raw.gameCenterLink),
+    },
   };
 }
 

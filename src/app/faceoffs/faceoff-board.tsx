@@ -1,5 +1,6 @@
 import { EmptyCrew } from "@/components/EmptyCrew";
 import { GameCard } from "@/components/GameCard";
+import { HighlightLinks } from "@/components/HighlightLinks";
 import { Jersey } from "@/components/Jersey";
 import { LocalTime } from "@/components/LocalTime";
 import { Puck } from "@/components/Puck";
@@ -66,6 +67,7 @@ function seriesText({ a, b, winsA, winsB, games }: Rivalry): string {
 
 function RivalryCard({ rivalry, owners }: { rivalry: Rivalry; owners: ReadonlyMap<string, CrewMember> }) {
   const { a, b, winsA, winsB, next, last } = rivalry;
+  const earlier = rivalry.games.filter((g) => g.phase === "final" && g !== last).reverse();
   return (
     <article className="overflow-hidden rounded-sm bg-white/80 shadow-md ring-1 ring-black/5">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 pt-4">
@@ -96,6 +98,17 @@ function RivalryCard({ rivalry, owners }: { rivalry: Rivalry; owners: ReadonlyMa
           </div>
         )}
       </div>
+
+      {earlier.length > 0 && (
+        <section className="px-4 pb-4">
+          <h4 className="mb-1 text-xs font-extrabold tracking-[0.2em] text-ink-soft uppercase">Earlier meetings</h4>
+          <ul className="divide-y divide-black/5">
+            {earlier.map((game) => (
+              <MeetingRow key={game.id} game={game} />
+            ))}
+          </ul>
+        </section>
+      )}
     </article>
   );
 }
@@ -190,6 +203,30 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
   );
 }
 
+/** A past crew-vs-crew game: date, score with the winner first, and a highlights link. */
+function MeetingRow({ game }: { game: Game }) {
+  const homeWon = (game.home.score ?? 0) > (game.away.score ?? 0);
+  const [winner, loser] = homeWon ? [game.home, game.away] : [game.away, game.home];
+  return (
+    <li className="flex flex-wrap items-center gap-x-2 gap-y-1 py-1.5 text-sm">
+      <span className="w-24 text-ink-soft">
+        <LocalTime iso={game.startTimeUTC} format="date" />
+      </span>
+      <TeamLogo team={winner.abbrev} size={20} />
+      <span className="font-led text-xl leading-none">
+        {winner.score}–{loser.score}
+      </span>
+      <TeamLogo team={loser.abbrev} size={20} />
+      {game.periodType && game.periodType !== "REG" && (
+        <span className="text-xs font-bold text-ink-soft">{game.periodType}</span>
+      )}
+      <span className="ml-auto">
+        <HighlightLinks game={game} variant="light" max={1} />
+      </span>
+    </li>
+  );
+}
+
 function ResultRow({ game, team }: { game: Game; team: string }) {
   const result = resultFor(game, team);
   const home = game.home.abbrev === team;
@@ -219,6 +256,7 @@ function ResultRow({ game, team }: { game: Game; team: string }) {
           </Term>
         )}
       </span>
+      <HighlightLinks game={game} variant="light" compact />
     </li>
   );
 }
