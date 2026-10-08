@@ -1,0 +1,3587 @@
+{
+"currentSeason": 20262027,
+"clubTimezone": "America/Toronto",
+"games": [
+{
+"id": 2026010006,
+"season": 20262027,
+"gameType": 1,
+"gameDate": "2026-09-19",
+"startTimeUTC": "2026-09-19T23:00:00Z",
+"gameState": "FINAL",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 8,
+"abbrev": "MTL",
+"commonName": {
+"default": "Canadiens"
+},
+"placeName": {
+"default": "Montr\u00e9al"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/MTL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/MTL_dark.svg",
+"score": 4
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg",
+"score": 1
+},
+"periodDescriptor": {
+"number": 3,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+},
+"gameOutcome": {
+"lastPeriodType": "REG"
+}
+},
+{
+"id": 2026010007,
+"season": 20262027,
+"gameType": 1,
+"gameDate": "2026-09-19",
+"startTimeUTC": "2026-09-19T23:00:00Z",
+"gameState": "FINAL",
+"venue": {
+"default": "Centre Bell"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg",
+"score": 3
+},
+"homeTeam": {
+"id": 8,
+"abbrev": "MTL",
+"commonName": {
+"default": "Canadiens"
+},
+"placeName": {
+"default": "Montr\u00e9al"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/MTL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/MTL_dark.svg",
+"score": 4
+},
+"periodDescriptor": {
+"number": 4,
+"periodType": "OT",
+"maxRegulationPeriods": 3
+},
+"gameOutcome": {
+"lastPeriodType": "OT"
+}
+},
+{
+"id": 2026010035,
+"season": 20262027,
+"gameType": 1,
+"gameDate": "2026-09-23",
+"startTimeUTC": "2026-09-23T23:00:00Z",
+"gameState": "FINAL",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 9,
+"abbrev": "OTT",
+"commonName": {
+"default": "Senators",
+"fr": "S\u00e9nateurs"
+},
+"placeName": {
+"default": "Ottawa"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/OTT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/OTT_dark.svg",
+"score": 1
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg",
+"score": 6
+},
+"periodDescriptor": {
+"number": 3,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+},
+"gameOutcome": {
+"lastPeriodType": "REG"
+}
+},
+{
+"id": 2026010036,
+"season": 20262027,
+"gameType": 1,
+"gameDate": "2026-09-23",
+"startTimeUTC": "2026-09-23T23:00:00Z",
+"gameState": "FINAL",
+"venue": {
+"default": "Canadian Tire Centre",
+"fr": "Centre Canadian Tire"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg",
+"score": 4
+},
+"homeTeam": {
+"id": 9,
+"abbrev": "OTT",
+"commonName": {
+"default": "Senators",
+"fr": "S\u00e9nateurs"
+},
+"placeName": {
+"default": "Ottawa"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/OTT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/OTT_dark.svg",
+"score": 2
+},
+"periodDescriptor": {
+"number": 3,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+},
+"gameOutcome": {
+"lastPeriodType": "REG"
+}
+},
+{
+"id": 2026020002,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-09-29",
+"startTimeUTC": "2026-09-29T23:00:00Z",
+"gameState": "OFF",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 8,
+"abbrev": "MTL",
+"commonName": {
+"default": "Canadiens"
+},
+"placeName": {
+"default": "Montr\u00e9al"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/MTL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/MTL_dark.svg",
+"score": 3
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg",
+"score": 2
+},
+"periodDescriptor": {
+"number": 3,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+},
+"gameOutcome": {
+"lastPeriodType": "REG"
+}
+},
+{
+"id": 2026020008,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-09-30",
+"startTimeUTC": "2026-09-30T23:30:00Z",
+"gameState": "OFF",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 2,
+"abbrev": "NYI",
+"commonName": {
+"default": "Islanders"
+},
+"placeName": {
+"default": "New York"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NYI_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NYI_dark.svg",
+"score": 1
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg",
+"score": 2
+},
+"periodDescriptor": {
+"number": 3,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+},
+"gameOutcome": {
+"lastPeriodType": "REG"
+}
+},
+{
+"id": 2026020023,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-03",
+"startTimeUTC": "2026-10-03T23:00:00Z",
+"gameState": "OFF",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 9,
+"abbrev": "OTT",
+"commonName": {
+"default": "Senators",
+"fr": "S\u00e9nateurs"
+},
+"placeName": {
+"default": "Ottawa"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/OTT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/OTT_dark.svg",
+"score": 3
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg",
+"score": 2
+},
+"periodDescriptor": {
+"number": 3,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+},
+"gameOutcome": {
+"lastPeriodType": "REG"
+}
+},
+{
+"id": 2026020044,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-06",
+"startTimeUTC": "2026-10-06T23:00:00Z",
+"gameState": "OFF",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 18,
+"abbrev": "NSH",
+"commonName": {
+"default": "Predators"
+},
+"placeName": {
+"default": "Nashville"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NSH_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NSH_dark.svg",
+"score": 4
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg",
+"score": 5
+},
+"periodDescriptor": {
+"number": 4,
+"periodType": "OT",
+"maxRegulationPeriods": 3
+},
+"gameOutcome": {
+"lastPeriodType": "OT"
+}
+},
+{
+"id": 2026020065,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-08",
+"startTimeUTC": "2026-10-09T02:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "T-Mobile Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 54,
+"abbrev": "VGK",
+"commonName": {
+"default": "Golden Knights"
+},
+"placeName": {
+"default": "Vegas"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/VGK_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/VGK_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020080,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-10",
+"startTimeUTC": "2026-10-10T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Ball Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 21,
+"abbrev": "COL",
+"commonName": {
+"default": "Avalanche"
+},
+"placeName": {
+"default": "Colorado"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/COL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/COL_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020102,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-13",
+"startTimeUTC": "2026-10-14T01:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Delta Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 68,
+"abbrev": "UTA",
+"commonName": {
+"default": "Mammoth"
+},
+"placeName": {
+"default": "Utah"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/UTA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/UTA_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020108,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-15",
+"startTimeUTC": "2026-10-15T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 7,
+"abbrev": "BUF",
+"commonName": {
+"default": "Sabres"
+},
+"placeName": {
+"default": "Buffalo"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/BUF_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/BUF_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020125,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-17",
+"startTimeUTC": "2026-10-17T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 2,
+"abbrev": "NYI",
+"commonName": {
+"default": "Islanders"
+},
+"placeName": {
+"default": "New York"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NYI_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NYI_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020139,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-19",
+"startTimeUTC": "2026-10-19T23:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 28,
+"abbrev": "SJS",
+"commonName": {
+"default": "Sharks"
+},
+"placeName": {
+"default": "San Jose"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/SJS_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/SJS_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020145,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-20",
+"startTimeUTC": "2026-10-20T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Nationwide Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 29,
+"abbrev": "CBJ",
+"commonName": {
+"default": "Blue Jackets"
+},
+"placeName": {
+"default": "Columbus"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CBJ_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CBJ_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020155,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-22",
+"startTimeUTC": "2026-10-22T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 3,
+"abbrev": "NYR",
+"commonName": {
+"default": "Rangers"
+},
+"placeName": {
+"default": "New York"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NYR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NYR_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020176,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-24",
+"startTimeUTC": "2026-10-24T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Rogers Place"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 22,
+"abbrev": "EDM",
+"commonName": {
+"default": "Oilers"
+},
+"placeName": {
+"default": "Edmonton"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/EDM_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/EDM_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020186,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-26",
+"startTimeUTC": "2026-10-27T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Saddledome"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 20,
+"abbrev": "CGY",
+"commonName": {
+"default": "Flames"
+},
+"placeName": {
+"default": "Calgary"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CGY_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CGY_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020202,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-28",
+"startTimeUTC": "2026-10-29T02:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Climate Pledge Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 55,
+"abbrev": "SEA",
+"commonName": {
+"default": "Kraken"
+},
+"placeName": {
+"default": "Seattle"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/SEA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/SEA_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020224,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-10-31",
+"startTimeUTC": "2026-10-31T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Rogers Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 23,
+"abbrev": "VAN",
+"commonName": {
+"default": "Canucks"
+},
+"placeName": {
+"default": "Vancouver"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/VAN_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/VAN_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020236,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-03",
+"startTimeUTC": "2026-11-04T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 68,
+"abbrev": "UTA",
+"commonName": {
+"default": "Mammoth"
+},
+"placeName": {
+"default": "Utah"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/UTA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/UTA_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020268,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-07",
+"startTimeUTC": "2026-11-08T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 8,
+"abbrev": "MTL",
+"commonName": {
+"default": "Canadiens"
+},
+"placeName": {
+"default": "Montr\u00e9al"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/MTL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/MTL_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020279,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-08",
+"startTimeUTC": "2026-11-09T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 1,
+"abbrev": "NJD",
+"commonName": {
+"default": "Devils"
+},
+"placeName": {
+"default": "New Jersey"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NJD_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NJD_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020286,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-10",
+"startTimeUTC": "2026-11-11T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 21,
+"abbrev": "COL",
+"commonName": {
+"default": "Avalanche"
+},
+"placeName": {
+"default": "Colorado"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/COL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/COL_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020300,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-12",
+"startTimeUTC": "2026-11-13T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 30,
+"abbrev": "MIN",
+"commonName": {
+"default": "Wild"
+},
+"placeName": {
+"default": "Minnesota"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/MIN_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/MIN_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020314,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-14",
+"startTimeUTC": "2026-11-15T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 22,
+"abbrev": "EDM",
+"commonName": {
+"default": "Oilers"
+},
+"placeName": {
+"default": "Edmonton"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/EDM_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/EDM_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020338,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-17",
+"startTimeUTC": "2026-11-18T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "United Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 16,
+"abbrev": "CHI",
+"commonName": {
+"default": "Blackhawks"
+},
+"placeName": {
+"default": "Chicago"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CHI_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CHI_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020347,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-19",
+"startTimeUTC": "2026-11-20T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 26,
+"abbrev": "LAK",
+"commonName": {
+"default": "Kings"
+},
+"placeName": {
+"default": "Los Angeles"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/LAK_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/LAK_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020364,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-21",
+"startTimeUTC": "2026-11-22T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 29,
+"abbrev": "CBJ",
+"commonName": {
+"default": "Blue Jackets"
+},
+"placeName": {
+"default": "Columbus"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CBJ_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CBJ_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020381,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-23",
+"startTimeUTC": "2026-11-24T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "UBS Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 2,
+"abbrev": "NYI",
+"commonName": {
+"default": "Islanders"
+},
+"placeName": {
+"default": "New York"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NYI_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NYI_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020400,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-27",
+"startTimeUTC": "2026-11-27T18:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "TD Garden"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 6,
+"abbrev": "BOS",
+"commonName": {
+"default": "Bruins"
+},
+"placeName": {
+"default": "Boston"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/BOS_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/BOS_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020420,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-28",
+"startTimeUTC": "2026-11-29T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "PPG Paints Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 5,
+"abbrev": "PIT",
+"commonName": {
+"default": "Penguins"
+},
+"placeName": {
+"default": "Pittsburgh"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/PIT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/PIT_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020433,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-11-30",
+"startTimeUTC": "2026-12-01T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 4,
+"abbrev": "PHI",
+"commonName": {
+"default": "Flyers"
+},
+"placeName": {
+"default": "Philadelphia",
+"fr": "Philadelphie"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/PHI_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/PHI_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020448,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-03",
+"startTimeUTC": "2026-12-04T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 13,
+"abbrev": "FLA",
+"commonName": {
+"default": "Panthers"
+},
+"placeName": {
+"default": "Florida",
+"fr": "Floride"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/FLA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/FLA_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020471,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-05",
+"startTimeUTC": "2026-12-06T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Lenovo Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 12,
+"abbrev": "CAR",
+"commonName": {
+"default": "Hurricanes"
+},
+"placeName": {
+"default": "Carolina",
+"fr": "Caroline"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CAR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CAR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020497,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-09",
+"startTimeUTC": "2026-12-10T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "American Airlines Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 25,
+"abbrev": "DAL",
+"commonName": {
+"default": "Stars"
+},
+"placeName": {
+"default": "Dallas"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/DAL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/DAL_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020519,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-12",
+"startTimeUTC": "2026-12-13T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 54,
+"abbrev": "VGK",
+"commonName": {
+"default": "Golden Knights"
+},
+"placeName": {
+"default": "Vegas"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/VGK_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/VGK_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020529,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-13",
+"startTimeUTC": "2026-12-14T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 24,
+"abbrev": "ANA",
+"commonName": {
+"default": "Ducks"
+},
+"placeName": {
+"default": "Anaheim"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/ANA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/ANA_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020544,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-15",
+"startTimeUTC": "2026-12-16T01:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Grand Casino Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 30,
+"abbrev": "MIN",
+"commonName": {
+"default": "Wild"
+},
+"placeName": {
+"default": "Minnesota"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/MIN_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/MIN_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020553,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-17",
+"startTimeUTC": "2026-12-18T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Prudential Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 1,
+"abbrev": "NJD",
+"commonName": {
+"default": "Devils"
+},
+"placeName": {
+"default": "New Jersey"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NJD_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NJD_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020570,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-19",
+"startTimeUTC": "2026-12-20T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 14,
+"abbrev": "TBL",
+"commonName": {
+"default": "Lightning"
+},
+"placeName": {
+"default": "Tampa Bay"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TBL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TBL_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020585,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-21",
+"startTimeUTC": "2026-12-21T19:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 15,
+"abbrev": "WSH",
+"commonName": {
+"default": "Capitals"
+},
+"placeName": {
+"default": "Washington"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/WSH_secondary_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/WSH_secondary_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020595,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-22",
+"startTimeUTC": "2026-12-23T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Little Caesars Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 17,
+"abbrev": "DET",
+"commonName": {
+"default": "Red Wings"
+},
+"placeName": {
+"default": "Detroit"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/DET_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/DET_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020604,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-26",
+"startTimeUTC": "2026-12-27T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Centre Bell"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 8,
+"abbrev": "MTL",
+"commonName": {
+"default": "Canadiens"
+},
+"placeName": {
+"default": "Montr\u00e9al"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/MTL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/MTL_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020636,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-29",
+"startTimeUTC": "2026-12-30T03:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Honda Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 24,
+"abbrev": "ANA",
+"commonName": {
+"default": "Ducks"
+},
+"placeName": {
+"default": "Anaheim"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/ANA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/ANA_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020641,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2026-12-30",
+"startTimeUTC": "2026-12-31T03:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Crypto.com Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 26,
+"abbrev": "LAK",
+"commonName": {
+"default": "Kings"
+},
+"placeName": {
+"default": "Los Angeles"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/LAK_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/LAK_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020663,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-02",
+"startTimeUTC": "2027-01-03T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "SAP Center at San Jose",
+"es": "SAP Center en San Jose",
+"fr": "SAP Center de San Jose"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 28,
+"abbrev": "SJS",
+"commonName": {
+"default": "Sharks"
+},
+"placeName": {
+"default": "San Jose"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/SJS_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/SJS_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020676,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-04",
+"startTimeUTC": "2027-01-05T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Capital One Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 15,
+"abbrev": "WSH",
+"commonName": {
+"default": "Capitals"
+},
+"placeName": {
+"default": "Washington"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/WSH_secondary_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/WSH_secondary_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020697,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-07",
+"startTimeUTC": "2027-01-08T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Xfinity Mobile Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 4,
+"abbrev": "PHI",
+"commonName": {
+"default": "Flyers"
+},
+"placeName": {
+"default": "Philadelphia",
+"fr": "Philadelphie"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/PHI_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/PHI_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020713,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-09",
+"startTimeUTC": "2027-01-10T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 4,
+"abbrev": "PHI",
+"commonName": {
+"default": "Flyers"
+},
+"placeName": {
+"default": "Philadelphia",
+"fr": "Philadelphie"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/PHI_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/PHI_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020725,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-11",
+"startTimeUTC": "2027-01-12T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 52,
+"abbrev": "WPG",
+"commonName": {
+"default": "Jets"
+},
+"placeName": {
+"default": "Winnipeg"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/WPG_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/WPG_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020745,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-14",
+"startTimeUTC": "2027-01-15T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 16,
+"abbrev": "CHI",
+"commonName": {
+"default": "Blackhawks"
+},
+"placeName": {
+"default": "Chicago"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CHI_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CHI_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020762,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-16",
+"startTimeUTC": "2027-01-17T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 5,
+"abbrev": "PIT",
+"commonName": {
+"default": "Penguins"
+},
+"placeName": {
+"default": "Pittsburgh"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/PIT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/PIT_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020783,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-18",
+"startTimeUTC": "2027-01-19T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 19,
+"abbrev": "STL",
+"commonName": {
+"default": "Blues"
+},
+"placeName": {
+"default": "St. Louis"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/STL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/STL_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020794,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-20",
+"startTimeUTC": "2027-01-21T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Canadian Tire Centre",
+"fr": "Centre Canadian Tire"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 9,
+"abbrev": "OTT",
+"commonName": {
+"default": "Senators",
+"fr": "S\u00e9nateurs"
+},
+"placeName": {
+"default": "Ottawa"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/OTT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/OTT_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020818,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-23",
+"startTimeUTC": "2027-01-24T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Enterprise Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 19,
+"abbrev": "STL",
+"commonName": {
+"default": "Blues"
+},
+"placeName": {
+"default": "St. Louis"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/STL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/STL_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020835,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-26",
+"startTimeUTC": "2027-01-27T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 20,
+"abbrev": "CGY",
+"commonName": {
+"default": "Flames"
+},
+"placeName": {
+"default": "Calgary"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CGY_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CGY_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020846,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-27",
+"startTimeUTC": "2027-01-28T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Little Caesars Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 17,
+"abbrev": "DET",
+"commonName": {
+"default": "Red Wings"
+},
+"placeName": {
+"default": "Detroit"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/DET_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/DET_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020869,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-01-30",
+"startTimeUTC": "2027-01-31T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "TD Garden"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 6,
+"abbrev": "BOS",
+"commonName": {
+"default": "Bruins"
+},
+"placeName": {
+"default": "Boston"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/BOS_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/BOS_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020895,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-08",
+"startTimeUTC": "2027-02-09T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 29,
+"abbrev": "CBJ",
+"commonName": {
+"default": "Blue Jackets"
+},
+"placeName": {
+"default": "Columbus"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CBJ_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CBJ_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020901,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-10",
+"startTimeUTC": "2027-02-11T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 6,
+"abbrev": "BOS",
+"commonName": {
+"default": "Bruins"
+},
+"placeName": {
+"default": "Boston"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/BOS_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/BOS_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020918,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-13",
+"startTimeUTC": "2027-02-14T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Canadian Tire Centre",
+"fr": "Centre Canadian Tire"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 9,
+"abbrev": "OTT",
+"commonName": {
+"default": "Senators",
+"fr": "S\u00e9nateurs"
+},
+"placeName": {
+"default": "Ottawa"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/OTT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/OTT_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020939,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-16",
+"startTimeUTC": "2027-02-17T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 12,
+"abbrev": "CAR",
+"commonName": {
+"default": "Hurricanes"
+},
+"placeName": {
+"default": "Carolina",
+"fr": "Caroline"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CAR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CAR_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020956,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-18",
+"startTimeUTC": "2027-02-19T01:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Bridgestone Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 18,
+"abbrev": "NSH",
+"commonName": {
+"default": "Predators"
+},
+"placeName": {
+"default": "Nashville"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NSH_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NSH_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020973,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-20",
+"startTimeUTC": "2027-02-21T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Benchmark International Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 14,
+"abbrev": "TBL",
+"commonName": {
+"default": "Lightning"
+},
+"placeName": {
+"default": "Tampa Bay"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TBL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TBL_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026020991,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-23",
+"startTimeUTC": "2027-02-24T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 17,
+"abbrev": "DET",
+"commonName": {
+"default": "Red Wings"
+},
+"placeName": {
+"default": "Detroit"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/DET_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/DET_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021005,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-25",
+"startTimeUTC": "2027-02-26T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "PPG Paints Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 5,
+"abbrev": "PIT",
+"commonName": {
+"default": "Penguins"
+},
+"placeName": {
+"default": "Pittsburgh"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/PIT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/PIT_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021022,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-02-27",
+"startTimeUTC": "2027-02-28T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "KeyBank Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 7,
+"abbrev": "BUF",
+"commonName": {
+"default": "Sabres"
+},
+"placeName": {
+"default": "Buffalo"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/BUF_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/BUF_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021036,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-01",
+"startTimeUTC": "2027-03-02T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 17,
+"abbrev": "DET",
+"commonName": {
+"default": "Red Wings"
+},
+"placeName": {
+"default": "Detroit"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/DET_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/DET_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021048,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-03",
+"startTimeUTC": "2027-03-03T23:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 55,
+"abbrev": "SEA",
+"commonName": {
+"default": "Kraken"
+},
+"placeName": {
+"default": "Seattle"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/SEA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/SEA_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021065,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-05",
+"startTimeUTC": "2027-03-06T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Lenovo Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 12,
+"abbrev": "CAR",
+"commonName": {
+"default": "Hurricanes"
+},
+"placeName": {
+"default": "Carolina",
+"fr": "Caroline"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/CAR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/CAR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021076,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-06",
+"startTimeUTC": "2027-03-07T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Amerant Bank Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 13,
+"abbrev": "FLA",
+"commonName": {
+"default": "Panthers"
+},
+"placeName": {
+"default": "Florida",
+"fr": "Floride"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/FLA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/FLA_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021090,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-08",
+"startTimeUTC": "2027-03-09T00:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 25,
+"abbrev": "DAL",
+"commonName": {
+"default": "Stars"
+},
+"placeName": {
+"default": "Dallas"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/DAL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/DAL_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021112,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-11",
+"startTimeUTC": "2027-03-12T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Canada Life Centre"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 52,
+"abbrev": "WPG",
+"commonName": {
+"default": "Jets"
+},
+"placeName": {
+"default": "Winnipeg"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/WPG_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/WPG_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021125,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-13",
+"startTimeUTC": "2027-03-14T00:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 23,
+"abbrev": "VAN",
+"commonName": {
+"default": "Canucks"
+},
+"placeName": {
+"default": "Vancouver"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/VAN_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/VAN_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021141,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-15",
+"startTimeUTC": "2027-03-15T23:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 13,
+"abbrev": "FLA",
+"commonName": {
+"default": "Panthers"
+},
+"placeName": {
+"default": "Florida",
+"fr": "Floride"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/FLA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/FLA_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021155,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-17",
+"startTimeUTC": "2027-03-17T23:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 14,
+"abbrev": "TBL",
+"commonName": {
+"default": "Lightning"
+},
+"placeName": {
+"default": "Tampa Bay"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TBL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TBL_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021165,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-18",
+"startTimeUTC": "2027-03-18T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Madison Square Garden"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 3,
+"abbrev": "NYR",
+"commonName": {
+"default": "Rangers"
+},
+"placeName": {
+"default": "New York"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NYR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NYR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021180,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-20",
+"startTimeUTC": "2027-03-20T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Prudential Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 1,
+"abbrev": "NJD",
+"commonName": {
+"default": "Devils"
+},
+"placeName": {
+"default": "New Jersey"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NJD_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NJD_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021194,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-22",
+"startTimeUTC": "2027-03-22T23:30:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Centre Bell"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 8,
+"abbrev": "MTL",
+"commonName": {
+"default": "Canadiens"
+},
+"placeName": {
+"default": "Montr\u00e9al"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/MTL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/MTL_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021212,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-25",
+"startTimeUTC": "2027-03-25T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "KeyBank Center"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 7,
+"abbrev": "BUF",
+"commonName": {
+"default": "Sabres"
+},
+"placeName": {
+"default": "Buffalo"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/BUF_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/BUF_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021231,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-27",
+"startTimeUTC": "2027-03-27T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 9,
+"abbrev": "OTT",
+"commonName": {
+"default": "Senators",
+"fr": "S\u00e9nateurs"
+},
+"placeName": {
+"default": "Ottawa"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/OTT_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/OTT_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021241,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-28",
+"startTimeUTC": "2027-03-28T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 15,
+"abbrev": "WSH",
+"commonName": {
+"default": "Capitals"
+},
+"placeName": {
+"default": "Washington"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/WSH_secondary_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/WSH_secondary_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021250,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-03-30",
+"startTimeUTC": "2027-03-30T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Benchmark International Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 14,
+"abbrev": "TBL",
+"commonName": {
+"default": "Lightning"
+},
+"placeName": {
+"default": "Tampa Bay"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TBL_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TBL_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021265,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-04-01",
+"startTimeUTC": "2027-04-01T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Amerant Bank Arena"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 13,
+"abbrev": "FLA",
+"commonName": {
+"default": "Panthers"
+},
+"placeName": {
+"default": "Florida",
+"fr": "Floride"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/FLA_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/FLA_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021283,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-04-03",
+"startTimeUTC": "2027-04-03T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 7,
+"abbrev": "BUF",
+"commonName": {
+"default": "Sabres"
+},
+"placeName": {
+"default": "Buffalo"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/BUF_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/BUF_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021298,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-04-05",
+"startTimeUTC": "2027-04-05T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Scotiabank Arena"
+},
+"awayTeam": {
+"id": 6,
+"abbrev": "BOS",
+"commonName": {
+"default": "Bruins"
+},
+"placeName": {
+"default": "Boston"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/BOS_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/BOS_dark.svg"
+},
+"homeTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+},
+{
+"id": 2026021339,
+"season": 20262027,
+"gameType": 2,
+"gameDate": "2027-04-10",
+"startTimeUTC": "2027-04-10T23:00:00Z",
+"gameState": "FUT",
+"venue": {
+"default": "Madison Square Garden"
+},
+"awayTeam": {
+"id": 10,
+"abbrev": "TOR",
+"commonName": {
+"default": "Maple Leafs"
+},
+"placeName": {
+"default": "Toronto"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_dark.svg"
+},
+"homeTeam": {
+"id": 3,
+"abbrev": "NYR",
+"commonName": {
+"default": "Rangers"
+},
+"placeName": {
+"default": "New York"
+},
+"logo": "https://assets.nhle.com/logos/nhl/svg/NYR_light.svg",
+"darkLogo": "https://assets.nhle.com/logos/nhl/svg/NYR_dark.svg"
+},
+"periodDescriptor": {
+"number": 1,
+"periodType": "REG",
+"maxRegulationPeriods": 3
+}
+}
+]
+}

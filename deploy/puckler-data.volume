@@ -1,0 +1,3 @@
+# Holds crew.json (the picks). Survives container rebuilds.
+[Volume]
+VolumeName=puckler-data
