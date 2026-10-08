@@ -1,0 +1,26 @@
+# Quadlet unit — copy to ~/.config/containers/systemd/ (rootless)
+# or /etc/containers/systemd/ (rootful), then `systemctl [--user] daemon-reload`.
+
+[Unit]
+Description=Puckler NHL crew tracker
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+ContainerName=puckler
+Image=localhost/puckler:latest
+PublishPort=3000:3000
+Volume=puckler-data.volume:/data:Z
+# Created with `podman secret create` — see README.
+Secret=puckler-password,type=env,target=CREW_PASSWORD
+Secret=puckler-session,type=env,target=SESSION_SECRET
+HealthCmd=wget -qO- http://127.0.0.1:3000/api/health
+HealthInterval=30s
+HealthStartPeriod=15s
+HealthRetries=3
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
