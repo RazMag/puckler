@@ -1,6 +1,11 @@
+import { SEASON_GAMES } from "@/lib/nhl/league";
+
 /** Hockey terms explained for people new to the NHL; shown as tooltips. */
 export const GLOSSARY = {
-  gp: { title: "Games played", text: "How many games the team has played so far this season (82 in total)." },
+  gp: {
+    title: "Games played",
+    text: `How many games the team has played so far this season (${SEASON_GAMES} in total).`,
+  },
   w: { title: "Wins", text: "Each win is worth 2 points, whether in regulation, overtime or a shootout." },
   l: { title: "Regulation losses", text: "Losses in the normal 60 minutes. Worth 0 points." },
   ot: {
@@ -30,7 +35,7 @@ export const GLOSSARY = {
   hot: { title: "Hot streak", text: "Three or more wins in a row. The goal light is on." },
   pace: {
     title: "Points pace",
-    text: "Points the team would finish with over 82 games at its current points percentage. Around 95 usually makes the playoffs.",
+    text: `Points the team would finish with over ${SEASON_GAMES} games at its current points percentage. Somewhere in the mid-to-high 90s usually makes the playoffs.`,
   },
   nhlRank: { title: "League rank", text: "Position among all 32 NHL teams." },
   divRank: { title: "Division rank", text: "Position within the team's own 8-team division." },

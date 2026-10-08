@@ -1,8 +1,7 @@
 import type { CrewMember } from "@/lib/crew/types";
+import { POINTS_PER_WIN, SEASON_GAMES } from "@/lib/nhl/league";
 import type { TeamStanding } from "@/lib/nhl/types";
 import { playoffStatus, type PlayoffStatus } from "./division";
-
-export const SEASON_GAMES = 82;
 
 export type CrewRow = {
   rank: number;
@@ -34,7 +33,7 @@ export function rankCrew(crew: readonly CrewMember[], standings: readonly TeamSt
     member,
     team,
     pointsBehindLeader: leaderPoints - team.points,
-    projectedPoints: Math.round(team.pointPct * SEASON_GAMES * 2),
+    projectedPoints: Math.round(team.pointPct * SEASON_GAMES * POINTS_PER_WIN),
     playoff: playoffStatus(team, standings),
   }));
 }

@@ -6,6 +6,7 @@ import { normalizeSchedule, normalizeStandings } from "@/lib/nhl/normalize";
 import { clubScheduleResponseSchema, standingsResponseSchema } from "@/lib/nhl/schemas";
 import type { CrewMember } from "@/lib/crew/types";
 import type { Game } from "@/lib/nhl/types";
+import { SEASON_GAMES } from "@/lib/nhl/league";
 import { initials, rankCrew } from "./crew-standings";
 import { conferenceTables, playoffStatus } from "./division";
 import { benchReports, resultFor, rivalries } from "./faceoffs";
@@ -40,6 +41,14 @@ describe("rankCrew", () => {
   it("measures the gap to the leader", () => {
     expect(rows[0]?.pointsBehindLeader).toBe(0);
     expect(rows[1]?.pointsBehindLeader).toBe(rows[0]!.team.points - rows[1]!.team.points);
+  });
+
+  it("projects points over a full season matching the real schedule length", () => {
+    const regularSeason = schedules.get("TOR")!.filter((g) => g.gameType === 2).length;
+    expect(SEASON_GAMES).toBe(regularSeason);
+    for (const row of rows) {
+      expect(row.projectedPoints).toBe(Math.round(row.team.pointPct * regularSeason * 2));
+    }
   });
 
   it("skips members whose team is missing from standings", () => {
