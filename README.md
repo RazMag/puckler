@@ -26,18 +26,20 @@ src/
 
 ## Develop
 
-```bash
-npm install
-cp .env.example .env.local   # set CREW_PASSWORD and SESSION_SECRET
-npm run dev                  # http://localhost:3000
-```
+With [just](https://github.com/casey/just):
 
 ```bash
-npm test          # domain + token tests (against captured API fixtures)
-npm run lint
-npm run typecheck
-npm run format
+just dev
 ```
+
+This installs dependencies if needed and asks for the Draft Room password. Press Enter to keep the current one. It then writes `.env.local` (with a fresh session secret whenever the password changes) and starts the dev server on http://localhost:3000. `just password` changes the password without starting the server.
+
+```bash
+just check        # lint, type-check, tests, formatting
+just image        # podman build
+```
+
+Without `just`: copy `.env.example` to `.env.local`, fill in `CREW_PASSWORD` and `SESSION_SECRET`, then `npm install && npm run dev`.
 
 ## Run with Podman (Quadlet)
 
