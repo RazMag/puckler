@@ -60,7 +60,7 @@ export function DivisionRink({
             >
               <span
                 className={`grid size-[clamp(18px,5.4cqw,34px)] place-items-center rounded-full bg-white ${
-                  owner ? "animate-goal-light ring-[3px]" : "ring-1 ring-black/30"
+                  owner ? "shadow-[0_0_12px_3px_rgb(255_38_38/0.5)] ring-[3px]" : "ring-1 ring-black/30"
                 }`}
                 style={owner ? { ["--tw-ring-color" as string]: teamMeta(team.abbrev).primary } : undefined}
               >

@@ -125,12 +125,7 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
           {form.map((game) => {
             const result = resultFor(game, member.team) ?? "L";
             return (
-              <Puck
-                key={game.id}
-                size="sm"
-                className={`text-sm! ${result === "W" ? "animate-goal-light" : ""}`}
-                title={`${result} vs ${opponentOf(game, member.team)}`}
-              >
+              <Puck key={game.id} size="sm" className={`text-sm! ${result === "W" ? "text-goal" : ""}`}>
                 {result === "OTL" ? "OT" : result}
               </Puck>
             );

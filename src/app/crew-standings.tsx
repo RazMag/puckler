@@ -52,7 +52,7 @@ export async function CrewStandings() {
             className="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1 rounded-sm bg-white/70 px-3 py-2 shadow-sm ring-1 ring-black/5 backdrop-blur-sm sm:grid-cols-[12rem_1fr] sm:px-4"
           >
             <div className="flex items-center gap-2">
-              <Puck size="sm" className={isHot(row.team) ? "animate-goal-light" : ""} title="Crew rank">
+              <Puck size="sm" glow={isHot(row.team)}>
                 {row.rank}
               </Puck>
               <div className="min-w-0">
