@@ -132,7 +132,7 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
     <article className="rounded-sm bg-white/80 p-4 shadow-md ring-1 ring-black/5">
       <header className="flex flex-wrap items-center gap-3">
         <TeamLogo team={member.team} size={44} />
-        <div className="min-w-0 flex-1">
+        <div className="min-w-32 flex-1">
           <h3 className="truncate font-display text-xl leading-tight">{member.name}</h3>
           <p className="text-sm font-semibold text-ink-soft">{member.team}</p>
         </div>
