@@ -5,10 +5,21 @@ import { LocalTime } from "@/components/LocalTime";
 import { Puck } from "@/components/Puck";
 import { SectionHeading } from "@/components/Scoreboard";
 import { TeamLogo } from "@/components/TeamLogo";
+import { Term } from "@/components/Term";
+import { Tooltip } from "@/components/Tooltip";
 import type { CrewMember } from "@/lib/crew/types";
 import { loadFaceoffs } from "@/lib/data";
 import { ownersByTeam } from "@/lib/domain/crew-standings";
-import { benchReports, opponentOf, resultFor, rivalries, type BenchReport, type Rivalry } from "@/lib/domain/faceoffs";
+import {
+  benchReports,
+  opponentOf,
+  resultFor,
+  rivalries,
+  scoreFor,
+  type BenchReport,
+  type Result,
+  type Rivalry,
+} from "@/lib/domain/faceoffs";
 import type { Game } from "@/lib/nhl/types";
 
 export async function FaceoffBoard() {
@@ -62,7 +73,9 @@ function RivalryCard({ rivalry, owners }: { rivalry: Rivalry; owners: ReadonlyMa
         <FaceoffDot />
         <Jersey team={b.team} name={b.name} number={winsB} className="w-full max-w-36" />
       </div>
-      <p className="mt-2 text-center font-display text-lg">{seriesText(rivalry)}</p>
+      <p className="mt-2 text-center font-display text-lg">
+        <Term term="series">{seriesText(rivalry)}</Term>
+      </p>
       <p className="text-center text-xs font-semibold tracking-wider text-ink-soft uppercase">
         Jersey number = series wins
       </p>
@@ -103,6 +116,8 @@ function FaceoffDot() {
   );
 }
 
+const RESULT_NAME: Record<Result, string> = { W: "Win", L: "Loss", OTL: "OT loss" };
+
 const RESULT_STYLE = {
   W: "bg-goal text-white",
   OTL: "bg-blue-line text-white",
@@ -121,13 +136,25 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
           <h3 className="truncate font-display text-xl leading-tight">{member.name}</h3>
           <p className="text-sm font-semibold text-ink-soft">{member.team}</p>
         </div>
-        <div className="flex gap-1" aria-label="Recent form, oldest to newest">
+        <div className="flex items-center gap-1" aria-label="Recent form, oldest to newest">
+          <Term term="form" className="mr-1 text-xs font-extrabold tracking-[0.2em] text-ink-soft uppercase">
+            Form
+          </Term>
           {form.map((game) => {
             const result = resultFor(game, member.team) ?? "L";
+            const [us, them] = scoreFor(game, member.team);
             return (
-              <Puck key={game.id} size="sm" className={`text-sm! ${result === "W" ? "text-goal" : ""}`}>
-                {result === "OTL" ? "OT" : result}
-              </Puck>
+              <Tooltip
+                key={game.id}
+                title={`${RESULT_NAME[result]} vs ${opponentOf(game, member.team)}`}
+                text={`${us}–${them}${game.periodType && game.periodType !== "REG" ? ` (${game.periodType})` : ""}`}
+                underline={false}
+                className="rounded-full"
+              >
+                <Puck size="sm" className={`text-sm! ${result === "W" ? "text-goal" : ""}`}>
+                  {result === "OTL" ? "OT" : result}
+                </Puck>
+              </Tooltip>
             );
           })}
         </div>
@@ -166,18 +193,31 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
 function ResultRow({ game, team }: { game: Game; team: string }) {
   const result = resultFor(game, team);
   const home = game.home.abbrev === team;
-  const [us, them] = home ? [game.home.score, game.away.score] : [game.away.score, game.home.score];
+  const [us, them] = scoreFor(game, team);
   return (
     <li className="flex items-center gap-2 py-1.5 text-sm">
-      {result && (
-        <span className={`w-9 -skew-x-12 text-center text-xs font-extrabold ${RESULT_STYLE[result]}`}>{result}</span>
-      )}
+      {result &&
+        (result === "OTL" ? (
+          <Term
+            term="otl"
+            underline={false}
+            className={`w-9 -skew-x-12 text-center text-xs font-extrabold ${RESULT_STYLE[result]}`}
+          >
+            {result}
+          </Term>
+        ) : (
+          <span className={`w-9 -skew-x-12 text-center text-xs font-extrabold ${RESULT_STYLE[result]}`}>{result}</span>
+        ))}
       <span className="w-4 text-ink-soft">{home ? "vs" : "@"}</span>
       <TeamLogo team={opponentOf(game, team)} size={20} />
       <span className="font-semibold">{opponentOf(game, team)}</span>
       <span className="ml-auto font-led text-xl">
         {us}–{them}
-        {game.periodType && game.periodType !== "REG" && <span className="ml-1 text-sm">{game.periodType}</span>}
+        {(game.periodType === "OT" || game.periodType === "SO") && (
+          <Term term={game.periodType === "OT" ? "finalOt" : "finalSo"} underline={false} className="ml-1 text-sm">
+            {game.periodType}
+          </Term>
+        )}
       </span>
     </li>
   );
@@ -192,9 +232,14 @@ function UpcomingRow({ game, team, owners }: { game: Game; team: string; owners:
       <TeamLogo team={opponent} size={20} />
       <span className="font-semibold">{opponent}</span>
       {rival && (
-        <span className="-skew-x-12 bg-red-line px-1 font-display text-[10px] text-white" title="Crew clash">
+        <Tooltip
+          title="Crew clash"
+          text={`${rival.name}'s team. This one counts toward your season series.`}
+          underline={false}
+          className="-skew-x-12 bg-red-line px-1 font-display text-[10px] text-white"
+        >
           {rival.name}
-        </span>
+        </Tooltip>
       )}
       <span className="ml-auto text-right text-ink-soft">
         <LocalTime iso={game.startTimeUTC} />

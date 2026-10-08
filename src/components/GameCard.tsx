@@ -4,6 +4,7 @@ import { resultFor } from "@/lib/domain/faceoffs";
 import type { Game, GameSide } from "@/lib/nhl/types";
 import { LocalTime } from "./LocalTime";
 import { TeamLogo } from "./TeamLogo";
+import { Term } from "./Term";
 
 function statusLabel(game: Game) {
   if (game.phase === "live") {
@@ -17,7 +18,9 @@ function statusLabel(game: Game) {
     );
   }
   if (game.phase === "final") {
-    return game.periodType === "OT" || game.periodType === "SO" ? `FINAL/${game.periodType}` : "FINAL";
+    if (game.periodType === "OT") return <Term term="finalOt">FINAL/OT</Term>;
+    if (game.periodType === "SO") return <Term term="finalSo">FINAL/SO</Term>;
+    return "FINAL";
   }
   return <LocalTime iso={game.startTimeUTC} />;
 }

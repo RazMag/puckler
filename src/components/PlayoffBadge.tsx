@@ -1,5 +1,7 @@
 import type { PlayoffStatus } from "@/lib/domain/division";
+import type { GlossaryKey } from "@/lib/glossary";
 import { ordinal } from "@/lib/format";
+import { Term } from "./Term";
 
 const BASE =
   "inline-flex items-center px-2 py-0.5 text-xs font-extrabold tracking-wider whitespace-nowrap uppercase -skew-x-12";
@@ -19,10 +21,16 @@ function label(status: PlayoffStatus, compact: boolean, division?: string): stri
 }
 
 const STYLE = {
-  division: ["bg-blue-line text-white", "Holds a top-three division spot"],
-  wildcard: ["bg-kickplate text-black", "Holds a wild card spot"],
-  out: ["bg-ink-soft/20 text-ink", "Outside the playoff picture: points behind the last wild card"],
+  division: "bg-blue-line text-white",
+  wildcard: "bg-kickplate text-black",
+  out: "bg-ink-soft/20 text-ink",
 } as const;
+
+function termFor(status: PlayoffStatus): GlossaryKey {
+  if (status.kind === "division") return "divisionSpot";
+  if (status.kind === "wildcard") return "wildCard";
+  return status.pointsBehind === 0 ? "bubble" : "out";
+}
 
 /** "In · 2nd" / "Wild card 1" / "Out · 3 pts back" stamp describing a team's playoff position today. */
 export function PlayoffBadge({
@@ -34,10 +42,9 @@ export function PlayoffBadge({
   division?: string;
   compact?: boolean;
 }) {
-  const [style, title] = STYLE[status.kind];
   return (
-    <span className={`${BASE} ${style}`} title={title}>
+    <Term term={termFor(status)} underline={false} className={`${BASE} ${STYLE[status.kind]}`}>
       <span className="skew-x-12">{label(status, compact, division)}</span>
-    </span>
+    </Term>
   );
 }

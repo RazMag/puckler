@@ -8,10 +8,14 @@ export type Result = "W" | "L" | "OTL";
 /** Outcome of a finished game from `abbrev`'s point of view. */
 export function resultFor(game: Game, abbrev: string): Result | null {
   if (game.phase !== "final" || game.home.score === null || game.away.score === null) return null;
-  const [us, them] =
-    game.home.abbrev === abbrev ? [game.home.score, game.away.score] : [game.away.score, game.home.score];
+  const [us, them] = scoreFor(game, abbrev) as [number, number];
   if (us > them) return "W";
   return game.periodType === "OT" || game.periodType === "SO" ? "OTL" : "L";
+}
+
+/** `[our goals, their goals]` from `abbrev`'s point of view. */
+export function scoreFor(game: Game, abbrev: string): [number | null, number | null] {
+  return game.home.abbrev === abbrev ? [game.home.score, game.away.score] : [game.away.score, game.home.score];
 }
 
 export function opponentOf(game: Game, abbrev: string): string {

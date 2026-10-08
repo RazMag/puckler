@@ -6,9 +6,11 @@ import { Puck } from "@/components/Puck";
 import { SectionHeading } from "@/components/Scoreboard";
 import { StickBar } from "@/components/StickBar";
 import { TeamLogo } from "@/components/TeamLogo";
+import { Term } from "@/components/Term";
 import { loadBoard } from "@/lib/data";
 import { rankCrew, type CrewRow } from "@/lib/domain/crew-standings";
 import { ordinal, pct, signed } from "@/lib/format";
+import type { GlossaryKey } from "@/lib/glossary";
 import type { TeamStanding } from "@/lib/nhl/types";
 
 const HOT_STREAK = 3;
@@ -71,17 +73,21 @@ export async function CrewStandings() {
                 label={`${row.member.name} points`}
               />
               <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold text-ink-soft">
-                <span>{record(row.team)}</span>
-                <span>{row.team.gamesPlayed} GP</span>
-                <span>{signed(row.team.goalDiff)} GD</span>
-                <span className={isHot(row.team) ? "font-extrabold text-goal" : ""}>
+                <Term term="record">{record(row.team)}</Term>
+                <Term term="gp">{row.team.gamesPlayed} GP</Term>
+                <Term term="gd">{signed(row.team.goalDiff)} GD</Term>
+                <Term
+                  term={isHot(row.team) ? "hot" : "streak"}
+                  className={isHot(row.team) ? "font-extrabold text-goal" : ""}
+                >
                   {streakText(row.team)}
                   {isHot(row.team) && " 🚨"}
-                </span>
+                </Term>
+                <Term term="pace">{row.projectedPoints} pace</Term>
                 {row.pointsBehindLeader > 0 && (
-                  <span>
+                  <Term term="ptsBack">
                     {row.pointsBehindLeader} pt{row.pointsBehindLeader === 1 ? "" : "s"} back
-                  </span>
+                  </Term>
                 )}
                 <PlayoffBadge status={row.playoff} division={row.team.division} />
               </div>
@@ -121,7 +127,7 @@ function Podium({ rows }: { rows: CrewRow[] }) {
               <div className={`font-display leading-tight ${first ? "text-2xl" : "text-lg"}`}>{row.member.name}</div>
               <div className="flex items-center justify-center gap-1 text-sm font-semibold text-ink-soft">
                 <TeamLogo team={row.team.abbrev} size={18} />
-                {row.team.points} pts
+                <Term term="pts">{row.team.points} pts</Term>
               </div>
             </figcaption>
             <div
@@ -143,27 +149,27 @@ function Podium({ rows }: { rows: CrewRow[] }) {
 }
 
 function TapeTable({ rows }: { rows: CrewRow[] }) {
-  const columns: { label: string; title: string; value: (r: CrewRow) => string | number }[] = [
-    { label: "GP", title: "Games played", value: (r) => r.team.gamesPlayed },
-    { label: "W", title: "Wins", value: (r) => r.team.wins },
-    { label: "L", title: "Regulation losses", value: (r) => r.team.losses },
-    { label: "OT", title: "Overtime/shootout losses", value: (r) => r.team.otLosses },
-    { label: "PTS", title: "Points", value: (r) => r.team.points },
-    { label: "P%", title: "Points percentage", value: (r) => pct(r.team.pointPct) },
-    { label: "GF", title: "Goals for", value: (r) => r.team.goalsFor },
-    { label: "GA", title: "Goals against", value: (r) => r.team.goalsAgainst },
-    { label: "DIFF", title: "Goal differential", value: (r) => signed(r.team.goalDiff) },
+  const columns: { label: string; term: GlossaryKey; value: (r: CrewRow) => string | number }[] = [
+    { label: "GP", term: "gp", value: (r) => r.team.gamesPlayed },
+    { label: "W", term: "w", value: (r) => r.team.wins },
+    { label: "L", term: "l", value: (r) => r.team.losses },
+    { label: "OT", term: "ot", value: (r) => r.team.otLosses },
+    { label: "PTS", term: "pts", value: (r) => r.team.points },
+    { label: "P%", term: "pct", value: (r) => pct(r.team.pointPct) },
+    { label: "GF", term: "gf", value: (r) => r.team.goalsFor },
+    { label: "GA", term: "ga", value: (r) => r.team.goalsAgainst },
+    { label: "DIFF", term: "gd", value: (r) => signed(r.team.goalDiff) },
     {
       label: "L10",
-      title: "Last 10 games (W-L-OT)",
+      term: "l10",
       value: (r) => `${r.team.last10.wins}-${r.team.last10.losses}-${r.team.last10.otLosses}`,
     },
-    { label: "STRK", title: "Current streak", value: (r) => streakText(r.team) },
-    { label: "PACE", title: "Points pace over 82 games", value: (r) => r.projectedPoints },
-    { label: "NHL", title: "League rank", value: (r) => ordinal(r.team.leagueRank) },
+    { label: "STRK", term: "streak", value: (r) => streakText(r.team) },
+    { label: "PACE", term: "pace", value: (r) => r.projectedPoints },
+    { label: "NHL", term: "nhlRank", value: (r) => ordinal(r.team.leagueRank) },
     {
       label: "DIV",
-      title: "Division rank",
+      term: "divRank",
       value: (r) => `${ordinal(r.team.divisionRank)} ${r.team.division.slice(0, 3)}`,
     },
   ];
@@ -175,10 +181,8 @@ function TapeTable({ rows }: { rows: CrewRow[] }) {
           <tr className="text-[11px] tracking-[0.18em] text-white/50 uppercase">
             <th className="px-2 py-1 text-left">Player</th>
             {columns.map((c) => (
-              <th key={c.label} className="px-2 py-1" title={c.title}>
-                <abbr title={c.title} className="no-underline">
-                  {c.label}
-                </abbr>
+              <th key={c.label} className="px-2 py-1">
+                <Term term={c.term}>{c.label}</Term>
               </th>
             ))}
           </tr>

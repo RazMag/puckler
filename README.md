@@ -21,6 +21,7 @@ src/
   lib/crew/         crew store (JSON file) + guarded server actions
   lib/auth/         signed editor cookie, login/logout actions
   lib/domain/       pure logic: crew ranking, playoff status, rivalries
+  lib/glossary.ts   plain-English explanations behind every tooltip
 ```
 
 ## Develop

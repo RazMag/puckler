@@ -3,6 +3,7 @@ import { PlayoffBadge } from "@/components/PlayoffBadge";
 import { DivisionRink } from "@/components/rink/DivisionRink";
 import { SectionHeading } from "@/components/Scoreboard";
 import { TeamLogo } from "@/components/TeamLogo";
+import { Term } from "@/components/Term";
 import { loadBoard } from "@/lib/data";
 import { ownersByTeam } from "@/lib/domain/crew-standings";
 import { conferenceTables, DIVISION_SPOTS, playoffStatus, WILD_CARD_SPOTS } from "@/lib/domain/division";
@@ -16,7 +17,7 @@ export async function DivisionBoard() {
 
   return conferenceTables(standings.teams).map((conference) => (
     <section key={conference.name} aria-label={`${conference.name} Conference`}>
-      <SectionHeading line="blue" aside={`Wild card cut: ${conference.cutLinePoints} pts`}>
+      <SectionHeading line="blue" aside={<Term term="cutLine">Wild card cut: {conference.cutLinePoints} pts</Term>}>
         {conference.name} Conference
       </SectionHeading>
 
@@ -26,7 +27,7 @@ export async function DivisionBoard() {
             <h3 className="mb-2 font-display text-xl tracking-wide">
               {division.name}
               <span className="ml-2 align-middle font-sans text-sm font-semibold text-ink-soft">
-                top {DIVISION_SPOTS} qualify
+                <Term term="topThree">top {DIVISION_SPOTS} qualify</Term>
               </span>
             </h3>
             <DivisionRink
@@ -49,7 +50,7 @@ export async function DivisionBoard() {
       <h3 className="mt-8 mb-2 font-display text-xl tracking-wide">
         Wild Card Race
         <span className="ml-2 align-middle font-sans text-sm font-semibold text-ink-soft">
-          best {WILD_CARD_SPOTS} of the rest
+          <Term term="wildCard">best {WILD_CARD_SPOTS} of the rest</Term>
         </span>
       </h3>
       <StandingsTable
@@ -83,11 +84,15 @@ function StandingsTable({
           <tr className="bg-boards text-[11px] tracking-[0.15em] text-white/60 uppercase">
             <th className="w-8 px-2 py-1.5">#</th>
             <th className="px-2 py-1.5 text-left">Team</th>
-            <th className="px-2 py-1.5 text-right" title="Wins-losses-overtime losses">
-              Record
+            <th className="px-2 py-1.5 text-right">
+              <Term term="record">Record</Term>
             </th>
-            <th className="px-2 py-1.5 text-right">PTS</th>
-            <th className="px-2 py-1.5 text-right">Diff</th>
+            <th className="px-2 py-1.5 text-right">
+              <Term term="pts">PTS</Term>
+            </th>
+            <th className="px-2 py-1.5 text-right">
+              <Term term="gd">Diff</Term>
+            </th>
             <th className="px-2 py-1.5 text-left">Status</th>
           </tr>
         </thead>
