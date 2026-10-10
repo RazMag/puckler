@@ -1,0 +1,423 @@
+{
+  "timestamp": "2026-10-10T09:13:39Z",
+  "status": "success",
+  "injuries": [
+    {
+      "id": "8",
+      "displayName": "Los Angeles Kings",
+      "injuries": [
+        {
+          "id": "595235",
+          "shortComment": "Turcotte is week-to-week, according to the team.",
+          "status": "Day-To-Day",
+          "date": "2026-10-09T20:27Z",
+          "athlete": {
+            "firstName": "Alex",
+            "lastName": "Turcotte",
+            "displayName": "Alex Turcotte",
+            "position": {
+              "abbreviation": "C"
+            },
+            "team": {
+              "id": "8",
+              "abbreviation": "LA",
+              "displayName": "Los Angeles Kings"
+            }
+          },
+          "type": {
+            "id": "6",
+            "name": "INJURY_STATUS_DAYTODAY",
+            "description": "day-to-day",
+            "abbreviation": "DD"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "Day-To-Day",
+              "abbreviation": "Day-To-Day"
+            },
+            "type": "Undisclosed",
+            "detail": "Not Specified",
+            "side": "Not Specified",
+            "returnDate": "2026-10-10"
+          }
+        },
+        {
+          "id": "595234",
+          "shortComment": "Zuccarello is week-to-week, according to the team.",
+          "status": "Out",
+          "date": "2026-10-09T20:24Z",
+          "athlete": {
+            "firstName": "Mats",
+            "lastName": "Zuccarello",
+            "displayName": "Mats Zuccarello",
+            "position": {
+              "abbreviation": "RW"
+            },
+            "team": {
+              "id": "8",
+              "abbreviation": "LA",
+              "displayName": "Los Angeles Kings"
+            }
+          },
+          "type": {
+            "id": "4",
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "OUT",
+              "abbreviation": "OUT"
+            },
+            "type": "Undisclosed",
+            "returnDate": "2026-10-17"
+          }
+        },
+        {
+          "id": "593688",
+          "shortComment": "Dvorak is week-to-week, according to the team.",
+          "status": "Injured Reserve",
+          "date": "2026-09-24T19:49Z",
+          "athlete": {
+            "firstName": "Jakub",
+            "lastName": "Dvorak",
+            "displayName": "Jakub Dvorak",
+            "position": {
+              "abbreviation": "D"
+            },
+            "team": {
+              "id": "8",
+              "abbreviation": "LA",
+              "displayName": "Los Angeles Kings"
+            }
+          },
+          "type": {
+            "id": "5",
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "IR-NR",
+              "abbreviation": "IR-NR"
+            },
+            "type": "Upper Body",
+            "returnDate": "2026-10-31"
+          }
+        },
+        {
+          "id": "593687",
+          "shortComment": "Jenik is week-to-week, according to the team.",
+          "status": "Injured Reserve",
+          "date": "2026-09-24T19:45Z",
+          "athlete": {
+            "firstName": "Jan",
+            "lastName": "Jenik",
+            "displayName": "Jan Jenik",
+            "position": {
+              "abbreviation": "C"
+            },
+            "team": {
+              "id": "8",
+              "abbreviation": "LA",
+              "displayName": "Los Angeles Kings"
+            }
+          },
+          "type": {
+            "id": "5",
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "IR-NR",
+              "abbreviation": "IR-NR"
+            },
+            "type": "Undisclosed",
+            "returnDate": "2026-10-24"
+          }
+        },
+        {
+          "id": "593257",
+          "shortComment": "Fiala is week-to-week, according to the team.",
+          "status": "Injured Reserve",
+          "date": "2026-09-17T19:39Z",
+          "athlete": {
+            "firstName": "Kevin",
+            "lastName": "Fiala",
+            "displayName": "Kevin Fiala",
+            "position": {
+              "abbreviation": "LW"
+            },
+            "team": {
+              "id": "8",
+              "abbreviation": "LA",
+              "displayName": "Los Angeles Kings"
+            }
+          },
+          "type": {
+            "id": "5",
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "IR",
+              "abbreviation": "IR"
+            },
+            "type": "Lower Leg",
+            "detail": "Surgery",
+            "side": "Left",
+            "returnDate": "2026-10-17"
+          }
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "displayName": "Toronto Maple Leafs",
+      "injuries": [
+        {
+          "id": "595240",
+          "shortComment": "Tavares is week-to-week, according to the team.",
+          "status": "Out",
+          "date": "2026-10-09T21:33Z",
+          "athlete": {
+            "firstName": "John",
+            "lastName": "Tavares",
+            "displayName": "John Tavares",
+            "position": {
+              "abbreviation": "C"
+            },
+            "team": {
+              "id": "21",
+              "abbreviation": "TOR",
+              "displayName": "Toronto Maple Leafs"
+            }
+          },
+          "type": {
+            "id": "4",
+            "name": "INJURY_STATUS_OUT",
+            "description": "out",
+            "abbreviation": "O"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "OUT",
+              "abbreviation": "OUT"
+            },
+            "type": "Personal",
+            "returnDate": "2026-10-13"
+          }
+        },
+        {
+          "id": "595156",
+          "shortComment": "Ekman-Larsson is week-to-week, according to the team.",
+          "status": "Day-To-Day",
+          "date": "2026-10-09T05:32Z",
+          "athlete": {
+            "firstName": "Oliver",
+            "lastName": "Ekman-Larsson",
+            "displayName": "Oliver Ekman-Larsson",
+            "position": {
+              "abbreviation": "D"
+            },
+            "team": {
+              "id": "21",
+              "abbreviation": "TOR",
+              "displayName": "Toronto Maple Leafs"
+            }
+          },
+          "type": {
+            "id": "6",
+            "name": "INJURY_STATUS_DAYTODAY",
+            "description": "day-to-day",
+            "abbreviation": "DD"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "Day-To-Day",
+              "abbreviation": "Day-To-Day"
+            },
+            "type": "Undisclosed",
+            "returnDate": "2026-10-10"
+          }
+        },
+        {
+          "id": "594285",
+          "shortComment": "Joshua is week-to-week, according to the team.",
+          "status": "Injured Reserve",
+          "date": "2026-09-30T21:47Z",
+          "athlete": {
+            "firstName": "Dakota",
+            "lastName": "Joshua",
+            "displayName": "Dakota Joshua",
+            "position": {
+              "abbreviation": "C"
+            },
+            "team": {
+              "id": "21",
+              "abbreviation": "TOR",
+              "displayName": "Toronto Maple Leafs"
+            }
+          },
+          "type": {
+            "id": "5",
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "IR-LT",
+              "abbreviation": "IR-LT"
+            },
+            "type": "Abdomen",
+            "returnDate": "2026-10-24"
+          }
+        },
+        {
+          "id": "594278",
+          "shortComment": "Domi is week-to-week, according to the team.",
+          "status": "Injured Reserve",
+          "date": "2026-09-30T18:51Z",
+          "athlete": {
+            "firstName": "Max",
+            "lastName": "Domi",
+            "displayName": "Max Domi",
+            "position": {
+              "abbreviation": "C"
+            },
+            "team": {
+              "id": "21",
+              "abbreviation": "TOR",
+              "displayName": "Toronto Maple Leafs"
+            }
+          },
+          "type": {
+            "id": "5",
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "IR-LT",
+              "abbreviation": "IR-LT"
+            },
+            "type": "Back",
+            "detail": "Surgery",
+            "returnDate": "2026-11-21"
+          }
+        },
+        {
+          "id": "594166",
+          "shortComment": "Webber is week-to-week, according to the team.",
+          "status": "Injured Reserve",
+          "date": "2026-09-29T14:55Z",
+          "athlete": {
+            "firstName": "Cade",
+            "lastName": "Webber",
+            "displayName": "Cade Webber",
+            "position": {
+              "abbreviation": "D"
+            },
+            "team": {
+              "id": "21",
+              "abbreviation": "TOR",
+              "displayName": "Toronto Maple Leafs"
+            }
+          },
+          "type": {
+            "id": "5",
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "IR-NR",
+              "abbreviation": "IR-NR"
+            },
+            "type": "Elbow",
+            "returnDate": "2026-10-31"
+          }
+        },
+        {
+          "id": "594162",
+          "shortComment": "Merzlikins is week-to-week, according to the team.",
+          "status": "Injured Reserve",
+          "date": "2026-09-29T14:24Z",
+          "athlete": {
+            "firstName": "Elvis",
+            "lastName": "Merzlikins",
+            "displayName": "Elvis Merzlikins",
+            "position": {
+              "abbreviation": "G"
+            },
+            "team": {
+              "id": "21",
+              "abbreviation": "TOR",
+              "displayName": "Toronto Maple Leafs"
+            }
+          },
+          "type": {
+            "id": "5",
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "IR-LT",
+              "abbreviation": "IR-LT"
+            },
+            "type": "Shoulder",
+            "detail": "Surgery",
+            "side": "Not Specified",
+            "returnDate": "2027-03-30"
+          }
+        },
+        {
+          "id": "594164",
+          "shortComment": "Villeneuve is week-to-week, according to the team.",
+          "status": "Injured Reserve",
+          "date": "2026-09-29T04:30Z",
+          "athlete": {
+            "firstName": "William",
+            "lastName": "Villeneuve",
+            "displayName": "William Villeneuve",
+            "position": {
+              "abbreviation": "D"
+            },
+            "team": {
+              "id": "21",
+              "abbreviation": "TOR",
+              "displayName": "Toronto Maple Leafs"
+            }
+          },
+          "type": {
+            "id": "5",
+            "name": "INJURY_STATUS_IR",
+            "description": "Injured Reserve",
+            "abbreviation": "IR"
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "IR-NR",
+              "abbreviation": "IR-NR"
+            },
+            "type": "Knee",
+            "detail": "Surgery",
+            "side": "Not Specified",
+            "returnDate": "2026-10-31"
+          }
+        }
+      ]
+    }
+  ]
+}
