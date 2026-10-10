@@ -5,6 +5,7 @@ import statsJson from "@/lib/nhl/__fixtures__/club-stats-TOR.json";
 import rosterJson from "@/lib/nhl/__fixtures__/roster-TOR.json";
 import type { CrewMember } from "@/lib/crew/types";
 import { firstSentence, injuriesResponseSchema, normalizeInjuries, type Injury } from "@/lib/espn/injuries";
+import { dayLabel, positionLabel, shortName } from "@/lib/format";
 import { normalizeBoxscore, normalizeRoster, normalizeTeamStats } from "@/lib/nhl/normalize";
 import { boxscoreResponseSchema, clubStatsResponseSchema, rosterResponseSchema } from "@/lib/nhl/schemas";
 import type { BoxScore } from "@/lib/nhl/types";
@@ -249,5 +250,14 @@ describe("threeStars", () => {
 
   it("is empty when nobody has scored", () => {
     expect(threeStars([playerReport(raz, { ...tor, boxScores: [] }, null)])).toEqual([]);
+  });
+});
+
+describe("player formatting", () => {
+  it("formats names, positions and days", () => {
+    expect(shortName("Auston", "Matthews")).toBe("A. Matthews");
+    expect(positionLabel("L")).toBe("LW");
+    expect(positionLabel("D")).toBe("D");
+    expect(dayLabel("2026-10-17")).toBe("Oct 17");
   });
 });

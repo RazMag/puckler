@@ -1,3 +1,4 @@
+import { HOT_STREAK, LEADER_COUNT, RECENT_GAMES } from "@/lib/domain/players";
 import { SEASON_GAMES } from "@/lib/nhl/league";
 
 /** Hockey terms explained for people new to the NHL; shown as tooltips. */
@@ -80,6 +81,61 @@ export const GLOSSARY = {
   form: {
     title: "Recent form",
     text: "The last few results, oldest on the left: W win, L loss, OT overtime/shootout loss.",
+  },
+  playerPts: {
+    title: "Points (player)",
+    text: "One for every goal and one for every assist. The usual way to rank scorers.",
+  },
+  goals: { title: "Goals", text: "Pucks the player put in the net." },
+  assists: {
+    title: "Assists",
+    text: "Credit for the last one or two teammates to touch the puck before a goal.",
+  },
+  plusMinus: {
+    title: "Plus/minus",
+    text: "Even-strength and shorthanded goals scored minus goals allowed while the player was on the ice. Power-play goals don't count.",
+  },
+  lastGames: {
+    title: `Last ${RECENT_GAMES} games`,
+    text: "Points in each of the team's latest games, oldest on the left. A dash means the player didn't dress.",
+  },
+  hotStick: {
+    title: "Hot stick",
+    text: `A point in each of the player's last ${HOT_STREAK} or more games.`,
+  },
+  threeStars: {
+    title: "Three stars",
+    text: `After every NHL game the three best players are named its stars. Here: the top scorers on crew teams over each team's last ${RECENT_GAMES} games.`,
+  },
+  goalieRecord: {
+    title: "Goalie record (W-L-OT)",
+    text: "Games the goalie was in net for the result: wins, regulation losses and overtime/shootout losses.",
+  },
+  svPct: {
+    title: "Save percentage",
+    text: "Share of shots on goal the goalie stopped. About .900 is average; .920 or better is excellent.",
+  },
+  gaa: {
+    title: "Goals against average",
+    text: "Goals allowed per 60 minutes in net. Lower is better; under 2.50 is excellent.",
+  },
+  keyPlayer: {
+    title: "Key player",
+    text: `One of the team's top ${LEADER_COUNT} scorers or its starting goalie.`,
+  },
+  ir: {
+    title: "Injured reserve",
+    text: "Out for at least a week. The team can fill the roster spot while the player heals.",
+  },
+  injuryOut: { title: "Out", text: "Won't play the next game, maybe more. No firm timeline yet." },
+  dtd: { title: "Day-to-day", text: "A minor knock. Could play any night; it's decided game by game." },
+  suspended: {
+    title: "Suspended",
+    text: "Banned by the league for a set number of games, usually after a dangerous hit.",
+  },
+  estReturn: {
+    title: "Estimated return",
+    text: "ESPN's best guess at when the player is back. Injuries often run longer.",
   },
 } as const satisfies Record<string, { title: string; text: string }>;
 
