@@ -1,5 +1,11 @@
-import type { ClubScheduleResponse, StandingsResponse } from "./schemas";
-import type { Game, GamePhase, Standings, TeamStanding } from "./types";
+import type {
+  BoxscoreResponse,
+  ClubScheduleResponse,
+  ClubStatsResponse,
+  RosterResponse,
+  StandingsResponse,
+} from "./schemas";
+import type { BoxScore, Game, GamePhase, RosterPlayer, Standings, TeamStanding, TeamStats } from "./types";
 
 const NHL_SITE = "https://www.nhl.com";
 
@@ -89,4 +95,61 @@ export function normalizeSchedule(raw: ClubScheduleResponse): Game[] {
     .filter((g) => g.season === raw.currentSeason)
     .map(normalizeGame)
     .sort((a, b) => a.startTimeUTC.localeCompare(b.startTimeUTC));
+}
+
+export function normalizeTeamStats(raw: ClubStatsResponse): TeamStats {
+  return {
+    skaters: raw.skaters.map((p) => ({
+      id: p.playerId,
+      firstName: p.firstName.default,
+      lastName: p.lastName.default,
+      position: p.positionCode,
+      headshot: p.headshot,
+      gamesPlayed: p.gamesPlayed,
+      goals: p.goals,
+      assists: p.assists,
+      points: p.points,
+      plusMinus: p.plusMinus,
+    })),
+    goalies: raw.goalies.map((p) => ({
+      id: p.playerId,
+      firstName: p.firstName.default,
+      lastName: p.lastName.default,
+      headshot: p.headshot,
+      gamesPlayed: p.gamesPlayed,
+      gamesStarted: p.gamesStarted,
+      wins: p.wins,
+      losses: p.losses,
+      otLosses: p.overtimeLosses,
+      gaa: p.goalsAgainstAverage ?? null,
+      savePct: p.savePercentage ?? null,
+    })),
+  };
+}
+
+export function normalizeRoster(raw: RosterResponse): RosterPlayer[] {
+  return [...raw.forwards, ...raw.defensemen, ...raw.goalies].map((p) => ({
+    id: p.id,
+    firstName: p.firstName.default,
+    lastName: p.lastName.default,
+    number: p.sweaterNumber ?? null,
+    position: p.positionCode,
+    headshot: p.headshot,
+  }));
+}
+
+export function normalizeBoxscore(raw: BoxscoreResponse): BoxScore {
+  const stats = raw.playerByGameStats;
+  const side = (team: string, players: NonNullable<typeof stats>["homeTeam"]) =>
+    [...players.forwards, ...players.defense].map(({ playerId, goals, assists, points }) => ({
+      playerId,
+      team,
+      goals,
+      assists,
+      points,
+    }));
+  return {
+    gameId: raw.id,
+    skaters: stats ? [...side(raw.awayTeam.abbrev, stats.awayTeam), ...side(raw.homeTeam.abbrev, stats.homeTeam)] : [],
+  };
 }
