@@ -10,7 +10,7 @@ import { SEASON_GAMES } from "@/lib/nhl/league";
 import { initials, rankCrew } from "./crew-standings";
 import { conferenceTables, playoffStatus } from "./division";
 import { benchReports, resultFor, rivalries } from "./faceoffs";
-import { highlightsFor } from "@/lib/nhl/highlights";
+import { compactHighlights, highlightsFor } from "@/lib/nhl/highlights";
 
 const { teams } = normalizeStandings(standingsResponseSchema.parse(standingsJson));
 const schedules = new Map([
@@ -164,6 +164,17 @@ describe("highlights", () => {
 
     const bare = { ...noRecap, links: { recap: null, condensed: null, gameCenter: noRecap.links.gameCenter } };
     expect(highlightsFor(bare).map((h) => h.kind)).toEqual(["gameCenter"]);
+  });
+
+  it("keeps the best video and the game center for tight rows", () => {
+    const withRecap = finals.find((g) => g.links.recap && g.links.condensed)!;
+    expect(compactHighlights(withRecap).map((h) => h.kind)).toEqual(["recap", "gameCenter"]);
+
+    const noRecap = finals.find((g) => !g.links.recap)!;
+    expect(compactHighlights(noRecap).map((h) => h.kind)).toEqual(["condensed", "gameCenter"]);
+
+    const bare = { ...noRecap, links: { recap: null, condensed: null, gameCenter: noRecap.links.gameCenter } };
+    expect(compactHighlights(bare).map((h) => h.kind)).toEqual(["gameCenter"]);
   });
 
   it("ignores anything that isn't an nhl.com path", () => {

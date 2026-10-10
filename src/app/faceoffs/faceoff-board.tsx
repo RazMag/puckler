@@ -179,7 +179,8 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
         </div>
       )}
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      {/* Two bench cards share a row from lg up; stack the lists until there's room for both. */}
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
         <section>
           <h4 className="mb-1 text-xs font-extrabold tracking-[0.2em] text-ink-soft uppercase">Last {recent.length}</h4>
           <ul className="divide-y divide-black/5">
@@ -248,7 +249,7 @@ function ResultRow({ game, team }: { game: Game; team: string }) {
       <span className="w-4 text-ink-soft">{home ? "vs" : "@"}</span>
       <TeamLogo team={opponentOf(game, team)} size={20} />
       <span className="font-semibold">{opponentOf(game, team)}</span>
-      <span className="ml-auto font-led text-xl">
+      <span className="ml-auto font-led text-xl whitespace-nowrap">
         {us}–{them}
         {(game.periodType === "OT" || game.periodType === "SO") && (
           <Term term={game.periodType === "OT" ? "finalOt" : "finalSo"} underline={false} className="ml-1 text-sm">
