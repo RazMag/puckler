@@ -84,7 +84,7 @@ export function Tooltip({
         id={id}
         role="tooltip"
         popover="manual"
-        className="fixed inset-auto m-0 w-max max-w-64 border-2 border-black bg-boards px-3 py-2 text-left font-sans text-sm leading-snug font-medium tracking-normal text-white normal-case shadow-[4px_4px_0_0_var(--color-red-line)]"
+        className="fixed inset-auto m-0 w-max max-w-64 border-2 border-black bg-boards px-3 py-2 text-left font-sans text-sm leading-snug font-medium tracking-normal whitespace-normal text-white normal-case shadow-[4px_4px_0_0_var(--color-red-line)]"
       >
         <span className="block font-display text-xs tracking-wider text-led uppercase">{title}</span>
         {text}
