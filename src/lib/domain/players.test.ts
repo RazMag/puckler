@@ -3,14 +3,51 @@ import injuriesJson from "@/lib/espn/__fixtures__/injuries.json";
 import boxJson from "@/lib/nhl/__fixtures__/boxscore-2026020065.json";
 import statsJson from "@/lib/nhl/__fixtures__/club-stats-TOR.json";
 import rosterJson from "@/lib/nhl/__fixtures__/roster-TOR.json";
-import { firstSentence, injuriesResponseSchema, normalizeInjuries } from "@/lib/espn/injuries";
+import type { CrewMember } from "@/lib/crew/types";
+import { firstSentence, injuriesResponseSchema, normalizeInjuries, type Injury } from "@/lib/espn/injuries";
 import { normalizeBoxscore, normalizeRoster, normalizeTeamStats } from "@/lib/nhl/normalize";
 import { boxscoreResponseSchema, clubStatsResponseSchema, rosterResponseSchema } from "@/lib/nhl/schemas";
+import type { BoxScore } from "@/lib/nhl/types";
+import {
+  hasReturnEstimate,
+  isHot,
+  LEADER_COUNT,
+  matchPlayer,
+  playerReport,
+  recentForm,
+  threeStars,
+  type TeamPlayers,
+} from "./players";
 
 const stats = normalizeTeamStats(clubStatsResponseSchema.parse(statsJson));
 const roster = normalizeRoster(rosterResponseSchema.parse(rosterJson));
 const box = normalizeBoxscore(boxscoreResponseSchema.parse(boxJson));
 const injuries = normalizeInjuries(injuriesResponseSchema.parse(injuriesJson));
+const tor: TeamPlayers = { stats, roster, boxScores: [box] };
+const raz: CrewMember = { id: "1", name: "Raz", team: "TOR" };
+
+function injury(overrides: Partial<Injury>): Injury {
+  return {
+    team: "TOR",
+    firstName: "Auston",
+    lastName: "Matthews",
+    position: "C",
+    status: "dtd",
+    ailment: null,
+    returnDate: null,
+    note: null,
+    updatedAt: "2026-10-01T00:00Z",
+    ...overrides,
+  };
+}
+
+/** A box score where `playerId` (TOR) had the given points; absent when null. */
+function game(gameId: number, playerId: number, points: number | null): BoxScore {
+  return {
+    gameId,
+    skaters: points === null ? [] : [{ playerId, team: "TOR", goals: points, assists: 0, points }],
+  };
+}
 
 describe("NHL player fixtures", () => {
   it("reads season totals for skaters and goalies", () => {
@@ -104,5 +141,113 @@ describe("ESPN injuries", () => {
     );
     expect(firstSentence("J.T. Miller is out. More later.")).toBe("J.T. Miller is out.");
     expect(firstSentence("No end mark")).toBe("No end mark");
+  });
+
+  it("only trusts return dates after today", () => {
+    expect(hasReturnEstimate(injury({ returnDate: "2026-10-17" }), "2026-10-10")).toBe(true);
+    expect(hasReturnEstimate(injury({ returnDate: "2026-10-10" }), "2026-10-10")).toBe(false);
+    expect(hasReturnEstimate(injury({ returnDate: null }), "2026-10-10")).toBe(false);
+  });
+});
+
+describe("recentForm", () => {
+  it("lists points per game oldest first, with null for games missed", () => {
+    const form = recentForm(7, "TOR", [game(1, 7, 2), game(2, 7, null), game(3, 7, 0), game(4, 7, 1)]);
+    expect(form.perGame).toEqual([2, null, 0, 1]);
+    expect(form).toMatchObject({ games: 3, goals: 3, points: 3, pointStreak: 1 });
+  });
+
+  it("carries a point streak over games the player sat out", () => {
+    const form = recentForm(7, "TOR", [game(1, 7, 0), game(2, 7, 1), game(3, 7, null), game(4, 7, 2), game(5, 7, 1)]);
+    expect(form.pointStreak).toBe(3);
+    expect(isHot(form)).toBe(true);
+  });
+
+  it("ignores a same-numbered id on the other team", () => {
+    const other: BoxScore = { gameId: 1, skaters: [{ playerId: 7, team: "MTL", goals: 3, assists: 0, points: 3 }] };
+    expect(recentForm(7, "TOR", [other]).perGame).toEqual([null]);
+  });
+});
+
+describe("matchPlayer", () => {
+  const people = [
+    { id: 1, firstName: "Tim", lastName: "Stützle", number: 18, headshot: "" },
+    { id: 2, firstName: "Alexander", lastName: "Nylander", number: 92, headshot: "" },
+    { id: 3, firstName: "William", lastName: "Nylander", number: 88, headshot: "" },
+    { id: 4, firstName: "Oliver", lastName: "Ekman-Larsson", number: 95, headshot: "" },
+  ];
+
+  it("matches names regardless of accents and hyphens", () => {
+    expect(matchPlayer(injury({ firstName: "Tim", lastName: "Stutzle" }), people)?.id).toBe(1);
+    expect(matchPlayer(injury({ firstName: "Oliver", lastName: "Ekman Larsson" }), people)?.id).toBe(4);
+  });
+
+  it("falls back to first initial and last name when that's unambiguous", () => {
+    expect(matchPlayer(injury({ firstName: "Alex", lastName: "Nylander" }), people)?.id).toBe(2);
+    expect(matchPlayer(injury({ firstName: "Will", lastName: "Nylander" }), people)?.id).toBe(3);
+    expect(matchPlayer(injury({ firstName: "Brady", lastName: "Stutzle" }), people)).toBeNull();
+  });
+
+  it("gives up rather than guess between two players with the same initial", () => {
+    const twins = [...people, { id: 5, firstName: "Andrew", lastName: "Nylander", number: 9, headshot: "" }];
+    expect(matchPlayer(injury({ firstName: "Alex", lastName: "Nylander" }), twins)).toBeNull();
+  });
+});
+
+describe("playerReport", () => {
+  const report = playerReport(raz, tor, injuries);
+
+  it("ranks skaters by points, then goals", () => {
+    const pts = report.skaters.map((s) => s.points);
+    expect(pts).toEqual(pts.toSorted((a, b) => b - a));
+    expect(report.skaters[0]?.number).not.toBeNull();
+    expect(report.recentGames).toBe(1);
+  });
+
+  it("puts the busiest goalie first", () => {
+    const starts = report.goalies.map((g) => g.gamesStarted);
+    expect(starts).toEqual(starts.toSorted((a, b) => b - a));
+  });
+
+  it("keeps only this team's injuries, key players first", () => {
+    expect(report.injuries).toHaveLength(injuries.filter((i) => i.team === "TOR").length);
+    const keys = report.injuries!.map((i) => i.keyPlayer);
+    expect(keys).toEqual(keys.toSorted((a, b) => Number(b) - Number(a)));
+  });
+
+  it("flags an injured top scorer as a key player and marks them in the scoring list", () => {
+    const tavares = report.injuries!.find((i) => i.lastName === "Tavares")!;
+    const rank = report.skaters.findIndex((s) => s.lastName === "Tavares");
+    expect(tavares.playerId).toBe(8475166);
+    expect(tavares.keyPlayer).toBe(rank < LEADER_COUNT);
+    expect(report.skaters[rank]?.injury?.status).toBe("out");
+  });
+
+  it("still lists injured players it can't find on the team", () => {
+    const merzlikins = report.injuries!.find((i) => i.lastName === "Merzlikins")!;
+    expect(merzlikins).toMatchObject({ playerId: null, headshot: null, keyPlayer: false });
+  });
+
+  it("reports a missing injury feed as unknown, not as healthy", () => {
+    expect(playerReport(raz, tor, null).injuries).toBeNull();
+    expect(playerReport(raz, tor, []).injuries).toEqual([]);
+  });
+});
+
+describe("threeStars", () => {
+  const sharing: CrewMember = { id: "2", name: "Dana", team: "TOR" };
+  const reports = [playerReport(raz, tor, null), playerReport(sharing, tor, null)];
+  const stars = threeStars(reports);
+
+  it("picks the top recent scorers, each player once", () => {
+    expect(stars.length).toBeLessThanOrEqual(3);
+    expect(new Set(stars.map((s) => s.skater.id)).size).toBe(stars.length);
+    const pts = stars.map((s) => s.skater.recent.points);
+    expect(pts).toEqual(pts.toSorted((a, b) => b - a));
+    for (const s of stars) expect(s.skater.recent.points).toBeGreaterThan(0);
+  });
+
+  it("is empty when nobody has scored", () => {
+    expect(threeStars([playerReport(raz, { ...tor, boxScores: [] }, null)])).toEqual([]);
   });
 });
