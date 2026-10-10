@@ -54,16 +54,53 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # main also publishes the package.json version (e.g. 1.1.0 and 1.1), once per
+      # version: if that tag is already in the registry, this build only moves latest
+      # and adds its sha tag, so a forgotten bump can't overwrite a release.
+      - name: App version
+        if: github.ref == 'refs/heads/main'
+        env:
+          ACTOR: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=$(jq -r .version package.json)
+          if [[ ! $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error title=Bad version::package.json version '$version' isn't MAJOR.MINOR.PATCH"
+            exit 1
+          fi
+          repo=${IMAGE#ghcr.io/}
+          bearer=$(curl -fsS -u "$ACTOR:$TOKEN" "https://ghcr.io/token?scope=repository:$repo:pull" | jq -r .token)
+          status=$(curl -sS -o /dev/null -w '%{http_code}' -I \
+            -H "Authorization: Bearer $bearer" \
+            -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.oci.image.manifest.v1+json,application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.docker.distribution.manifest.v2+json" \
+            "https://ghcr.io/v2/$repo/manifests/$version")
+          case $status in
+            404)
+              echo "NEW_VERSION=$version" >> "$GITHUB_ENV"
+              echo "NEW_MINOR=${version%.*}" >> "$GITHUB_ENV"
+              ;;
+            200)
+              echo "::warning title=Version not bumped::$IMAGE:$version is already published, so this build only updates latest. Bump the version in package.json to publish a new version tag."
+              ;;
+            *)
+              echo "::error::Couldn't check whether $IMAGE:$version exists (registry answered $status)"
+              exit 1
+              ;;
+          esac
+
       - name: Tags and labels
         id: meta
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.IMAGE }}
           # latest = tip of main (what the Quadlet unit tracks), plus immutable
-          # sha-<commit> tags and semver tags for v* releases.
+          # sha-<commit> tags, the package.json version when it's new, and semver
+          # tags for v* git tags.
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha,format=short
+            type=raw,value=${{ env.NEW_VERSION }},enable=${{ env.NEW_VERSION != '' }}
+            type=raw,value=${{ env.NEW_MINOR }},enable=${{ env.NEW_MINOR != '' }}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=ref,event=pr

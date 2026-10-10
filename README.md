@@ -45,11 +45,13 @@ Without `just`: copy `.env.example` to `.env.local`, fill in `CREW_PASSWORD` and
 
 CI (`.github/workflows/ci.yml`) runs the checks and publishes the image to GitHub Container Registry:
 
-| Tag                                    | When                                              |
-| -------------------------------------- | ------------------------------------------------- |
-| `ghcr.io/razmag/puckler:latest`        | every push to `main` (what the Quadlet unit runs) |
-| `ghcr.io/razmag/puckler:sha-<commit>`  | every push to `main`, for pinning or rolling back |
-| `ghcr.io/razmag/puckler:1.2.3`, `:1.2` | pushing a `v1.2.3` git tag                        |
+| Tag                                    | When                                                                                  |
+| -------------------------------------- | ------------------------------------------------------------------------------------- |
+| `ghcr.io/razmag/puckler:latest`        | every push to `main` (what the Quadlet unit runs)                                     |
+| `ghcr.io/razmag/puckler:sha-<commit>`  | every push to `main`, for pinning or rolling back                                     |
+| `ghcr.io/razmag/puckler:1.2.3`, `:1.2` | the first push to `main` with that `version` in `package.json`, or a `v1.2.3` git tag |
+
+From `main`, each version tag is published once: if `main` gets new commits without a version bump, CI warns and only moves `latest`, so `:1.2.3` always points at the build that introduced it. See `AGENTS.md` for when to bump.
 
 Pull requests build the image too, without pushing it.
 
