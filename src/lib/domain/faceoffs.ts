@@ -37,19 +37,21 @@ export function benchReports(
 ): BenchReport[] {
   return crew.map((member) => {
     const games = schedules.get(member.team) ?? [];
-    const regular = games.filter((g) => g.gameType === REGULAR_SEASON);
-    // Before opening night, fall back to preseason so there's something to show.
-    const pool = regular.some((g) => g.phase === "final") ? regular : games;
     return {
       member,
       live: games.find((g) => g.phase === "live") ?? null,
-      recent: pool
-        .filter((g) => g.phase === "final")
-        .slice(-recentCount)
-        .reverse(),
-      upcoming: regular.filter((g) => g.phase === "upcoming").slice(0, upcomingCount),
+      recent: recentFinals(games, recentCount).reverse(),
+      upcoming: games.filter((g) => g.gameType === REGULAR_SEASON && g.phase === "upcoming").slice(0, upcomingCount),
     };
   });
+}
+
+/** The last `count` finished regular-season games, oldest first. */
+export function recentFinals(games: readonly Game[], count: number): Game[] {
+  const regular = games.filter((g) => g.gameType === REGULAR_SEASON);
+  // Before opening night, fall back to preseason so there's something to show.
+  const pool = regular.some((g) => g.phase === "final") ? regular : games;
+  return pool.filter((g) => g.phase === "final").slice(-count);
 }
 
 export type Rivalry = {
