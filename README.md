@@ -5,9 +5,10 @@ A hockey-loud scoreboard for a crew of friends who each picked an NHL team. It s
 - **Standings**: your picks ranked against each other (jersey podium, stick-race bars and a full stat table).
 - **Divisions**: all four divisions drawn as rinks, with your teams highlighted and the playoff cut line marked.
 - **Faceoffs**: every game where two crew picks play each other, plus each team's recent results and next games.
+- **Players**: who's carrying each crew team. The crew's "three stars" over the last five games, each team's top scorers with their recent form, its goalies, and its injury report with key players flagged.
 - **Draft Room**: add, rename or remove crew members and their teams. Editing needs the crew password.
 
-Data comes from the public NHL web API (`api-web.nhle.com`). The server fetches it and caches it for about a minute, so no API key is needed.
+Data comes from the public NHL web API (`api-web.nhle.com`). The server fetches it and caches it for about a minute, so no API key is needed. The NHL API has no injury data, so the injury report comes from ESPN's public site API, refreshed every 15 minutes. If ESPN is unreachable, the Players page still loads and says the injury report is unavailable.
 
 ## Stack
 
@@ -15,12 +16,13 @@ Next.js 16 (App Router, Server Components, Server Actions, Cache Components), Re
 
 ```
 src/
-  app/              routes: / · /divisions · /faceoffs · /crew · /api/health
+  app/              routes: / · /divisions · /faceoffs · /players · /crew · /api/health
   components/       hockey UI: Jersey, StickBar, Puck, rink/…, GameCard
   lib/nhl/          API client, zod schemas, normalization, team colors
+  lib/espn/         injury report (the one feed that isn't from the NHL)
   lib/crew/         crew store (JSON file) + guarded server actions
   lib/auth/         signed editor cookie, login/logout actions
-  lib/domain/       pure logic: crew ranking, playoff status, rivalries
+  lib/domain/       pure logic: crew ranking, playoff status, rivalries, player form
   lib/glossary.ts   plain-English explanations behind every tooltip
 ```
 

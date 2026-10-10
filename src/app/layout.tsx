@@ -43,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <footer className="bg-boards text-white/60">
           <div className="red-line" />
           <div className="mx-auto flex max-w-6xl flex-wrap justify-between gap-2 px-4 py-4 text-sm">
-            <span>Data: NHL public API · refreshed every minute or so</span>
+            <span>Data: NHL public API, injuries from ESPN · refreshed every minute or so</span>
             <span className="font-led text-lg text-led">KEEP YOUR STICK ON THE ICE</span>
           </div>
         </footer>

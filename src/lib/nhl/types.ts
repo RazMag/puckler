@@ -59,3 +59,51 @@ export type Game = {
   period: number | null;
   links: GameLinks;
 };
+
+export type Skater = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  /** C, L, R or D. */
+  position: string;
+  headshot: string;
+  gamesPlayed: number;
+  goals: number;
+  assists: number;
+  points: number;
+  plusMinus: number;
+};
+
+export type Goalie = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  headshot: string;
+  gamesPlayed: number;
+  gamesStarted: number;
+  wins: number;
+  losses: number;
+  otLosses: number;
+  /** Null until the goalie has faced a shot. */
+  gaa: number | null;
+  savePct: number | null;
+};
+
+/** One team's season totals for everyone who has dressed this season. */
+export type TeamStats = { skaters: Skater[]; goalies: Goalie[] };
+
+export type RosterPlayer = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  number: number | null;
+  /** C, L, R, D or G. */
+  position: string;
+  headshot: string;
+};
+
+/** A skater's scoring in one game. */
+export type SkaterLine = { playerId: number; team: string; goals: number; assists: number; points: number };
+
+/** Skater scoring from a finished game, both teams. */
+export type BoxScore = { gameId: number; skaters: SkaterLine[] };
