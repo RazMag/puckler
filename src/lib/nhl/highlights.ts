@@ -27,3 +27,11 @@ export function highlightsFor(game: Game): Highlight[] {
     return url ? [{ kind, label, description, url }] : [];
   });
 }
+
+/** For tight rows: the best video, then the game center. Either may be missing. */
+export function compactHighlights(game: Game): Highlight[] {
+  const all = highlightsFor(game);
+  return [all.find((h) => h.kind !== "gameCenter"), all.find((h) => h.kind === "gameCenter")].filter(
+    (h) => h !== undefined,
+  );
+}
