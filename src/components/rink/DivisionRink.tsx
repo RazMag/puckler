@@ -3,8 +3,8 @@ import { initials } from "@/lib/domain/crew-standings";
 import type { DivisionTable } from "@/lib/domain/division";
 import { teamMeta } from "@/lib/nhl/teams";
 import { TeamLogo } from "../TeamLogo";
+import { TeamTooltip } from "../TeamTooltip";
 import { Term } from "../Term";
-import { Tooltip } from "../Tooltip";
 import { RinkSurface } from "./RinkSurface";
 
 // Usable ice between the goal lines, as a share of the 200 ft rink.
@@ -59,9 +59,9 @@ export function DivisionRink({
               className="absolute -translate-x-1/2 -translate-y-1/2"
               style={{ left: `${xFor(team.points, maxPoints)}%`, top: `${top}%`, zIndex: owner ? 2 : 1 }}
             >
-              <Tooltip
-                title={team.name}
-                text={`${team.points} pts · ${team.wins}-${team.losses}-${team.otLosses}${owner ? ` · ${owner.name}'s pick` : ""}`}
+              <TeamTooltip
+                team={team.abbrev}
+                detail={`${team.points} pts · ${team.wins}-${team.losses}-${team.otLosses}${owner ? ` · ${owner.name}'s pick` : ""}`}
                 underline={false}
                 className="block rounded-full"
               >
@@ -73,7 +73,7 @@ export function DivisionRink({
                 >
                   <TeamLogo team={team.abbrev} size={28} className="size-[82%]" />
                 </span>
-              </Tooltip>
+              </TeamTooltip>
               {owner && (
                 <span className="absolute top-1/2 left-full ml-1 -translate-y-1/2 -skew-x-12 bg-boards px-1 font-display text-[clamp(8px,2.2cqw,12px)] leading-tight text-white">
                   {initials(owner.name)}

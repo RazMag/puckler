@@ -6,6 +6,7 @@ import { LocalTime } from "@/components/LocalTime";
 import { Puck } from "@/components/Puck";
 import { SectionHeading } from "@/components/Scoreboard";
 import { TeamLogo } from "@/components/TeamLogo";
+import { TeamTooltip } from "@/components/TeamTooltip";
 import { Term } from "@/components/Term";
 import { Tooltip } from "@/components/Tooltip";
 import type { CrewMember } from "@/lib/crew/types";
@@ -147,7 +148,9 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
         <TeamLogo team={member.team} size={44} />
         <div className="min-w-32 flex-1">
           <h3 className="truncate font-display text-xl leading-tight">{member.name}</h3>
-          <p className="text-sm font-semibold text-ink-soft">{member.team}</p>
+          <p className="text-sm font-semibold text-ink-soft">
+            <TeamTooltip team={member.team}>{member.team}</TeamTooltip>
+          </p>
         </div>
         <div className="flex items-center gap-1" aria-label="Recent form, oldest to newest">
           <Term term="form" className="mr-1 text-xs font-extrabold tracking-[0.2em] text-ink-soft uppercase">
@@ -213,11 +216,15 @@ function MeetingRow({ game }: { game: Game }) {
       <span className="w-24 text-ink-soft">
         <LocalTime iso={game.startTimeUTC} format="date" />
       </span>
-      <TeamLogo team={winner.abbrev} size={20} />
+      <TeamTooltip team={winner.abbrev} underline={false} className="rounded-full">
+        <TeamLogo team={winner.abbrev} size={20} />
+      </TeamTooltip>
       <span className="font-led text-xl leading-none">
         {winner.score}–{loser.score}
       </span>
-      <TeamLogo team={loser.abbrev} size={20} />
+      <TeamTooltip team={loser.abbrev} underline={false} className="rounded-full">
+        <TeamLogo team={loser.abbrev} size={20} />
+      </TeamTooltip>
       {game.periodType && game.periodType !== "REG" && (
         <span className="text-xs font-bold text-ink-soft">{game.periodType}</span>
       )}
@@ -248,7 +255,9 @@ function ResultRow({ game, team }: { game: Game; team: string }) {
         ))}
       <span className="w-4 text-ink-soft">{home ? "vs" : "@"}</span>
       <TeamLogo team={opponentOf(game, team)} size={20} />
-      <span className="font-semibold">{opponentOf(game, team)}</span>
+      <TeamTooltip team={opponentOf(game, team)} className="font-semibold">
+        {opponentOf(game, team)}
+      </TeamTooltip>
       <span className="ml-auto font-led text-xl whitespace-nowrap">
         {us}–{them}
         {(game.periodType === "OT" || game.periodType === "SO") && (
@@ -269,7 +278,9 @@ function UpcomingRow({ game, team, owners }: { game: Game; team: string; owners:
     <li className="flex items-center gap-2 py-1.5 text-sm">
       <span className="w-4 text-ink-soft">{game.home.abbrev === team ? "vs" : "@"}</span>
       <TeamLogo team={opponent} size={20} />
-      <span className="font-semibold">{opponent}</span>
+      <TeamTooltip team={opponent} detail={rival && `${rival.name}'s pick`} className="font-semibold">
+        {opponent}
+      </TeamTooltip>
       {rival && (
         <Tooltip
           title="Crew clash"

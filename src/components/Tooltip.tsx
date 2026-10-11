@@ -1,23 +1,26 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 const GAP = 8;
 
 /**
- * Hover/focus/tap tooltip rendered in the top layer (Popover API), so it isn't
+ * Hover/focus/tap popup rendered in the top layer (Popover API), so it isn't
  * clipped by scrolling tables. Positioned above the trigger, or below when
- * there's no room.
+ * there's no room. `tip` is the popup's content and `tipClassName` its look;
+ * `Tooltip` and `TeamTooltip` are the styled versions to reach for.
  */
-export function Tooltip({
-  title,
-  text,
+export function HoverTip({
+  tip,
+  tipClassName,
+  tipStyle,
   children,
   underline = true,
   className = "",
 }: {
-  title: string;
-  text: ReactNode;
+  tip: ReactNode;
+  tipClassName: string;
+  tipStyle?: CSSProperties;
   children: ReactNode;
   underline?: boolean;
   className?: string;
@@ -84,11 +87,38 @@ export function Tooltip({
         id={id}
         role="tooltip"
         popover="manual"
-        className="fixed inset-auto m-0 w-max max-w-64 border-2 border-black bg-boards px-3 py-2 text-left font-sans text-sm leading-snug font-medium tracking-normal whitespace-normal text-white normal-case shadow-[4px_4px_0_0_var(--color-red-line)]"
+        // Reset what it would otherwise inherit from the trigger's row (truncate, uppercase, tracking).
+        className={`fixed inset-auto m-0 w-max text-left font-sans leading-snug tracking-normal whitespace-normal normal-case ${tipClassName}`}
+        style={tipStyle}
       >
-        <span className="block font-display text-xs tracking-wider text-led uppercase">{title}</span>
-        {text}
+        {tip}
       </span>
     </>
+  );
+}
+
+/** A piece of explanatory text on hover, focus or tap, styled as a jumbotron card. */
+export function Tooltip({
+  title,
+  text,
+  ...trigger
+}: {
+  title: string;
+  text: ReactNode;
+  children: ReactNode;
+  underline?: boolean;
+  className?: string;
+}) {
+  return (
+    <HoverTip
+      {...trigger}
+      tipClassName="max-w-64 border-2 border-black bg-boards px-3 py-2 text-sm font-medium text-white shadow-[4px_4px_0_0_var(--color-red-line)]"
+      tip={
+        <>
+          <span className="block font-display text-xs tracking-wider text-led uppercase">{title}</span>
+          {text}
+        </>
+      }
+    />
   );
 }

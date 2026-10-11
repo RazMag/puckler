@@ -6,6 +6,7 @@ import type { Game, GameSide } from "@/lib/nhl/types";
 import { HighlightLinks } from "./HighlightLinks";
 import { LocalTime } from "./LocalTime";
 import { TeamLogo } from "./TeamLogo";
+import { TeamTooltip } from "./TeamTooltip";
 import { Term } from "./Term";
 
 function statusLabel(game: Game) {
@@ -61,7 +62,9 @@ export function GameCard({
         </span>
         <span className={`font-bold tracking-wide ${won ? "text-white" : "text-white/70"}`}>
           {where && <span className="mr-1 text-white/40">@</span>}
-          {side.abbrev}
+          <TeamTooltip team={side.abbrev} detail={owner && `${owner.name}'s pick`}>
+            {side.abbrev}
+          </TeamTooltip>
         </span>
         {owner && (
           <span className="-skew-x-12 bg-red-line px-1 font-display text-[10px] leading-tight text-white">
