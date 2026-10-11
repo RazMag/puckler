@@ -4,6 +4,7 @@ import { Headshot } from "@/components/Headshot";
 import { Jersey } from "@/components/Jersey";
 import { SectionHeading } from "@/components/Scoreboard";
 import { TeamLogo } from "@/components/TeamLogo";
+import { TeamTooltip } from "@/components/TeamTooltip";
 import { Term } from "@/components/Term";
 import { loadPlayers } from "@/lib/data";
 import {
@@ -80,7 +81,9 @@ function StarCard({ star: { member, skater }, rank }: { star: Star; rank: number
           {skater.firstName} {skater.lastName}
         </h3>
         <p className="flex items-center gap-1.5 text-sm text-white/70">
-          <TeamLogo team={member.team} variant="dark" size={18} />
+          <TeamTooltip team={member.team} underline={false} className="shrink-0 rounded-full">
+            <TeamLogo team={member.team} variant="dark" size={18} />
+          </TeamTooltip>
           <span className="truncate">{member.name}&apos;s pick</span>
         </p>
         <p className="mt-2 flex items-baseline gap-2">
