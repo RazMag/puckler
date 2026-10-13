@@ -47,7 +47,14 @@ export async function FaceoffBoard() {
           {hidden} crew game{hidden === 1 ? " is" : "s are"} taped over until you catch up. Highlight links still work.
         </ShieldNote>
       )}
-      <SectionHeading aside={`${clashes.length} crew rivalr${clashes.length === 1 ? "y" : "ies"}`}>
+      <SectionHeading>Bench Report</SectionHeading>
+      <div className="grid gap-6 lg:grid-cols-2">
+        {reports.map((report) => (
+          <BenchCard key={report.member.id} report={report} owners={owners} />
+        ))}
+      </div>
+
+      <SectionHeading line="blue" aside={`${clashes.length} crew rivalr${clashes.length === 1 ? "y" : "ies"}`}>
         Crew Clashes
       </SectionHeading>
       {clashes.length === 0 ? (
@@ -61,13 +68,6 @@ export async function FaceoffBoard() {
           ))}
         </div>
       )}
-
-      <SectionHeading line="blue">Bench Report</SectionHeading>
-      <div className="grid gap-6 lg:grid-cols-2">
-        {reports.map((report) => (
-          <BenchCard key={report.member.id} report={report} owners={owners} />
-        ))}
-      </div>
     </>
   );
 }
@@ -305,7 +305,10 @@ function ResultRow({ game, team }: { game: Game; team: string }) {
         {opponentOf(game, team)}
       </TeamTooltip>
       {game.hidden ? (
-        <SpoilerTape label="Taped" className="ml-auto" />
+        // Same line box as the LED score, so the row keeps its height when spoilers flip.
+        <span className="ml-auto font-led text-xl">
+          <SpoilerTape label="Taped" />
+        </span>
       ) : (
         <span className="ml-auto font-led text-xl whitespace-nowrap">
           {us}–{them}
