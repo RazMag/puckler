@@ -305,7 +305,10 @@ function ResultRow({ game, team }: { game: Game; team: string }) {
         {opponentOf(game, team)}
       </TeamTooltip>
       {game.hidden ? (
-        <SpoilerTape label="Taped" className="ml-auto" />
+        // Same line box as the LED score, so the row keeps its height when spoilers flip.
+        <span className="ml-auto font-led text-xl">
+          <SpoilerTape label="Taped" />
+        </span>
       ) : (
         <span className="ml-auto font-led text-xl whitespace-nowrap">
           {us}–{them}

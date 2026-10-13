@@ -75,6 +75,12 @@ export function GameCard({
         {showScores && (
           <span className={`led ml-auto text-3xl leading-none ${won ? "" : "opacity-60"}`}>{side.score ?? 0}</span>
         )}
+        {/* Holds the score's height under the tape, so the card doesn't jump when spoilers flip. */}
+        {game.hidden && (
+          <span aria-hidden="true" className="invisible ml-auto font-led text-3xl leading-none">
+            0
+          </span>
+        )}
       </div>
     );
   };
