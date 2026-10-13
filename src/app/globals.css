@@ -135,11 +135,13 @@
     background: repeating-linear-gradient(115deg, #15181d 0 5px, #2b3038 5px 6px);
   }
 
-  /* A torn strip of white tape stuck over a result the viewer hasn't seen yet. */
+  /*
+   * A torn strip of white tape stuck over a result the viewer hasn't seen yet.
+   * The torn edge goes through a custom property: Turbopack's dev CSS pipeline
+   * drops this whole rule when clip-path holds a polygon() directly.
+   */
   .spoiler-tape {
-    background: repeating-linear-gradient(115deg, #ffffff 0 5px, #e3e8ee 5px 6px);
-    color: var(--color-ink);
-    clip-path: polygon(
+    --torn-edge: polygon(
       0 12%,
       3% 0,
       30% 8%,
@@ -154,6 +156,9 @@
       0 88%,
       2% 50%
     );
+    background: repeating-linear-gradient(115deg, #ffffff 0 5px, #e3e8ee 5px 6px);
+    color: var(--color-ink);
+    clip-path: var(--torn-edge);
   }
 }
 
