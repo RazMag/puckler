@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Bungee, Graduate, VT323 } from "next/font/google";
 import Link from "next/link";
+import { Suspense } from "react";
 import { NavLinks } from "@/components/NavLinks";
 import { CrossedSticks } from "@/components/CrossedSticks";
+import { SpoilerControl } from "@/components/SpoilerControl";
+import { SpoilerSwitch } from "@/components/SpoilerSwitch";
 import "./globals.css";
 
 const bungee = Bungee({ variable: "--font-bungee", weight: "400", subsets: ["latin"] });
@@ -34,6 +37,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 PUCK<span className="text-red-line">LER</span>
               </span>
             </Link>
+            {/* Next to the logo on a phone, after the nav from sm up. */}
+            <div className="ml-auto sm:order-last sm:ml-0">
+              <Suspense fallback={<SpoilerSwitch on={false} disabled />}>
+                <SpoilerControl />
+              </Suspense>
+            </div>
             <NavLinks />
           </div>
         </header>

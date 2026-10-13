@@ -24,7 +24,7 @@ const stats = normalizeTeamStats(clubStatsResponseSchema.parse(statsJson));
 const roster = normalizeRoster(rosterResponseSchema.parse(rosterJson));
 const box = normalizeBoxscore(boxscoreResponseSchema.parse(boxJson));
 const injuries = normalizeInjuries(injuriesResponseSchema.parse(injuriesJson));
-const tor: TeamPlayers = { stats, roster, boxScores: [box] };
+const tor: TeamPlayers = { stats, roster, boxScores: [box], hiddenGames: 0 };
 const raz: CrewMember = { id: "1", name: "Raz", team: "TOR" };
 
 function injury(overrides: Partial<Injury>): Injury {
@@ -46,7 +46,8 @@ function injury(overrides: Partial<Injury>): Injury {
 function game(gameId: number, playerId: number, points: number | null): BoxScore {
   return {
     gameId,
-    skaters: points === null ? [] : [{ playerId, team: "TOR", goals: points, assists: 0, points }],
+    skaters: points === null ? [] : [{ playerId, team: "TOR", goals: points, assists: 0, points, plusMinus: 0 }],
+    goalies: [],
   };
 }
 
@@ -165,7 +166,11 @@ describe("recentForm", () => {
   });
 
   it("ignores a same-numbered id on the other team", () => {
-    const other: BoxScore = { gameId: 1, skaters: [{ playerId: 7, team: "MTL", goals: 3, assists: 0, points: 3 }] };
+    const other: BoxScore = {
+      gameId: 1,
+      skaters: [{ playerId: 7, team: "MTL", goals: 3, assists: 0, points: 3, plusMinus: 1 }],
+      goalies: [],
+    };
     expect(recentForm(7, "TOR", [other]).perGame).toEqual([null]);
   });
 });

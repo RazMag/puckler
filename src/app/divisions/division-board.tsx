@@ -2,6 +2,7 @@ import type { CrewMember } from "@/lib/crew/types";
 import { PlayoffBadge } from "@/components/PlayoffBadge";
 import { DivisionRink } from "@/components/rink/DivisionRink";
 import { SectionHeading } from "@/components/Scoreboard";
+import { StandingsShieldNote } from "@/components/ShieldNote";
 import { TeamLogo } from "@/components/TeamLogo";
 import { Term } from "@/components/Term";
 import { loadBoard } from "@/lib/data";
@@ -11,57 +12,62 @@ import { signed } from "@/lib/format";
 import type { TeamStanding } from "@/lib/nhl/types";
 
 export async function DivisionBoard() {
-  const { crew, standings } = await loadBoard();
+  const { crew, standings, through } = await loadBoard();
   const owners = ownersByTeam(crew);
   const maxPoints = Math.max(1, ...standings.teams.map((t) => t.points));
 
-  return conferenceTables(standings.teams).map((conference) => (
-    <section key={conference.name} aria-label={`${conference.name} Conference`}>
-      <SectionHeading line="blue" aside={<Term term="cutLine">Wild card cut: {conference.cutLinePoints} pts</Term>}>
-        {conference.name} Conference
-      </SectionHeading>
+  return (
+    <>
+      {through && <StandingsShieldNote through={through} />}
+      {conferenceTables(standings.teams).map((conference) => (
+        <section key={conference.name} aria-label={`${conference.name} Conference`}>
+          <SectionHeading line="blue" aside={<Term term="cutLine">Wild card cut: {conference.cutLinePoints} pts</Term>}>
+            {conference.name} Conference
+          </SectionHeading>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        {conference.divisions.map((division) => (
-          <article key={division.name} className="min-w-0">
-            <h3 className="mb-2 font-display text-xl tracking-wide">
-              {division.name}
-              <span className="ml-2 align-middle font-sans text-sm font-semibold text-ink-soft">
-                <Term term="topThree">top {DIVISION_SPOTS} qualify</Term>
-              </span>
-            </h3>
-            <DivisionRink
-              division={division}
-              maxPoints={maxPoints}
-              cutLinePoints={conference.cutLinePoints}
-              owners={owners}
-            />
-            <StandingsTable
-              teams={division.teams}
-              owners={owners}
-              all={standings.teams}
-              cutAfter={DIVISION_SPOTS}
-              rankOf={(t) => t.divisionRank}
-            />
-          </article>
-        ))}
-      </div>
+          <div className="grid gap-8 lg:grid-cols-2">
+            {conference.divisions.map((division) => (
+              <article key={division.name} className="min-w-0">
+                <h3 className="mb-2 font-display text-xl tracking-wide">
+                  {division.name}
+                  <span className="ml-2 align-middle font-sans text-sm font-semibold text-ink-soft">
+                    <Term term="topThree">top {DIVISION_SPOTS} qualify</Term>
+                  </span>
+                </h3>
+                <DivisionRink
+                  division={division}
+                  maxPoints={maxPoints}
+                  cutLinePoints={conference.cutLinePoints}
+                  owners={owners}
+                />
+                <StandingsTable
+                  teams={division.teams}
+                  owners={owners}
+                  all={standings.teams}
+                  cutAfter={DIVISION_SPOTS}
+                  rankOf={(t) => t.divisionRank}
+                />
+              </article>
+            ))}
+          </div>
 
-      <h3 className="mt-8 mb-2 font-display text-xl tracking-wide">
-        Wild Card Race
-        <span className="ml-2 align-middle font-sans text-sm font-semibold text-ink-soft">
-          <Term term="wildCard">best {WILD_CARD_SPOTS} of the rest</Term>
-        </span>
-      </h3>
-      <StandingsTable
-        teams={conference.wildCardRace}
-        owners={owners}
-        all={standings.teams}
-        cutAfter={WILD_CARD_SPOTS}
-        rankOf={(t) => t.wildcardRank}
-      />
-    </section>
-  ));
+          <h3 className="mt-8 mb-2 font-display text-xl tracking-wide">
+            Wild Card Race
+            <span className="ml-2 align-middle font-sans text-sm font-semibold text-ink-soft">
+              <Term term="wildCard">best {WILD_CARD_SPOTS} of the rest</Term>
+            </span>
+          </h3>
+          <StandingsTable
+            teams={conference.wildCardRace}
+            owners={owners}
+            all={standings.teams}
+            cutAfter={WILD_CARD_SPOTS}
+            rankOf={(t) => t.wildcardRank}
+          />
+        </section>
+      ))}
+    </>
+  );
 }
 
 function StandingsTable({

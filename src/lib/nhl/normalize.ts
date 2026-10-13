@@ -2,10 +2,21 @@ import type {
   BoxscoreResponse,
   ClubScheduleResponse,
   ClubStatsResponse,
+  LeagueScheduleResponse,
   RosterResponse,
   StandingsResponse,
 } from "./schemas";
-import type { BoxScore, Game, GamePhase, RosterPlayer, Standings, TeamStanding, TeamStats } from "./types";
+import type {
+  BoxScore,
+  Game,
+  GamePhase,
+  GoalieLine,
+  LeagueGame,
+  RosterPlayer,
+  Standings,
+  TeamStanding,
+  TeamStats,
+} from "./types";
 
 const NHL_SITE = "https://www.nhl.com";
 
@@ -49,7 +60,7 @@ export function normalizeStanding(raw: RawStanding): TeamStanding {
 
 export function normalizeStandings(raw: StandingsResponse): Standings {
   return {
-    updatedAt: raw.standingsDateTimeUtc,
+    updatedAt: raw.standingsDateTimeUtc ?? null,
     teams: raw.standings.map(normalizeStanding).sort((a, b) => a.leagueRank - b.leagueRank),
   };
 }
@@ -73,6 +84,7 @@ export function normalizeGame(raw: RawGame): Game {
   return {
     id: raw.id,
     gameType: raw.gameType,
+    gameDate: raw.gameDate,
     startTimeUTC: raw.startTimeUTC,
     phase,
     venue: raw.venue?.default ?? null,
@@ -86,6 +98,7 @@ export function normalizeGame(raw: RawGame): Game {
       condensed: nhlUrl(raw.condensedGame),
       gameCenter: nhlUrl(raw.gameCenterLink),
     },
+    hidden: false,
   };
 }
 
@@ -123,6 +136,10 @@ export function normalizeTeamStats(raw: ClubStatsResponse): TeamStats {
       otLosses: p.overtimeLosses,
       gaa: p.goalsAgainstAverage ?? null,
       savePct: p.savePercentage ?? null,
+      goalsAgainst: p.goalsAgainst,
+      shotsAgainst: p.shotsAgainst,
+      saves: p.saves,
+      timeOnIce: p.timeOnIce,
     })),
   };
 }
@@ -138,18 +155,55 @@ export function normalizeRoster(raw: RosterResponse): RosterPlayer[] {
   }));
 }
 
+/** "64:40" → 3880. */
+function seconds(toi: string): number {
+  const [minutes, secs] = toi.split(":").map(Number);
+  return (minutes ?? 0) * 60 + (secs ?? 0) || 0;
+}
+
+const DECISIONS = new Set(["W", "L", "O"]);
+
 export function normalizeBoxscore(raw: BoxscoreResponse): BoxScore {
   const stats = raw.playerByGameStats;
-  const side = (team: string, players: NonNullable<typeof stats>["homeTeam"]) =>
-    [...players.forwards, ...players.defense].map(({ playerId, goals, assists, points }) => ({
+  type Side = NonNullable<typeof stats>["homeTeam"];
+  const skaters = (team: string, players: Side) =>
+    [...players.forwards, ...players.defense].map(({ playerId, goals, assists, points, plusMinus }) => ({
       playerId,
       team,
       goals,
       assists,
       points,
+      plusMinus,
     }));
+  const goalies = (team: string, players: Side): GoalieLine[] =>
+    players.goalies.map((g) => ({
+      playerId: g.playerId,
+      team,
+      seconds: seconds(g.toi),
+      starter: g.starter ?? false,
+      decision: g.decision && DECISIONS.has(g.decision) ? (g.decision as GoalieLine["decision"]) : null,
+      goalsAgainst: g.goalsAgainst ?? 0,
+      shotsAgainst: g.shotsAgainst ?? 0,
+      saves: g.saves ?? 0,
+    }));
+  const away = raw.awayTeam.abbrev;
+  const home = raw.homeTeam.abbrev;
   return {
     gameId: raw.id,
-    skaters: stats ? [...side(raw.awayTeam.abbrev, stats.awayTeam), ...side(raw.homeTeam.abbrev, stats.homeTeam)] : [],
+    skaters: stats ? [...skaters(away, stats.awayTeam), ...skaters(home, stats.homeTeam)] : [],
+    goalies: stats ? [...goalies(away, stats.awayTeam), ...goalies(home, stats.homeTeam)] : [],
   };
+}
+
+/** Every league game in the week the response covers, filed under its Eastern-time day. */
+export function normalizeLeagueSchedule(raw: LeagueScheduleResponse): LeagueGame[] {
+  return raw.gameWeek.flatMap((day) =>
+    day.games.map((g) => ({
+      id: g.id,
+      gameType: g.gameType,
+      gameDate: day.date,
+      startTimeUTC: g.startTimeUTC,
+      phase: PHASES[g.gameState] ?? "upcoming",
+    })),
+  );
 }

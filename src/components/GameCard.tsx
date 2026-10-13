@@ -5,6 +5,7 @@ import { highlightsFor } from "@/lib/nhl/highlights";
 import type { Game, GameSide } from "@/lib/nhl/types";
 import { HighlightLinks } from "./HighlightLinks";
 import { LocalTime } from "./LocalTime";
+import { SpoilerTape } from "./SpoilerTape";
 import { TeamLogo } from "./TeamLogo";
 import { TeamTooltip } from "./TeamTooltip";
 import { Term } from "./Term";
@@ -47,7 +48,7 @@ export function GameCard({
         : result === "L"
           ? "border-l-ink-soft"
           : "border-l-led";
-  const showScores = game.phase !== "upcoming";
+  const showScores = game.phase !== "upcoming" && !game.hidden;
 
   const row = (side: GameSide, where: "@" | "") => {
     const owner = owners.get(side.abbrev);
@@ -80,9 +81,16 @@ export function GameCard({
 
   return (
     <article className={`jumbotron border-l-[6px] px-3 pt-4 pb-2 text-sm ${edge}`}>
-      <div className="space-y-1">
+      <div className="relative space-y-1">
         {row(game.away, "")}
         {row(game.home, "@")}
+        {game.hidden && (
+          <SpoilerTape
+            label="Score taped"
+            size="lg"
+            className="absolute top-1/2 right-0 -translate-y-1/2 rotate-[-4deg]"
+          />
+        )}
       </div>
       <div className="mt-2 flex items-center justify-between gap-2 border-t border-white/10 pt-1.5 text-xs font-semibold tracking-wider text-white/60 uppercase">
         <span>{statusLabel(game)}</span>
