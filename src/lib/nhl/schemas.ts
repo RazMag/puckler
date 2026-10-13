@@ -39,7 +39,8 @@ export const standingSchema = z.object({
 });
 
 export const standingsResponseSchema = z.object({
-  standingsDateTimeUtc: z.string(),
+  // Missing for days before opening night, which also have no standings.
+  standingsDateTimeUtc: z.string().nullish(),
   standings: z.array(standingSchema),
 });
 
@@ -54,6 +55,8 @@ export const scheduleGameSchema = z.object({
   id: z.number(),
   season: z.number(),
   gameType: z.number(),
+  /** Eastern-time calendar day, e.g. "2026-10-13". Late puck drops are already the next day in UTC. */
+  gameDate: z.string(),
   startTimeUTC: z.string(),
   gameState: z.string(),
   venue: localized.optional(),
@@ -98,6 +101,11 @@ const clubGoalieSchema = z.object({
   // Missing for a goalie who hasn't faced a shot yet.
   goalsAgainstAverage: z.number().optional(),
   savePercentage: z.number().optional(),
+  goalsAgainst: z.number(),
+  shotsAgainst: z.number(),
+  saves: z.number(),
+  /** Seconds. */
+  timeOnIce: z.number(),
 });
 
 export const clubStatsResponseSchema = z.object({
@@ -126,11 +134,25 @@ const boxSkaterSchema = z.object({
   goals: z.number(),
   assists: z.number(),
   points: z.number(),
+  plusMinus: z.number(),
+});
+
+const boxGoalieSchema = z.object({
+  playerId: z.number(),
+  /** "MM:SS"; "00:00" for a backup who never went in. */
+  toi: z.string(),
+  starter: z.boolean().nullish(),
+  /** W, L or O (overtime/shootout loss) for the goalie of record, otherwise null. */
+  decision: z.string().nullish(),
+  goalsAgainst: z.number().nullish(),
+  shotsAgainst: z.number().nullish(),
+  saves: z.number().nullish(),
 });
 
 const boxTeamSchema = z.object({
   forwards: z.array(boxSkaterSchema),
   defense: z.array(boxSkaterSchema),
+  goalies: z.array(boxGoalieSchema),
 });
 
 export const boxscoreResponseSchema = z.object({
@@ -141,8 +163,20 @@ export const boxscoreResponseSchema = z.object({
   playerByGameStats: z.object({ awayTeam: boxTeamSchema, homeTeam: boxTeamSchema }).optional(),
 });
 
+export const leagueScheduleResponseSchema = z.object({
+  gameWeek: z.array(
+    z.object({
+      date: z.string(),
+      games: z.array(
+        z.object({ id: z.number(), gameType: z.number(), startTimeUTC: z.string(), gameState: z.string() }),
+      ),
+    }),
+  ),
+});
+
 export type StandingsResponse = z.infer<typeof standingsResponseSchema>;
 export type ClubScheduleResponse = z.infer<typeof clubScheduleResponseSchema>;
 export type ClubStatsResponse = z.infer<typeof clubStatsResponseSchema>;
 export type RosterResponse = z.infer<typeof rosterResponseSchema>;
 export type BoxscoreResponse = z.infer<typeof boxscoreResponseSchema>;
+export type LeagueScheduleResponse = z.infer<typeof leagueScheduleResponseSchema>;

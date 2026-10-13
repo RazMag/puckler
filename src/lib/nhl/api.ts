@@ -3,6 +3,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import { nhlFetch } from "./client";
 import {
   normalizeBoxscore,
+  normalizeLeagueSchedule,
   normalizeRoster,
   normalizeSchedule,
   normalizeStandings,
@@ -12,10 +13,11 @@ import {
   boxscoreResponseSchema,
   clubScheduleResponseSchema,
   clubStatsResponseSchema,
+  leagueScheduleResponseSchema,
   rosterResponseSchema,
   standingsResponseSchema,
 } from "./schemas";
-import type { BoxScore, Game, RosterPlayer, Standings, TeamStats } from "./types";
+import type { BoxScore, Game, LeagueGame, RosterPlayer, Standings, TeamStats } from "./types";
 
 /** League standings, refreshed about once a minute. */
 export async function getStandings(): Promise<Standings> {
@@ -23,6 +25,25 @@ export async function getStandings(): Promise<Standings> {
   cacheLife("minutes");
   cacheTag("nhl:standings");
   return normalizeStandings(await nhlFetch("/standings/now", standingsResponseSchema));
+}
+
+/**
+ * League standings at the end of an Eastern-time day (YYYY-MM-DD), for the
+ * spoiler shield. Past days don't change. Empty before opening night.
+ */
+export async function getStandingsOn(date: string): Promise<Standings> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(`nhl:standings:${date}`);
+  return normalizeStandings(await nhlFetch(`/standings/${encodeURIComponent(date)}`, standingsResponseSchema));
+}
+
+/** Every league game in the week starting on `date` (YYYY-MM-DD), with live state. */
+export async function getLeagueWeek(date: string): Promise<LeagueGame[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(`nhl:league-week:${date}`);
+  return normalizeLeagueSchedule(await nhlFetch(`/schedule/${encodeURIComponent(date)}`, leagueScheduleResponseSchema));
 }
 
 /** One club's current-season schedule including scores of played games. */

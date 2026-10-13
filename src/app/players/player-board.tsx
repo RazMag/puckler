@@ -3,6 +3,7 @@ import { EmptyCrew } from "@/components/EmptyCrew";
 import { Headshot } from "@/components/Headshot";
 import { Jersey } from "@/components/Jersey";
 import { SectionHeading } from "@/components/Scoreboard";
+import { ShieldNote } from "@/components/ShieldNote";
 import { TeamLogo } from "@/components/TeamLogo";
 import { TeamTooltip } from "@/components/TeamTooltip";
 import { Term } from "@/components/Term";
@@ -37,9 +38,15 @@ export async function PlayerBoard() {
     return data ? [playerReport(member, data, injuries)] : [];
   });
   const stars = threeStars(reports);
+  const hidden = [...players.values()].reduce((n, team) => n + team.hiddenGames, 0);
 
   return (
     <>
+      {hidden > 0 && (
+        <ShieldNote>
+          Stats and form leave out {hidden} crew game{hidden === 1 ? "" : "s"} you haven&apos;t caught up on.
+        </ShieldNote>
+      )}
       <SectionHeading aside={<Term term="threeStars">Last {RECENT_GAMES} games of each team</Term>}>
         Three Stars
       </SectionHeading>

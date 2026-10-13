@@ -30,7 +30,7 @@ export type TeamStanding = {
 };
 
 export type Standings = {
-  updatedAt: string;
+  updatedAt: string | null;
   teams: TeamStanding[];
 };
 
@@ -49,6 +49,8 @@ export type Game = {
   id: number;
   /** 1 preseason, 2 regular season, 3 playoffs. */
   gameType: number;
+  /** Eastern-time calendar day the NHL files the game under (YYYY-MM-DD). */
+  gameDate: string;
   startTimeUTC: string;
   phase: GamePhase;
   venue: string | null;
@@ -58,7 +60,12 @@ export type Game = {
   periodType: string | null;
   period: number | null;
   links: GameLinks;
+  /** Started after the viewer's spoiler line: scores and period are blanked out. */
+  hidden: boolean;
 };
+
+/** Just enough of a game anywhere in the league to tell whether it could spoil the standings. */
+export type LeagueGame = Pick<Game, "id" | "gameType" | "gameDate" | "startTimeUTC" | "phase">;
 
 export type Skater = {
   id: number;
@@ -87,6 +94,11 @@ export type Goalie = {
   /** Null until the goalie has faced a shot. */
   gaa: number | null;
   savePct: number | null;
+  goalsAgainst: number;
+  shotsAgainst: number;
+  saves: number;
+  /** Seconds in net this season. */
+  timeOnIce: number;
 };
 
 /** One team's season totals for everyone who has dressed this season. */
@@ -103,7 +115,26 @@ export type RosterPlayer = {
 };
 
 /** A skater's scoring in one game. */
-export type SkaterLine = { playerId: number; team: string; goals: number; assists: number; points: number };
+export type SkaterLine = {
+  playerId: number;
+  team: string;
+  goals: number;
+  assists: number;
+  points: number;
+  plusMinus: number;
+};
 
-/** Skater scoring from a finished game, both teams. */
-export type BoxScore = { gameId: number; skaters: SkaterLine[] };
+/** A goalie's night. `seconds` is 0 for a backup who never went in. */
+export type GoalieLine = {
+  playerId: number;
+  team: string;
+  seconds: number;
+  starter: boolean;
+  decision: "W" | "L" | "O" | null;
+  goalsAgainst: number;
+  shotsAgainst: number;
+  saves: number;
+};
+
+/** Player stats from a finished game, both teams. */
+export type BoxScore = { gameId: number; skaters: SkaterLine[]; goalies: GoalieLine[] };

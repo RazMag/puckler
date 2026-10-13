@@ -4,12 +4,13 @@ import { LocalTime } from "@/components/LocalTime";
 import { PlayoffBadge } from "@/components/PlayoffBadge";
 import { Puck } from "@/components/Puck";
 import { SectionHeading } from "@/components/Scoreboard";
+import { StandingsShieldNote } from "@/components/ShieldNote";
 import { StickBar } from "@/components/StickBar";
 import { TeamLogo } from "@/components/TeamLogo";
 import { Term } from "@/components/Term";
 import { loadBoard } from "@/lib/data";
 import { rankCrew, type CrewRow } from "@/lib/domain/crew-standings";
-import { ordinal, pct, signed } from "@/lib/format";
+import { dayLabel, ordinal, pct, signed } from "@/lib/format";
 import type { GlossaryKey } from "@/lib/glossary";
 import type { TeamStanding } from "@/lib/nhl/types";
 
@@ -28,7 +29,7 @@ function record(team: TeamStanding): string {
 }
 
 export async function CrewStandings() {
-  const { crew, standings } = await loadBoard();
+  const { crew, standings, through } = await loadBoard();
   if (crew.length === 0) return <EmptyCrew />;
 
   const rows = rankCrew(crew, standings.teams);
@@ -36,13 +37,20 @@ export async function CrewStandings() {
 
   return (
     <>
+      {through && <StandingsShieldNote through={through} />}
       <Podium rows={rows.slice(0, 3)} />
 
       <SectionHeading
         aside={
-          <>
-            NHL standings as of <LocalTime iso={standings.updatedAt} />
-          </>
+          through ? (
+            <>NHL standings through {dayLabel(through)}</>
+          ) : (
+            standings.updatedAt && (
+              <>
+                NHL standings as of <LocalTime iso={standings.updatedAt} />
+              </>
+            )
+          )
         }
       >
         The Stick Race

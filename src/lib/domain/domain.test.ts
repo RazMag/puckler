@@ -90,6 +90,7 @@ describe("faceoffs", () => {
     const game: Game = {
       id: 1,
       gameType: 2,
+      gameDate: "",
       startTimeUTC: "",
       phase: "final",
       venue: null,
@@ -98,6 +99,7 @@ describe("faceoffs", () => {
       away: { abbrev: "MTL", score: 3 },
       periodType: "OT",
       links: { recap: null, condensed: null, gameCenter: null },
+      hidden: false,
     };
     expect(resultFor(game, "MTL")).toBe("W");
     expect(resultFor(game, "TOR")).toBe("OTL");

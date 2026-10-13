@@ -37,6 +37,8 @@ export type TeamPlayers = {
   roster: RosterPlayer[];
   /** The team's recent finals, oldest first. */
   boxScores: BoxScore[];
+  /** Finals behind the spoiler shield, already taken back out of `stats`. */
+  hiddenGames: number;
 };
 
 export type PlayerReport = {
@@ -49,6 +51,8 @@ export type PlayerReport = {
   injuries: InjuryRow[] | null;
   /** Games in the recent-form window (fewer than RECENT_GAMES early in the season). */
   recentGames: number;
+  /** Finals left out because the viewer hasn't caught up on them. */
+  hiddenGames: number;
 };
 
 export function isHot(form: RecentForm): boolean {
@@ -112,7 +116,7 @@ function bySeasonScoring(a: Skater, b: Skater): number {
 
 export function playerReport(
   member: CrewMember,
-  { stats, roster, boxScores }: TeamPlayers,
+  { stats, roster, boxScores, hiddenGames }: TeamPlayers,
   injuries: readonly Injury[] | null,
 ): PlayerReport {
   const numbers = new Map(roster.map((p) => [p.id, p.number]));
@@ -155,6 +159,7 @@ export function playerReport(
         }))
         .sort((a, b) => Number(b.keyPlayer) - Number(a.keyPlayer) || b.updatedAt.localeCompare(a.updatedAt)),
     recentGames: boxScores.length,
+    hiddenGames,
   };
 }
 

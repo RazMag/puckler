@@ -5,6 +5,8 @@ import { Jersey } from "@/components/Jersey";
 import { LocalTime } from "@/components/LocalTime";
 import { Puck } from "@/components/Puck";
 import { SectionHeading } from "@/components/Scoreboard";
+import { ShieldNote } from "@/components/ShieldNote";
+import { SpoilerTape, TAPED_TIP } from "@/components/SpoilerTape";
 import { TeamLogo } from "@/components/TeamLogo";
 import { TeamTooltip } from "@/components/TeamTooltip";
 import { Term } from "@/components/Term";
@@ -31,9 +33,20 @@ export async function FaceoffBoard() {
   const owners = ownersByTeam(crew);
   const clashes = rivalries(crew, schedules);
   const reports = benchReports(crew, schedules);
+  const hidden = new Set(
+    [...schedules.values()]
+      .flat()
+      .filter((g) => g.hidden)
+      .map((g) => g.id),
+  ).size;
 
   return (
     <>
+      {hidden > 0 && (
+        <ShieldNote>
+          {hidden} crew game{hidden === 1 ? " is" : "s are"} taped over until you catch up. Highlight links still work.
+        </ShieldNote>
+      )}
       <SectionHeading aside={`${clashes.length} crew rivalr${clashes.length === 1 ? "y" : "ies"}`}>
         Crew Clashes
       </SectionHeading>
@@ -60,7 +73,7 @@ export async function FaceoffBoard() {
 }
 
 function seriesText({ a, b, winsA, winsB, games }: Rivalry): string {
-  const played = games.filter((g) => g.phase === "final").length;
+  const played = games.filter((g) => g.phase === "final" && !g.hidden).length;
   if (played === 0) return `${games.length} meeting${games.length === 1 ? "" : "s"} this season`;
   if (winsA === winsB) return `Series tied ${winsA}–${winsB}`;
   return winsA > winsB ? `${a.name} leads ${winsA}–${winsB}` : `${b.name} leads ${winsB}–${winsA}`;
@@ -157,6 +170,21 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
             Form
           </Term>
           {form.map((game) => {
+            if (game.hidden) {
+              return (
+                <Tooltip
+                  key={game.id}
+                  title={`Taped over vs ${opponentOf(game, member.team)}`}
+                  text={TAPED_TIP}
+                  underline={false}
+                  className="rounded-full"
+                >
+                  <Puck size="sm" className="text-sm! text-white/50">
+                    ?
+                  </Puck>
+                </Tooltip>
+              );
+            }
             const result = resultFor(game, member.team) ?? "L";
             const [us, them] = scoreFor(game, member.team);
             return (
@@ -209,6 +237,21 @@ function BenchCard({ report, owners }: { report: BenchReport; owners: ReadonlyMa
 
 /** A past crew-vs-crew game: date, score with the winner first, and a highlights link. */
 function MeetingRow({ game }: { game: Game }) {
+  if (game.hidden) {
+    return (
+      <li className="flex flex-wrap items-center gap-x-2 gap-y-1 py-1.5 text-sm">
+        <span className="w-24 text-ink-soft">
+          <LocalTime iso={game.startTimeUTC} format="date" />
+        </span>
+        <TeamLogo team={game.away.abbrev} size={20} />
+        <SpoilerTape label="Taped" />
+        <TeamLogo team={game.home.abbrev} size={20} />
+        <span className="ml-auto">
+          <HighlightLinks game={game} variant="light" max={1} />
+        </span>
+      </li>
+    );
+  }
   const homeWon = (game.home.score ?? 0) > (game.away.score ?? 0);
   const [winner, loser] = homeWon ? [game.home, game.away] : [game.away, game.home];
   return (
@@ -241,6 +284,9 @@ function ResultRow({ game, team }: { game: Game; team: string }) {
   const [us, them] = scoreFor(game, team);
   return (
     <li className="flex items-center gap-2 py-1.5 text-sm">
+      {game.hidden && (
+        <span className="w-9 -skew-x-12 bg-boards/10 text-center text-xs font-extrabold text-ink-soft">?</span>
+      )}
       {result &&
         (result === "OTL" ? (
           <Term
@@ -258,14 +304,18 @@ function ResultRow({ game, team }: { game: Game; team: string }) {
       <TeamTooltip team={opponentOf(game, team)} className="font-semibold">
         {opponentOf(game, team)}
       </TeamTooltip>
-      <span className="ml-auto font-led text-xl whitespace-nowrap">
-        {us}–{them}
-        {(game.periodType === "OT" || game.periodType === "SO") && (
-          <Term term={game.periodType === "OT" ? "finalOt" : "finalSo"} underline={false} className="ml-1 text-sm">
-            {game.periodType}
-          </Term>
-        )}
-      </span>
+      {game.hidden ? (
+        <SpoilerTape label="Taped" className="ml-auto" />
+      ) : (
+        <span className="ml-auto font-led text-xl whitespace-nowrap">
+          {us}–{them}
+          {(game.periodType === "OT" || game.periodType === "SO") && (
+            <Term term={game.periodType === "OT" ? "finalOt" : "finalSo"} underline={false} className="ml-1 text-sm">
+              {game.periodType}
+            </Term>
+          )}
+        </span>
+      )}
       <HighlightLinks game={game} variant="light" compact />
     </li>
   );
