@@ -1,4 +1,5 @@
 import { EmptyCrew } from "@/components/EmptyCrew";
+import { FaceoffDot } from "@/components/FaceoffDot";
 import { GameCard } from "@/components/GameCard";
 import { HighlightLinks } from "@/components/HighlightLinks";
 import { Jersey } from "@/components/Jersey";
@@ -21,6 +22,7 @@ import {
   resultFor,
   rivalries,
   scoreFor,
+  seriesText,
   type BenchReport,
   type Result,
   type Rivalry,
@@ -73,13 +75,6 @@ export async function FaceoffBoard() {
   );
 }
 
-function seriesText({ a, b, winsA, winsB, games }: Rivalry): string {
-  const played = games.filter((g) => g.phase === "final" && !g.hidden).length;
-  if (played === 0) return `${games.length} meeting${games.length === 1 ? "" : "s"} this season`;
-  if (winsA === winsB) return `Series tied ${winsA}–${winsB}`;
-  return winsA > winsB ? `${a.name} leads ${winsA}–${winsB}` : `${b.name} leads ${winsB}–${winsA}`;
-}
-
 function RivalryCard({ rivalry, owners }: { rivalry: Rivalry; owners: ReadonlyMap<string, CrewMember> }) {
   const { a, b, winsA, winsB, next, last } = rivalry;
   const earlier = rivalry.games.filter((g) => g.phase === "final" && g !== last).reverse();
@@ -87,7 +82,7 @@ function RivalryCard({ rivalry, owners }: { rivalry: Rivalry; owners: ReadonlyMa
     <article className="overflow-hidden rounded-sm bg-white/80 shadow-md ring-1 ring-black/5">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 pt-4">
         <Jersey team={a.team} name={a.name} number={winsA} className="w-full max-w-36 justify-self-end" />
-        <FaceoffDot />
+        <FaceoffDot className="size-16 sm:size-20" />
         <Jersey team={b.team} name={b.name} number={winsB} className="w-full max-w-36" />
       </div>
       <p className="mt-2 text-center font-display text-lg">
@@ -125,22 +120,6 @@ function RivalryCard({ rivalry, owners }: { rivalry: Rivalry; owners: ReadonlyMa
         </section>
       )}
     </article>
-  );
-}
-
-/** Center-ice faceoff circle with the dot and hash marks. */
-function FaceoffDot() {
-  return (
-    <svg viewBox="0 0 80 80" className="size-16 sm:size-20" aria-hidden="true">
-      <circle cx="40" cy="40" r="34" fill="#fff" stroke="var(--color-red-line)" strokeWidth="3" />
-      <g stroke="var(--color-red-line)" strokeWidth="3">
-        <path d="M28 6 V0 M52 6 V0 M28 74 V80 M52 74 V80" />
-      </g>
-      <circle cx="40" cy="40" r="11" fill="var(--color-red-line)" />
-      <text x="40" y="45" textAnchor="middle" fontFamily="var(--font-display)" fontSize="13" fill="#fff">
-        VS
-      </text>
-    </svg>
   );
 }
 

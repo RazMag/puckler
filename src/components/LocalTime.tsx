@@ -23,3 +23,15 @@ export function LocalTime({ iso, format = "datetime" }: { iso: string; format?: 
     </time>
   );
 }
+
+const dayKey = (iso: string) => new Date(iso).toDateString();
+
+/** The local date of `iso`, or nothing when it falls on the same local day as `after`. */
+export function LocalDay({ iso, after }: { iso: string; after?: string }) {
+  const sameDay = useSyncExternalStore(
+    subscribe,
+    () => after !== undefined && dayKey(after) === dayKey(iso),
+    () => false,
+  );
+  return sameDay ? null : <LocalTime iso={iso} format="date" />;
+}

@@ -9,7 +9,7 @@ import type { Game } from "@/lib/nhl/types";
 import { SEASON_GAMES } from "@/lib/nhl/league";
 import { initials, rankCrew } from "./crew-standings";
 import { conferenceTables, playoffStatus } from "./division";
-import { benchReports, resultFor, rivalries } from "./faceoffs";
+import { benchReports, onDeck, resultFor, rivalries, seriesText } from "./faceoffs";
 import { compactHighlights, highlightsFor } from "@/lib/nhl/highlights";
 
 const { teams } = normalizeStandings(standingsResponseSchema.parse(standingsJson));
@@ -122,6 +122,51 @@ describe("faceoffs", () => {
     const times = tor!.recent.map((g) => g.startTimeUTC);
     expect(times).toEqual([...times].sort().reverse());
     expect(tor?.upcoming).toHaveLength(3);
+  });
+});
+
+describe("on deck", () => {
+  it("lists each pending crew game once, in start order", () => {
+    const { games } = onDeck(crew, schedules, { count: 20 });
+    expect(games).toHaveLength(20);
+    const ids = games.map((d) => d.game.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(games.every((d) => d.game.phase !== "final" && d.game.gameType !== 1)).toBe(true);
+    const times = games.map((d) => d.game.startTimeUTC);
+    expect(times).toEqual([...times].sort());
+  });
+
+  it("puts live games first", () => {
+    const live = { ...schedules.get("TOR")!.at(-1)!, phase: "live" as const };
+    const { games } = onDeck(crew, new Map([...schedules, ["TOR", [...schedules.get("TOR")!.slice(0, -1), live]]]));
+    expect(games[0]?.game.id).toBe(live.id);
+  });
+
+  it("marks crew faceoffs with their season series", () => {
+    const { games } = onDeck(crew, schedules, { count: 200 });
+    const faceoffs = games.filter((d) => d.faceoff);
+    expect(faceoffs.length).toBeGreaterThan(0);
+    for (const { away, home, series } of faceoffs) {
+      expect(away).toHaveLength(1);
+      expect(home).toHaveLength(1);
+      expect([series?.a.team, series?.b.team].sort()).toEqual([away[0]!.team, home[0]!.team].sort());
+    }
+    expect(games.filter((d) => !d.faceoff).every((d) => d.away.length + d.home.length === 1)).toBe(true);
+  });
+
+  it("pins the next faceoff when the shown games have none", () => {
+    const all = onDeck(crew, schedules, { count: 200 }).games;
+    const first = all.findIndex((d) => d.faceoff);
+    expect(onDeck(crew, schedules, { count: first }).nextFaceoff?.game.id).toBe(all[first]!.game.id);
+    expect(onDeck(crew, schedules, { count: first + 1 }).nextFaceoff).toBeNull();
+  });
+
+  it("describes the season series", () => {
+    const rivalry = rivalries(crew, schedules)[0]!;
+    const pending = rivalry.games.map((g) => ({ ...g, phase: "upcoming" as const }));
+    expect(seriesText({ ...rivalry, games: pending, winsA: 0, winsB: 0 })).toBe(
+      `${pending.length} meetings this season`,
+    );
   });
 });
 
