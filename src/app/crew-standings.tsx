@@ -43,13 +43,6 @@ export async function CrewStandings() {
       {through && <StandingsShieldNote through={through} />}
       <Podium rows={rows.slice(0, 3)} />
 
-      <SectionHeading line="blue" aside={`Next ${ON_DECK_COUNT} crew games · times in your time zone`}>
-        On Deck
-      </SectionHeading>
-      <Suspense fallback={<BoardSkeleton label="Checking the schedule…" />}>
-        <OnDeck crew={rows.map((r) => r.member)} />
-      </Suspense>
-
       <SectionHeading
         aside={
           through ? (
@@ -114,9 +107,14 @@ export async function CrewStandings() {
         ))}
       </ol>
 
-      <SectionHeading line="blue" aside="Scroll sideways on a phone →">
-        Tale of the Tape
+      <SectionHeading line="blue" aside={`Next ${ON_DECK_COUNT} crew games · times in your time zone`}>
+        On Deck
       </SectionHeading>
+      <Suspense fallback={<BoardSkeleton label="Checking the schedule…" />}>
+        <OnDeck crew={rows.map((r) => r.member)} />
+      </Suspense>
+
+      <SectionHeading aside="Scroll sideways on a phone →">Tale of the Tape</SectionHeading>
       <TapeTable rows={rows} />
     </>
   );
