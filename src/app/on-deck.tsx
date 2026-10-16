@@ -37,10 +37,9 @@ export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
           </ol>
           {split && (
             <>
-              <RouteStart />
-              {/* Sized to its own games, so the route's last run stops at the last one. */}
-              <div className="relative self-start border-t border-white/10 xl:col-start-3 xl:row-start-2 xl:border-t-0">
-                <RouteFinish />
+              {/* Rows are near enough one height that game counts place the end of the line. */}
+              <Route end={right.length / left.length} />
+              <div className="border-t border-white/10 xl:col-start-3 xl:row-start-2 xl:border-t-0">
                 <ol>
                   {right.map((entry, i) => (
                     <DeckRow key={entry.game.id} entry={entry} after={right[i - 1]?.game} side="right" />
@@ -78,58 +77,46 @@ function BoardHeader({ className = "", hidden = false }: { className?: string; h
 }
 
 /*
- * The reading order between the two columns, drawn like a coach's whiteboard
- * play: skate down the left (solid), pass up and over (dashed), skate down the
- * right. The skates run 1.25rem in from each side of the 6rem gutter, and the
- * pass stretches to the gutter's height without thickening its stroke.
+ * The reading order between the two columns as one skating line: from the
+ * puck down the left column, a sweeping turn up across the gutter, then down
+ * the right column to the arrow. The viewBox is as wide as the 6rem gutter, so
+ * only its height stretches, and the stroke keeps its width while it does.
  */
-const SKATE = "absolute top-0 bottom-2 w-[3px] -translate-x-1/2 bg-red-line shadow-[0_0_8px_rgb(212_23_42/0.9)]";
+const LEFT_X = 18;
+const RIGHT_X = 78;
 
-function Arrowhead({ className }: { className: string }) {
-  return (
-    <span
-      className={`absolute bottom-0 -translate-x-1/2 border-x-[6px] border-t-[10px] border-x-transparent border-t-red-line drop-shadow-[0_0_4px_rgb(212_23_42/0.9)] ${className}`}
-    />
-  );
-}
-
-/** Fills the gutter: the puck, the first skate down the left and the pass across. */
-function RouteStart() {
+/** `end` is how far down the gutter the right column reaches, from 0 to 1. */
+function Route({ end }: { end: number }) {
+  const bottom = 100 * end;
+  // Straight down each column, rounded corners at the bottom and top of the climb across.
+  const d = `M${LEFT_X} 0 V86 Q${LEFT_X} 100 ${LEFT_X + 14} 90 L${RIGHT_X - 14} 10 Q${RIGHT_X} 0 ${RIGHT_X} 14 V${bottom}`;
   return (
     <div aria-hidden="true" className="relative hidden xl:col-start-2 xl:row-start-2 xl:block">
       <div className="absolute inset-x-0 inset-y-3">
-        {/* viewBox units across match the gutter's 96px, so only the height stretches. */}
         <svg
           viewBox="0 0 96 100"
           preserveAspectRatio="none"
-          className="absolute inset-0 size-full overflow-visible drop-shadow-[0_0_4px_rgb(255_178_28/0.7)]"
+          className="absolute inset-0 size-full overflow-visible drop-shadow-[0_0_6px_rgb(212_23_42/0.9)]"
         >
           <path
-            d="M20 100 C 20 45, 76 55, 76 0"
+            d={d}
             fill="none"
-            stroke="var(--color-led)"
-            strokeOpacity="0.85"
-            strokeWidth="2.5"
-            strokeDasharray="6 6"
+            stroke="var(--color-red-line)"
+            strokeWidth="3"
             strokeLinecap="round"
+            strokeLinejoin="round"
             vectorEffect="non-scaling-stroke"
           />
         </svg>
-        <span className={`${SKATE} left-5`} />
-        <Arrowhead className="left-5" />
-        <span className="absolute top-0 left-5 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_35%_30%,#3a404c,#0b0d12_62%)] shadow-[0_0_0_2px_rgb(255_255_255/0.75),0_2px_0_0_#000]" />
+        <span
+          className="absolute -translate-x-1/2 border-x-[7px] border-t-[11px] border-x-transparent border-t-red-line drop-shadow-[0_0_4px_rgb(212_23_42/0.9)]"
+          style={{ left: RIGHT_X, top: `calc(${bottom}% - 11px)` }}
+        />
+        <span
+          className="absolute top-0 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_35%_30%,#3a404c,#0b0d12_62%)] shadow-[0_0_0_2px_rgb(255_255_255/0.75),0_2px_0_0_#000]"
+          style={{ left: LEFT_X }}
+        />
       </div>
-    </div>
-  );
-}
-
-/** The second skate, hung off the right column so it ends at that column's last game. */
-function RouteFinish() {
-  return (
-    // 1.25rem in from the gutter's right side, which is this column's left edge.
-    <div aria-hidden="true" className="absolute inset-y-3 -left-5 hidden xl:block">
-      <span className={`${SKATE} left-0`} />
-      <Arrowhead className="left-0" />
     </div>
   );
 }
