@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { EmptyCrew } from "@/components/EmptyCrew";
 import { Jersey } from "@/components/Jersey";
 import { LocalTime } from "@/components/LocalTime";
@@ -5,6 +6,7 @@ import { PlayoffBadge } from "@/components/PlayoffBadge";
 import { Puck } from "@/components/Puck";
 import { SectionHeading } from "@/components/Scoreboard";
 import { StandingsShieldNote } from "@/components/ShieldNote";
+import { BoardSkeleton } from "@/components/Skeletons";
 import { StickBar } from "@/components/StickBar";
 import { TeamLogo } from "@/components/TeamLogo";
 import { Term } from "@/components/Term";
@@ -13,6 +15,7 @@ import { rankCrew, type CrewRow } from "@/lib/domain/crew-standings";
 import { dayLabel, ordinal, pct, signed } from "@/lib/format";
 import type { GlossaryKey } from "@/lib/glossary";
 import type { TeamStanding } from "@/lib/nhl/types";
+import { OnDeck } from "./on-deck";
 
 const HOT_STREAK = 3;
 
@@ -39,6 +42,13 @@ export async function CrewStandings() {
     <>
       {through && <StandingsShieldNote through={through} />}
       <Podium rows={rows.slice(0, 3)} />
+
+      <SectionHeading line="blue" aside="Next three games · times in your time zone">
+        On Deck
+      </SectionHeading>
+      <Suspense fallback={<BoardSkeleton label="Checking the schedule…" />}>
+        <OnDeck crew={rows.map((r) => r.member)} />
+      </Suspense>
 
       <SectionHeading
         aside={
