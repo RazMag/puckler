@@ -115,7 +115,8 @@ function Route({ rows, endRows }: { rows: number; endRows: number }) {
     `A${r} ${r} 0 0 0 ${LEFT_X + r * (1 + cos)} ${down + r * sin}`,
     `L${RIGHT_X - r * (1 + cos)} ${up - r * sin}`,
     `A${r} ${r} 0 0 1 ${RIGHT_X} ${up}`,
-    `V${bottom}`,
+    // Stop inside the arrowhead's wide end, so the line never pokes out past its tip.
+    `V${bottom - 7}`,
   ].join(" ");
   return (
     <div aria-hidden="true" className="relative hidden xl:col-start-2 xl:row-start-2 xl:block">
