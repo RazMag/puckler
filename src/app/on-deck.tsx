@@ -1,41 +1,266 @@
-import { GameCard } from "@/components/GameCard";
+import { FaceoffDot } from "@/components/FaceoffDot";
+import { LocalDay, LocalTime } from "@/components/LocalTime";
+import { SpoilerTape } from "@/components/SpoilerTape";
 import { TeamLogo } from "@/components/TeamLogo";
 import { TeamTooltip } from "@/components/TeamTooltip";
-import { UpcomingRow } from "@/components/UpcomingRow";
+import { Term } from "@/components/Term";
 import type { CrewMember } from "@/lib/crew/types";
 import { loadSchedules } from "@/lib/data";
-import { ownersByTeam } from "@/lib/domain/crew-standings";
-import { benchReports } from "@/lib/domain/faceoffs";
+import { initials } from "@/lib/domain/crew-standings";
+import { onDeck, seriesText, type DeckGame } from "@/lib/domain/faceoffs";
+import { inkOn, teamMeta } from "@/lib/nhl/teams";
+import type { Game, GameSide } from "@/lib/nhl/types";
 
-/** Each pick's live game and next few games, in the order the crew is ranked. */
+export const ON_DECK_COUNT = 12;
+
+/** The crew's next games as one arena schedule board, crew faceoffs lit up in red. */
 export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
-  const schedules = await loadSchedules(crew.map((m) => m.team));
-  const owners = ownersByTeam(crew);
+  const { games, nextFaceoff } = onDeck(crew, await loadSchedules(crew.map((m) => m.team)), { count: ON_DECK_COUNT });
+  // Side by side on wide screens: earliest games down the left, the rest down the right,
+  // with the route between them showing the way. Each column starts with its date showing.
+  const half = Math.ceil(games.length / 2);
+  const [left, right] = [games.slice(0, half), games.slice(half)];
+  const split = right.length > 0;
 
   return (
-    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {benchReports(crew, schedules).map(({ member, live, upcoming }) => (
-        <li key={member.id} className="rounded-sm bg-white/80 p-3 shadow-sm ring-1 ring-black/5">
-          <header className="flex items-center gap-2">
-            <TeamLogo team={member.team} size={28} />
-            <h3 className="min-w-0 truncate font-display text-lg leading-tight">{member.name}</h3>
-            <TeamTooltip team={member.team} className="ml-auto text-sm font-semibold text-ink-soft">
-              {member.team}
-            </TeamTooltip>
-          </header>
-          {live && (
-            <div className="mt-2">
-              <GameCard game={live} focus={member.team} owners={owners} />
-            </div>
-          )}
-          <ul className="mt-1 divide-y divide-black/5">
-            {upcoming.map((game) => (
-              <UpcomingRow key={game.id} game={game} team={member.team} owners={owners} />
+    <section className="jumbotron px-3 pt-6 pb-1 sm:px-5">
+      {games.length === 0 ? (
+        <p className="led py-6 text-center text-2xl">SEASON&apos;S OVER · SEE YOU IN OCTOBER</p>
+      ) : (
+        <div className="grid xl:grid-cols-[1fr_8rem_1fr]">
+          <BoardHeader className="xl:col-start-1 xl:row-start-1" />
+          {split && <BoardHeader hidden className="hidden xl:col-start-3 xl:row-start-1 xl:grid" />}
+          <ol className="xl:col-start-1 xl:row-start-2">
+            {left.map((entry, i) => (
+              <DeckRow key={entry.game.id} entry={entry} after={left[i - 1]?.game} side={split ? "left" : undefined} />
             ))}
-            {upcoming.length === 0 && <li className="py-1.5 text-sm text-ink-soft">Season&apos;s over.</li>}
-          </ul>
-        </li>
+          </ol>
+          {split && (
+            <>
+              <Route rows={left.length} endRows={right.length} />
+              <div className="border-t border-white/10 xl:col-start-3 xl:row-start-2 xl:border-t-0">
+                <ol>
+                  {right.map((entry, i) => (
+                    <DeckRow key={entry.game.id} entry={entry} after={right[i - 1]?.game} side="right" />
+                  ))}
+                </ol>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+      {nextFaceoff && (
+        <>
+          <p className="led border-t-2 border-led/30 pt-1.5 text-center text-lg leading-none tracking-[0.3em] uppercase">
+            ▼ Next crew faceoff ▼
+          </p>
+          <ol>
+            <DeckRow entry={nextFaceoff} />
+          </ol>
+        </>
+      )}
+    </section>
+  );
+}
+
+function BoardHeader({ className = "", hidden = false }: { className?: string; hidden?: boolean }) {
+  return (
+    <div
+      aria-hidden={hidden || undefined}
+      className={`grid grid-cols-[5.5rem_1fr] gap-3 border-b-2 border-led/30 pb-1 text-[11px] font-bold tracking-[0.2em] text-white/45 uppercase sm:grid-cols-[9rem_1fr] ${className}`}
+    >
+      <span>Puck drop</span>
+      <span>Matchup</span>
+    </div>
+  );
+}
+
+/*
+ * The reading order between the two columns as one skating line: from the
+ * puck down the left column, a round turn at the bottom, one straight climb
+ * across the gutter, a round turn at the top, then down the right column to
+ * the arrow. The path is drawn at about its real pixel size, from the row
+ * count, so the turns stay circular once it stretches to the gutter's height.
+ */
+const GUTTER = 128;
+const LEFT_X = 20;
+const RIGHT_X = 108;
+const TURN_RADIUS = 20;
+const ROW_HEIGHT = 45;
+
+/** Angle of the climb from vertical, so it leaves the bottom turn and meets the top one without a kink. */
+function climbAngle(span: number, rise: number, r: number): number {
+  // Wider angle: the arcs take more room across and less up; bisect for where the climb fits exactly.
+  const gap = (phi: number) => span - 2 * r * (1 + Math.cos(phi)) - Math.tan(phi) * (rise + 2 * r * Math.sin(phi));
+  let [lo, hi] = [0, Math.PI / 2 - 0.01];
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    if (gap(mid) > 0) lo = mid;
+    else hi = mid;
+  }
+  return lo;
+}
+
+/** `rows` games down the left column, `endRows` down the right. */
+function Route({ rows, endRows }: { rows: number; endRows: number }) {
+  const height = Math.max(rows * ROW_HEIGHT - 24, 120);
+  const r = TURN_RADIUS;
+  const [down, up] = [height - r, r];
+  const bottom = Math.max(up, (height * endRows) / rows);
+  const phi = climbAngle(RIGHT_X - LEFT_X, down - up, r);
+  const [cos, sin] = [Math.cos(phi), Math.sin(phi)];
+  const d = [
+    `M${LEFT_X} 0`,
+    `V${down}`,
+    `A${r} ${r} 0 0 0 ${LEFT_X + r * (1 + cos)} ${down + r * sin}`,
+    `L${RIGHT_X - r * (1 + cos)} ${up - r * sin}`,
+    `A${r} ${r} 0 0 1 ${RIGHT_X} ${up}`,
+    // Stop inside the arrowhead's wide end, so the line never pokes out past its tip.
+    `V${bottom - 7}`,
+  ].join(" ");
+  return (
+    <div aria-hidden="true" className="relative hidden xl:col-start-2 xl:row-start-2 xl:block">
+      <div className="absolute inset-x-0 inset-y-3">
+        <svg
+          viewBox={`0 0 ${GUTTER} ${height}`}
+          preserveAspectRatio="none"
+          className="absolute inset-0 size-full overflow-visible drop-shadow-[0_0_6px_rgb(212_23_42/0.9)]"
+        >
+          <path
+            d={d}
+            fill="none"
+            stroke="var(--color-red-line)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+        <span
+          className="absolute -translate-x-1/2 border-x-[7px] border-t-[11px] border-x-transparent border-t-red-line drop-shadow-[0_0_4px_rgb(212_23_42/0.9)]"
+          style={{ left: RIGHT_X, top: `calc(${(100 * bottom) / height}% - 11px)` }}
+        />
+        <span
+          className="absolute top-0 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_35%_30%,#3a404c,#0b0d12_62%)] shadow-[0_0_0_2px_rgb(255_255_255/0.75),0_2px_0_0_#000]"
+          style={{ left: LEFT_X }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/** `after` is the game listed before this one, so a day's date only shows on its first game. */
+function DeckRow({ entry, after, side }: { entry: DeckGame; after?: Game; side?: "left" | "right" }) {
+  const { game, away, home, faceoff, series } = entry;
+  return (
+    <li
+      className={`relative -mx-3 grid grid-cols-[5.5rem_1fr] items-center gap-x-3 border-b border-white/10 px-3 py-1.5 last:border-b-0 sm:-mx-5 sm:grid-cols-[9rem_1fr] sm:px-5 ${
+        // Side by side, rows stop at the gutter so the route stays clear.
+        side === "left" ? "xl:mr-0 xl:pr-3" : side === "right" ? "xl:ml-0 xl:pl-4" : ""
+      } ${
+        faceoff
+          ? "bg-[linear-gradient(90deg,rgb(212_23_42/0.45),rgb(212_23_42/0.12)_55%,transparent)] shadow-[inset_6px_0_0_0_var(--color-red-line),inset_0_1px_0_0_rgb(212_23_42/0.8),inset_0_-1px_0_0_rgb(212_23_42/0.8)]"
+          : ""
+      }`}
+    >
+      <When game={game} after={after} />
+
+      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 sm:gap-x-3">
+        <Plate side={game.away} owners={away} />
+        {faceoff ? (
+          <FaceoffDot className="-my-1 size-7 shrink-0 drop-shadow-[0_0_8px_rgb(212_23_42/0.8)] sm:size-8" />
+        ) : (
+          <span className="font-display text-xs text-white/35 sm:text-base">@</span>
+        )}
+        <Plate side={game.home} owners={home} />
+        {(faceoff || game.phase === "live") && (
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 sm:ml-auto">
+            {game.phase === "live" && <LiveScore game={game} />}
+            {faceoff && (
+              <>
+                <span className="-skew-x-12 bg-red-line px-2 py-0.5 font-display text-xs tracking-wider text-white shadow-[3px_3px_0_0_#000]">
+                  <span className="inline-block skew-x-12">Crew faceoff</span>
+                </span>
+                {series && (
+                  <Term term="series" className="text-xs font-bold tracking-wider text-white/75 uppercase">
+                    {seriesText(series)}
+                  </Term>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </li>
+  );
+}
+
+/** LED day and start time in the viewer's zone, on one line from sm up, or a breathing LIVE light. */
+function When({ game, after }: { game: Game; after?: Game }) {
+  if (game.phase === "live") {
+    const period =
+      game.periodType === "OT" ? "OT" : game.periodType === "SO" ? "SO" : game.period ? `P${game.period}` : "";
+    return (
+      <div className="flex items-center gap-1.5 font-led text-2xl leading-none text-goal">
+        <span className="size-2.5 animate-live rounded-full bg-goal shadow-[0_0_10px_2px_rgb(255_38_38/0.7)]" />
+        LIVE
+        {period && <span className="text-white/60">{period}</span>}
+      </div>
+    );
+  }
+  return (
+    <div className="led flex flex-col leading-none uppercase sm:flex-row sm:items-baseline sm:gap-2">
+      <span className="text-base opacity-75 empty:hidden sm:w-14 sm:text-lg sm:empty:block">
+        <LocalDay
+          iso={game.startTimeUTC}
+          after={after?.phase === "upcoming" ? after.startTimeUTC : undefined}
+          format="day"
+        />
+      </span>
+      <span className="text-xl sm:text-2xl">
+        <LocalTime iso={game.startTimeUTC} format="time" />
+      </span>
+    </div>
+  );
+}
+
+/** One side of the matchup: logo, abbreviation and a name bar in team colors for each crew pick. */
+function Plate({ side, owners }: { side: GameSide; owners: readonly CrewMember[] }) {
+  const crew = owners.length > 0;
+  const { primary } = teamMeta(side.abbrev);
+  return (
+    <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+      <span
+        className={`grid size-7 shrink-0 place-items-center rounded-full bg-white ${crew ? "ring-2 ring-led/70" : "opacity-70"}`}
+      >
+        <TeamLogo team={side.abbrev} size={22} />
+      </span>
+      <TeamTooltip
+        team={side.abbrev}
+        detail={crew && `${owners.map((m) => m.name).join(" & ")}'s pick`}
+        className={`font-bold tracking-wide ${crew ? "text-white" : "text-white/55"}`}
+      >
+        {side.abbrev}
+      </TeamTooltip>
+      {owners.map((member) => (
+        <span
+          key={member.id}
+          className="inline-block max-w-28 shrink-0 -skew-x-12 truncate px-1.5 font-display text-[11px] leading-5 shadow-[2px_2px_0_0_#000]"
+          style={{ backgroundColor: primary, color: inkOn(primary) }}
+        >
+          {/* Initials on a phone, so both teams fit on one line. */}
+          <span className="sm:hidden">{initials(member.name)}</span>
+          <span className="hidden sm:inline">{member.name}</span>
+        </span>
       ))}
-    </ul>
+    </div>
+  );
+}
+
+function LiveScore({ game }: { game: Game }) {
+  if (game.hidden) return <SpoilerTape label="Score taped" />;
+  return (
+    <span className="led text-3xl leading-none">
+      {game.away.score ?? 0}–{game.home.score ?? 0}
+    </span>
   );
 }

@@ -1,6 +1,7 @@
 import type { CrewMember } from "@/lib/crew/types";
 import type { Game } from "@/lib/nhl/types";
 
+export const PRESEASON = 1;
 export const REGULAR_SEASON = 2;
 
 export type Result = "W" | "L" | "OTL";
@@ -98,4 +99,65 @@ export function rivalries(crew: readonly CrewMember[], schedules: ReadonlyMap<st
       };
     })
     .sort((x, y) => (x.next?.startTimeUTC ?? "9999").localeCompare(y.next?.startTimeUTC ?? "9999"));
+}
+
+/** "Raz leads 2–1", "Series tied 1–1", or how many meetings are left before the first one. */
+export function seriesText({ a, b, winsA, winsB, games }: Rivalry): string {
+  const played = games.filter((g) => g.phase === "final" && !g.hidden).length;
+  if (played === 0) return `${games.length} meeting${games.length === 1 ? "" : "s"} this season`;
+  if (winsA === winsB) return `Series tied ${winsA}–${winsB}`;
+  return winsA > winsB ? `${a.name} leads ${winsA}–${winsB}` : `${b.name} leads ${winsB}–${winsA}`;
+}
+
+export type DeckGame = {
+  game: Game;
+  /** Crew members whose team plays on each side. */
+  away: CrewMember[];
+  home: CrewMember[];
+  /** Two crew picks meet. */
+  faceoff: boolean;
+  /** The regular-season series a faceoff counts toward. */
+  series: Rivalry | null;
+};
+
+export type Deck = {
+  /** The next `count` games, live ones first. */
+  games: DeckGame[];
+  /** The first crew faceoff after those, when none of them is one. */
+  nextFaceoff: DeckGame | null;
+};
+
+/** The crew's upcoming games in order, each listed once however many picks play in it. */
+export function onDeck(
+  crew: readonly CrewMember[],
+  schedules: ReadonlyMap<string, readonly Game[]>,
+  { count = 12 } = {},
+): Deck {
+  const games = new Map<number, Game>();
+  for (const team of new Set(crew.map((m) => m.team))) {
+    for (const game of schedules.get(team) ?? []) {
+      if (game.phase !== "final") games.set(game.id, game);
+    }
+  }
+  const pending = [...games.values()];
+  // Preseason only counts while there's nothing bigger left to play.
+  const pool = pending.some((g) => g.gameType !== PRESEASON)
+    ? pending.filter((g) => g.gameType !== PRESEASON)
+    : pending;
+  const meetings = new Map(rivalries(crew, schedules).flatMap((r) => r.games.map((g) => [g.id, r] as const)));
+
+  const deck = pool
+    .sort(
+      (x, y) => Number(y.phase === "live") - Number(x.phase === "live") || x.startTimeUTC.localeCompare(y.startTimeUTC),
+    )
+    .map((game): DeckGame => {
+      const away = crew.filter((m) => m.team === game.away.abbrev);
+      const home = crew.filter((m) => m.team === game.home.abbrev);
+      return { game, away, home, faceoff: away.length > 0 && home.length > 0, series: meetings.get(game.id) ?? null };
+    });
+  const shown = deck.slice(0, count);
+  return {
+    games: shown,
+    nextFaceoff: shown.some((d) => d.faceoff) ? null : (deck.slice(count).find((d) => d.faceoff) ?? null),
+  };
 }
