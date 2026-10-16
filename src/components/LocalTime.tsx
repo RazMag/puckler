@@ -10,11 +10,19 @@ const FORMATS = {
 
 const subscribe = () => () => {};
 
+function formatIso(iso: string, format: keyof typeof FORMATS | "day"): string {
+  const date = new Date(iso);
+  if (format !== "day") return new Intl.DateTimeFormat(undefined, FORMATS[format]).format(date);
+  // "Sat 17", weekday first whatever the locale's own order.
+  const part = (options: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(undefined, options).format(date);
+  return `${part({ weekday: "short" })} ${part({ day: "numeric" })}`;
+}
+
 /** Formats an ISO timestamp in the viewer's own time zone (server renders a placeholder). */
-export function LocalTime({ iso, format = "datetime" }: { iso: string; format?: keyof typeof FORMATS }) {
+export function LocalTime({ iso, format = "datetime" }: { iso: string; format?: keyof typeof FORMATS | "day" }) {
   const text = useSyncExternalStore(
     subscribe,
-    () => new Intl.DateTimeFormat(undefined, FORMATS[format]).format(new Date(iso)),
+    () => formatIso(iso, format),
     () => null,
   );
   return (
@@ -27,11 +35,19 @@ export function LocalTime({ iso, format = "datetime" }: { iso: string; format?: 
 const dayKey = (iso: string) => new Date(iso).toDateString();
 
 /** The local date of `iso`, or nothing when it falls on the same local day as `after`. */
-export function LocalDay({ iso, after }: { iso: string; after?: string }) {
+export function LocalDay({
+  iso,
+  after,
+  format = "date",
+}: {
+  iso: string;
+  after?: string;
+  format?: keyof typeof FORMATS | "day";
+}) {
   const sameDay = useSyncExternalStore(
     subscribe,
     () => after !== undefined && dayKey(after) === dayKey(iso),
     () => false,
   );
-  return sameDay ? null : <LocalTime iso={iso} format="date" />;
+  return sameDay ? null : <LocalTime iso={iso} format={format} />;
 }
