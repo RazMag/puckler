@@ -27,7 +27,7 @@ export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
       {games.length === 0 ? (
         <p className="led py-6 text-center text-2xl">SEASON&apos;S OVER · SEE YOU IN OCTOBER</p>
       ) : (
-        <div className="grid xl:grid-cols-[1fr_6rem_1fr]">
+        <div className="grid xl:grid-cols-[1fr_8rem_1fr]">
           <BoardHeader className="xl:col-start-1 xl:row-start-1" />
           {split && <BoardHeader hidden className="hidden xl:col-start-3 xl:row-start-1 xl:grid" />}
           <ol className="xl:col-start-1 xl:row-start-2">
@@ -37,8 +37,7 @@ export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
           </ol>
           {split && (
             <>
-              {/* Rows are near enough one height that game counts place the end of the line. */}
-              <Route end={right.length / left.length} />
+              <Route rows={left.length} endRows={right.length} />
               <div className="border-t border-white/10 xl:col-start-3 xl:row-start-2 xl:border-t-0">
                 <ol>
                   {right.map((entry, i) => (
@@ -78,23 +77,51 @@ function BoardHeader({ className = "", hidden = false }: { className?: string; h
 
 /*
  * The reading order between the two columns as one skating line: from the
- * puck down the left column, a sweeping turn up across the gutter, then down
- * the right column to the arrow. The viewBox is as wide as the 6rem gutter, so
- * only its height stretches, and the stroke keeps its width while it does.
+ * puck down the left column, a round turn at the bottom, one straight climb
+ * across the gutter, a round turn at the top, then down the right column to
+ * the arrow. The path is drawn at about its real pixel size, from the row
+ * count, so the turns stay circular once it stretches to the gutter's height.
  */
-const LEFT_X = 18;
-const RIGHT_X = 78;
+const GUTTER = 128;
+const LEFT_X = 20;
+const RIGHT_X = 108;
+const TURN_RADIUS = 20;
+const ROW_HEIGHT = 45;
 
-/** `end` is how far down the gutter the right column reaches, from 0 to 1. */
-function Route({ end }: { end: number }) {
-  const bottom = 100 * end;
-  // Straight down each column, rounded corners at the bottom and top of the climb across.
-  const d = `M${LEFT_X} 0 V86 Q${LEFT_X} 100 ${LEFT_X + 14} 90 L${RIGHT_X - 14} 10 Q${RIGHT_X} 0 ${RIGHT_X} 14 V${bottom}`;
+/** Angle of the climb from vertical, so it leaves the bottom turn and meets the top one without a kink. */
+function climbAngle(span: number, rise: number, r: number): number {
+  // Wider angle: the arcs take more room across and less up; bisect for where the climb fits exactly.
+  const gap = (phi: number) => span - 2 * r * (1 + Math.cos(phi)) - Math.tan(phi) * (rise + 2 * r * Math.sin(phi));
+  let [lo, hi] = [0, Math.PI / 2 - 0.01];
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    if (gap(mid) > 0) lo = mid;
+    else hi = mid;
+  }
+  return lo;
+}
+
+/** `rows` games down the left column, `endRows` down the right. */
+function Route({ rows, endRows }: { rows: number; endRows: number }) {
+  const height = Math.max(rows * ROW_HEIGHT - 24, 120);
+  const r = TURN_RADIUS;
+  const [down, up] = [height - r, r];
+  const bottom = Math.max(up, (height * endRows) / rows);
+  const phi = climbAngle(RIGHT_X - LEFT_X, down - up, r);
+  const [cos, sin] = [Math.cos(phi), Math.sin(phi)];
+  const d = [
+    `M${LEFT_X} 0`,
+    `V${down}`,
+    `A${r} ${r} 0 0 0 ${LEFT_X + r * (1 + cos)} ${down + r * sin}`,
+    `L${RIGHT_X - r * (1 + cos)} ${up - r * sin}`,
+    `A${r} ${r} 0 0 1 ${RIGHT_X} ${up}`,
+    `V${bottom}`,
+  ].join(" ");
   return (
     <div aria-hidden="true" className="relative hidden xl:col-start-2 xl:row-start-2 xl:block">
       <div className="absolute inset-x-0 inset-y-3">
         <svg
-          viewBox="0 0 96 100"
+          viewBox={`0 0 ${GUTTER} ${height}`}
           preserveAspectRatio="none"
           className="absolute inset-0 size-full overflow-visible drop-shadow-[0_0_6px_rgb(212_23_42/0.9)]"
         >
@@ -104,13 +131,12 @@ function Route({ end }: { end: number }) {
             stroke="var(--color-red-line)"
             strokeWidth="3"
             strokeLinecap="round"
-            strokeLinejoin="round"
             vectorEffect="non-scaling-stroke"
           />
         </svg>
         <span
           className="absolute -translate-x-1/2 border-x-[7px] border-t-[11px] border-x-transparent border-t-red-line drop-shadow-[0_0_4px_rgb(212_23_42/0.9)]"
-          style={{ left: RIGHT_X, top: `calc(${bottom}% - 11px)` }}
+          style={{ left: RIGHT_X, top: `calc(${(100 * bottom) / height}% - 11px)` }}
         />
         <span
           className="absolute top-0 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_35%_30%,#3a404c,#0b0d12_62%)] shadow-[0_0_0_2px_rgb(255_255_255/0.75),0_2px_0_0_#000]"
