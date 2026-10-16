@@ -2,7 +2,7 @@
 
 A hockey-loud scoreboard for a crew of friends who each picked an NHL team. It shows:
 
-- **Standings**: your picks ranked against each other (jersey podium, stick-race bars and a full stat table).
+- **Standings**: your picks ranked against each other (jersey podium, stick-race bars and a full stat table), plus **On Deck**: each pick's live game and next three games, right on the front page.
 - **Divisions**: all four divisions drawn as rinks, with your teams highlighted and the playoff cut line marked.
 - **Faceoffs**: every game where two crew picks play each other, plus each team's recent results and next games.
 - **Players**: who's carrying each crew team. The crew's "three stars" over the last five games, each team's top scorers with their recent form, its goalies, and its injury report with key players flagged.

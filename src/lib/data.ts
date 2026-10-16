@@ -47,12 +47,15 @@ async function shieldedStandings(shield: Shield): Promise<{ standings: Standings
 
 export async function loadFaceoffs() {
   await connection();
-  const [crew, shield] = await Promise.all([readCrew(), readShield()]);
-  const schedules = await getSchedules(crew.map((m) => m.team));
-  return {
-    crew,
-    schedules: new Map([...schedules].map(([team, games]) => [team, applyShield(games, shield)])),
-  };
+  const crew = await readCrew();
+  return { crew, schedules: await loadSchedules(crew.map((m) => m.team)) };
+}
+
+/** Club schedules for `teams`, with the viewer's spoiler shield applied. */
+export async function loadSchedules(teams: readonly string[]) {
+  await connection();
+  const [shield, schedules] = await Promise.all([readShield(), getSchedules(teams)]);
+  return new Map([...schedules].map(([team, games]) => [team, applyShield(games, shield)]));
 }
 
 export async function loadPlayers() {
