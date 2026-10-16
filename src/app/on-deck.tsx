@@ -16,27 +16,39 @@ export const ON_DECK_COUNT = 12;
 /** The crew's next games as one arena schedule board, crew faceoffs lit up in red. */
 export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
   const { games, nextFaceoff } = onDeck(crew, await loadSchedules(crew.map((m) => m.team)), { count: ON_DECK_COUNT });
-  // Side by side on wide screens: earliest games down the left, the rest down the right.
-  // Each column starts with its date showing.
+  // Side by side on wide screens: earliest games down the left, the rest down the right,
+  // with the route between them showing the way. Each column starts with its date showing.
   const half = Math.ceil(games.length / 2);
-  const columns = [games.slice(0, half), games.slice(half)].filter((column) => column.length > 0);
+  const [left, right] = [games.slice(0, half), games.slice(half)];
+  const split = right.length > 0;
 
   return (
     <section className="jumbotron px-3 pt-6 pb-1 sm:px-5">
       {games.length === 0 ? (
         <p className="led py-6 text-center text-2xl">SEASON&apos;S OVER · SEE YOU IN OCTOBER</p>
       ) : (
-        <div className="grid gap-x-10 xl:grid-cols-2">
-          {columns.map((column, c) => (
-            <div key={c}>
-              <BoardHeader className={c > 0 ? "hidden xl:grid" : ""} />
-              <ol>
-                {column.map((entry, i) => (
-                  <DeckRow key={entry.game.id} entry={entry} after={column[i - 1]?.game} />
-                ))}
-              </ol>
-            </div>
-          ))}
+        <div className="grid xl:grid-cols-[1fr_6rem_1fr]">
+          <BoardHeader className="xl:col-start-1 xl:row-start-1" />
+          {split && <BoardHeader hidden className="hidden xl:col-start-3 xl:row-start-1 xl:grid" />}
+          <ol className="xl:col-start-1 xl:row-start-2">
+            {left.map((entry, i) => (
+              <DeckRow key={entry.game.id} entry={entry} after={left[i - 1]?.game} side={split ? "left" : undefined} />
+            ))}
+          </ol>
+          {split && (
+            <>
+              <RouteStart />
+              {/* Sized to its own games, so the route's last run stops at the last one. */}
+              <div className="relative self-start border-t border-white/10 xl:col-start-3 xl:row-start-2 xl:border-t-0">
+                <RouteFinish />
+                <ol>
+                  {right.map((entry, i) => (
+                    <DeckRow key={entry.game.id} entry={entry} after={right[i - 1]?.game} side="right" />
+                  ))}
+                </ol>
+              </div>
+            </>
+          )}
         </div>
       )}
       {nextFaceoff && (
@@ -53,9 +65,10 @@ export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
   );
 }
 
-function BoardHeader({ className = "" }: { className?: string }) {
+function BoardHeader({ className = "", hidden = false }: { className?: string; hidden?: boolean }) {
   return (
     <div
+      aria-hidden={hidden || undefined}
       className={`grid grid-cols-[5.5rem_1fr] gap-3 border-b-2 border-led/30 pb-1 text-[11px] font-bold tracking-[0.2em] text-white/45 uppercase sm:grid-cols-[9rem_1fr] ${className}`}
     >
       <span>Puck drop</span>
@@ -64,12 +77,72 @@ function BoardHeader({ className = "" }: { className?: string }) {
   );
 }
 
+/*
+ * The reading order between the two columns, drawn like a coach's whiteboard
+ * play: skate down the left (solid), pass up and over (dashed), skate down the
+ * right. The skates run 1.25rem in from each side of the 6rem gutter, and the
+ * pass stretches to the gutter's height without thickening its stroke.
+ */
+const SKATE = "absolute top-0 bottom-2 w-[3px] -translate-x-1/2 bg-red-line shadow-[0_0_8px_rgb(212_23_42/0.9)]";
+
+function Arrowhead({ className }: { className: string }) {
+  return (
+    <span
+      className={`absolute bottom-0 -translate-x-1/2 border-x-[6px] border-t-[10px] border-x-transparent border-t-red-line drop-shadow-[0_0_4px_rgb(212_23_42/0.9)] ${className}`}
+    />
+  );
+}
+
+/** Fills the gutter: the puck, the first skate down the left and the pass across. */
+function RouteStart() {
+  return (
+    <div aria-hidden="true" className="relative hidden xl:col-start-2 xl:row-start-2 xl:block">
+      <div className="absolute inset-x-0 inset-y-3">
+        {/* viewBox units across match the gutter's 96px, so only the height stretches. */}
+        <svg
+          viewBox="0 0 96 100"
+          preserveAspectRatio="none"
+          className="absolute inset-0 size-full overflow-visible drop-shadow-[0_0_4px_rgb(255_178_28/0.7)]"
+        >
+          <path
+            d="M20 100 C 20 45, 76 55, 76 0"
+            fill="none"
+            stroke="var(--color-led)"
+            strokeOpacity="0.85"
+            strokeWidth="2.5"
+            strokeDasharray="6 6"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+        <span className={`${SKATE} left-5`} />
+        <Arrowhead className="left-5" />
+        <span className="absolute top-0 left-5 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_35%_30%,#3a404c,#0b0d12_62%)] shadow-[0_0_0_2px_rgb(255_255_255/0.75),0_2px_0_0_#000]" />
+      </div>
+    </div>
+  );
+}
+
+/** The second skate, hung off the right column so it ends at that column's last game. */
+function RouteFinish() {
+  return (
+    // 1.25rem in from the gutter's right side, which is this column's left edge.
+    <div aria-hidden="true" className="absolute inset-y-3 -left-5 hidden xl:block">
+      <span className={`${SKATE} left-0`} />
+      <Arrowhead className="left-0" />
+    </div>
+  );
+}
+
 /** `after` is the game listed before this one, so a day's date only shows on its first game. */
-function DeckRow({ entry, after }: { entry: DeckGame; after?: Game }) {
+function DeckRow({ entry, after, side }: { entry: DeckGame; after?: Game; side?: "left" | "right" }) {
   const { game, away, home, faceoff, series } = entry;
   return (
     <li
       className={`relative -mx-3 grid grid-cols-[5.5rem_1fr] items-center gap-x-3 border-b border-white/10 px-3 py-1.5 last:border-b-0 sm:-mx-5 sm:grid-cols-[9rem_1fr] sm:px-5 ${
+        // Side by side, rows stop at the gutter so the route stays clear.
+        side === "left" ? "xl:mr-0 xl:pr-3" : side === "right" ? "xl:ml-0 xl:pl-4" : ""
+      } ${
         faceoff
           ? "bg-[linear-gradient(90deg,rgb(212_23_42/0.45),rgb(212_23_42/0.12)_55%,transparent)] shadow-[inset_6px_0_0_0_var(--color-red-line),inset_0_1px_0_0_rgb(212_23_42/0.8),inset_0_-1px_0_0_rgb(212_23_42/0.8)]"
           : ""
