@@ -1,3 +1,5 @@
+import Link from "next/link";
+import type { ReactNode } from "react";
 import { FaceoffDot } from "@/components/FaceoffDot";
 import { LocalDay, LocalTime } from "@/components/LocalTime";
 import { SpoilerTape } from "@/components/SpoilerTape";
@@ -5,17 +7,95 @@ import { TeamLogo } from "@/components/TeamLogo";
 import { TeamTooltip } from "@/components/TeamTooltip";
 import { Term } from "@/components/Term";
 import type { CrewMember } from "@/lib/crew/types";
-import { loadSchedules } from "@/lib/data";
+import { loadUpcoming } from "@/lib/data";
 import { initials } from "@/lib/domain/crew-standings";
-import { onDeck, seriesText, type DeckGame } from "@/lib/domain/faceoffs";
+import { onDeck, seriesText, type Deck, type DeckGame } from "@/lib/domain/faceoffs";
 import { inkOn, teamMeta } from "@/lib/nhl/teams";
 import type { Game, GameSide } from "@/lib/nhl/types";
 
 export const ON_DECK_COUNT = 12;
 
+/** How far ahead the board looks: the next dozen games, or every game in the next few days. */
+export const DECK_RANGES = [
+  { key: "next", label: `Next ${ON_DECK_COUNT}`, days: null },
+  { key: "7d", label: "7 days", days: 7 },
+  { key: "14d", label: "14 days", days: 14 },
+  { key: "30d", label: "30 days", days: 30 },
+] as const;
+
+export type DeckRange = (typeof DECK_RANGES)[number];
+
+/** The range a `?deck=` search param asks for, the next dozen games by default. */
+export function deckRange(param: string | string[] | undefined): DeckRange {
+  return DECK_RANGES.find((r) => r.key === param) ?? DECK_RANGES[0];
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 /** The crew's next games as one arena schedule board, crew faceoffs lit up in red. */
-export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
-  const { games, nextFaceoff } = onDeck(crew, await loadSchedules(crew.map((m) => m.team)), { count: ON_DECK_COUNT });
+export async function OnDeck({ crew, range }: { crew: readonly CrewMember[]; range: DeckRange }) {
+  const { schedules, now } = await loadUpcoming(crew.map((m) => m.team));
+  const deck = onDeck(
+    crew,
+    schedules,
+    range.days === null ? { count: ON_DECK_COUNT } : { until: new Date(now.getTime() + range.days * DAY_MS) },
+  );
+  const shown = deck.games.length;
+  return (
+    <DeckBoard deck={deck} empty={deck.left > 0 ? `NO CREW GAMES IN THE NEXT ${range.days} DAYS` : undefined}>
+      {deck.left > 0 && (
+        <div className="-mx-3 mt-1 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t-2 border-led/30 px-3 pt-2 pb-1.5 text-[11px] font-bold tracking-[0.2em] text-white/45 uppercase sm:-mx-5 sm:px-5">
+          <span>
+            {range.days === null
+              ? `Next ${shown} of ${deck.left} crew games`
+              : `${shown} crew game${shown === 1 ? "" : "s"} in the next ${range.days} days`}{" "}
+            · times in your time zone
+          </span>
+          <Link
+            href="/schedule"
+            className="-skew-x-12 bg-red-line px-2.5 py-1 font-display text-xs tracking-wider text-white normal-case shadow-[3px_3px_0_0_#000] hover:brightness-110"
+          >
+            <span className="inline-block skew-x-12">Full schedule →</span>
+          </Link>
+        </div>
+      )}
+    </DeckBoard>
+  );
+}
+
+/** Tabs beside the On Deck heading that set how far ahead the board looks. */
+export function DeckRangeSwitch({ current }: { current: DeckRange }) {
+  return (
+    <nav aria-label="How far ahead" className="flex gap-1">
+      {DECK_RANGES.map((range) => (
+        <Link
+          key={range.key}
+          href={range === DECK_RANGES[0] ? "/" : `/?deck=${range.key}`}
+          scroll={false}
+          aria-current={range.key === current.key ? "true" : undefined}
+          className={`-skew-x-12 px-2 py-0.5 text-sm font-bold tracking-wide uppercase ${
+            range.key === current.key
+              ? "bg-boards text-led shadow-[2px_2px_0_0_var(--color-red-line)]"
+              : "hover:bg-black/10"
+          }`}
+        >
+          <span className="inline-block skew-x-12">{range.label}</span>
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
+/** The schedule board for any run of games; `children` go along the bottom edge. */
+function DeckBoard({
+  deck: { games, nextFaceoff },
+  empty = "SEASON'S OVER · SEE YOU IN OCTOBER",
+  children,
+}: {
+  deck: Deck;
+  empty?: string;
+  children?: ReactNode;
+}) {
   // Side by side on wide screens: earliest games down the left, the rest down the right,
   // with the route between them showing the way. Each column starts with its date showing.
   const half = Math.ceil(games.length / 2);
@@ -25,7 +105,7 @@ export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
   return (
     <section className="jumbotron px-3 pt-6 pb-1 sm:px-5">
       {games.length === 0 ? (
-        <p className="led py-6 text-center text-2xl">SEASON&apos;S OVER · SEE YOU IN OCTOBER</p>
+        <p className="led py-6 text-center text-2xl">{empty}</p>
       ) : (
         <div className="grid xl:grid-cols-[1fr_8rem_1fr]">
           <BoardHeader className="xl:col-start-1 xl:row-start-1" />
@@ -59,6 +139,7 @@ export async function OnDeck({ crew }: { crew: readonly CrewMember[] }) {
           </ol>
         </>
       )}
+      {children}
     </section>
   );
 }

@@ -58,6 +58,18 @@ export async function loadSchedules(teams: readonly string[]) {
   return new Map([...schedules].map(([team, games]) => [team, applyShield(games, shield)]));
 }
 
+/** Club schedules for `teams` and the moment they were read, for views that look days ahead. */
+export async function loadUpcoming(teams: readonly string[]) {
+  const schedules = await loadSchedules(teams);
+  return { schedules, now: new Date() };
+}
+
+export async function loadCalendar() {
+  await connection();
+  const crew = await readCrew();
+  return { crew, ...(await loadUpcoming(crew.map((m) => m.team))) };
+}
+
 export async function loadPlayers() {
   await connection();
   const [crew, shield] = await Promise.all([readCrew(), readShield()]);
