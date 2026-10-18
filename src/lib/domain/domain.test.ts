@@ -161,6 +161,27 @@ describe("on deck", () => {
     expect(onDeck(crew, schedules, { count: first + 1 }).nextFaceoff).toBeNull();
   });
 
+  it("holds every game before a cutoff instead of a count", () => {
+    const all = onDeck(crew, schedules, { count: 200 }).games;
+    const cutoff = new Date(all[30]!.game.startTimeUTC);
+    const { games, left } = onDeck(crew, schedules, { until: cutoff });
+    expect(games.map((d) => d.game.id)).toEqual(all.slice(0, 30).map((d) => d.game.id));
+    expect(left).toBe(all.length);
+  });
+
+  it("keeps live games whatever the cutoff", () => {
+    const live = { ...schedules.get("TOR")!.at(-1)!, phase: "live" as const };
+    const withLive = new Map([...schedules, ["TOR", [...schedules.get("TOR")!.slice(0, -1), live]]]);
+    expect(onDeck(crew, withLive, { until: new Date(0) }).games.map((d) => d.game.id)).toEqual([live.id]);
+  });
+
+  it("pins the next faceoff when the cutoff catches no games", () => {
+    const first = onDeck(crew, schedules, { count: 200 }).games.find((d) => d.faceoff);
+    const { games, nextFaceoff } = onDeck(crew, schedules, { until: new Date(0) });
+    expect(games).toEqual([]);
+    expect(nextFaceoff?.game.id).toBe(first?.game.id);
+  });
+
   it("describes the season series", () => {
     const rivalry = rivalries(crew, schedules)[0]!;
     const pending = rivalry.games.map((g) => ({ ...g, phase: "upcoming" as const }));

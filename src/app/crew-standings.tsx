@@ -15,7 +15,7 @@ import { rankCrew, type CrewRow } from "@/lib/domain/crew-standings";
 import { dayLabel, ordinal, pct, signed } from "@/lib/format";
 import type { GlossaryKey } from "@/lib/glossary";
 import type { TeamStanding } from "@/lib/nhl/types";
-import { ON_DECK_COUNT, OnDeck } from "./on-deck";
+import { DeckRangeSwitch, deckRange, OnDeck } from "./on-deck";
 
 const HOT_STREAK = 3;
 
@@ -31,8 +31,9 @@ function record(team: TeamStanding): string {
   return `${team.wins}-${team.losses}-${team.otLosses}`;
 }
 
-export async function CrewStandings() {
-  const { crew, standings, through } = await loadBoard();
+export async function CrewStandings({ searchParams }: { searchParams: PageProps<"/">["searchParams"] }) {
+  const [{ crew, standings, through }, params] = await Promise.all([loadBoard(), searchParams]);
+  const range = deckRange(params.deck);
   if (crew.length === 0) return <EmptyCrew />;
 
   const rows = rankCrew(crew, standings.teams);
@@ -107,11 +108,11 @@ export async function CrewStandings() {
         ))}
       </ol>
 
-      <SectionHeading line="blue" aside={`Next ${ON_DECK_COUNT} crew games · times in your time zone`}>
+      <SectionHeading line="blue" aside={<DeckRangeSwitch current={range} />}>
         On Deck
       </SectionHeading>
       <Suspense fallback={<BoardSkeleton label="Checking the schedule…" />}>
-        <OnDeck crew={rows.map((r) => r.member)} />
+        <OnDeck crew={rows.map((r) => r.member)} range={range} />
       </Suspense>
 
       <SectionHeading aside="Scroll sideways on a phone →">Tale of the Tape</SectionHeading>

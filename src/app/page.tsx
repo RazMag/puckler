@@ -3,7 +3,7 @@ import { Jumbotron } from "@/components/Scoreboard";
 import { BoardSkeleton } from "@/components/Skeletons";
 import { CrewStandings } from "./crew-standings";
 
-export default function StandingsPage() {
+export default function StandingsPage({ searchParams }: PageProps<"/">) {
   return (
     <>
       <Jumbotron kicker="▶ The crew race" title="Crew Standings">
@@ -11,7 +11,7 @@ export default function StandingsPage() {
         still earns 1, a regulation loss gets nothing.
       </Jumbotron>
       <Suspense fallback={<BoardSkeleton />}>
-        <CrewStandings />
+        <CrewStandings searchParams={searchParams} />
       </Suspense>
     </>
   );

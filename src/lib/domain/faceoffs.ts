@@ -121,17 +121,22 @@ export type DeckGame = {
 };
 
 export type Deck = {
-  /** The next `count` games, live ones first. */
+  /** The next `count` games, or every game starting before `until`, live ones first. */
   games: DeckGame[];
   /** The first crew faceoff after those, when none of them is one. */
   nextFaceoff: DeckGame | null;
+  /** Every crew game left to play, shown or not. */
+  left: number;
 };
 
-/** The crew's upcoming games in order, each listed once however many picks play in it. */
+/**
+ * The crew's upcoming games in order, each listed once however many picks play in it:
+ * the next `count`, or with `until`, every game that starts before then.
+ */
 export function onDeck(
   crew: readonly CrewMember[],
   schedules: ReadonlyMap<string, readonly Game[]>,
-  { count = 12 } = {},
+  { count = 12, until }: { count?: number; until?: Date } = {},
 ): Deck {
   const games = new Map<number, Game>();
   for (const team of new Set(crew.map((m) => m.team))) {
@@ -155,9 +160,12 @@ export function onDeck(
       const home = crew.filter((m) => m.team === game.home.abbrev);
       return { game, away, home, faceoff: away.length > 0 && home.length > 0, series: meetings.get(game.id) ?? null };
     });
-  const shown = deck.slice(0, count);
+  const shown = until
+    ? deck.filter((d) => d.game.phase === "live" || Date.parse(d.game.startTimeUTC) < until.getTime())
+    : deck.slice(0, count);
   return {
     games: shown,
-    nextFaceoff: shown.some((d) => d.faceoff) ? null : (deck.slice(count).find((d) => d.faceoff) ?? null),
+    nextFaceoff: shown.some((d) => d.faceoff) ? null : (deck.slice(shown.length).find((d) => d.faceoff) ?? null),
+    left: deck.length,
   };
 }

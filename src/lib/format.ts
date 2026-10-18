@@ -33,3 +33,11 @@ const DAY = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", t
 export function dayLabel(isoDate: string): string {
   return DAY.format(new Date(`${isoDate}T00:00:00Z`));
 }
+
+const MONTH = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+const MONTH_SHORT = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" });
+
+/** "2026-11" → "November 2026", or "Nov" when `short`. */
+export function monthLabel(month: string, short = false): string {
+  return (short ? MONTH_SHORT : MONTH).format(new Date(`${month}-01T00:00:00Z`));
+}

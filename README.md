@@ -2,7 +2,8 @@
 
 A hockey-loud scoreboard for a crew of friends who each picked an NHL team. It shows:
 
-- **Standings**: your picks ranked against each other (jersey podium, stick-race bars and a full stat table), plus **On Deck**: one arena-style board with the crew's next 12 games in order, live games first. Crew faceoffs light up in red with their season series, and if none of those 12 is a faceoff, the next one is pinned underneath.
+- **Standings**: your picks ranked against each other (jersey podium, stick-race bars and a full stat table), plus **On Deck**: one arena-style board with the crew's next 12 games in order, live games first. Crew faceoffs light up in red with their season series, and if none of those 12 is a faceoff, the next one is pinned underneath. A switch beside it stretches the board to every crew game in the next 7, 14 or 30 days.
+- **Schedule**: every crew game left this season as month calendars, crew faceoffs in red. Follow one pick or show only the faceoffs. In the nav, and linked from **Full schedule** under On Deck.
 - **Divisions**: all four divisions drawn as rinks, with your teams highlighted and the playoff cut line marked.
 - **Faceoffs**: every game where two crew picks play each other, plus each team's recent results and next games.
 - **Players**: who's carrying each crew team. The crew's "three stars" over the last five games, each team's top scorers with their recent form, its goalies, and its injury report with key players flagged.
@@ -17,7 +18,7 @@ Next.js 16 (App Router, Server Components, Server Actions, Cache Components), Re
 
 ```
 src/
-  app/              routes: / · /divisions · /faceoffs · /players · /crew · /api/health
+  app/              routes: / · /schedule · /divisions · /faceoffs · /players · /crew · /api/health
   components/       hockey UI: Jersey, StickBar, Puck, rink/…, GameCard
   lib/nhl/          API client, zod schemas, normalization, team colors
   lib/espn/         injury report (the one feed that isn't from the NHL)
