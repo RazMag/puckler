@@ -19,6 +19,7 @@ import {
   openingNight,
   rewindStats,
   shieldFor,
+  spoilersOffAt,
   spoilersOn,
   standingsThrough,
 } from "./shield";
@@ -58,21 +59,21 @@ describe("shieldFor", () => {
   it("starts at yesterday's slate with spoilers off", () => {
     const shield = shieldFor(NOW, undefined);
     expect(shield).toEqual({ since: "2026-10-12", caughtUpAt: null });
-    expect(spoilersOn(shield)).toBe(false);
+    expect(spoilersOn(shield, [])).toBe(false);
   });
 
   it("keeps a catch-up from last night or today", () => {
-    expect(spoilersOn(shieldFor(NOW, "2026-10-13T15:00:00.000Z"))).toBe(true);
-    expect(spoilersOn(shieldFor(NOW, "2026-10-12T20:00:00.000Z"))).toBe(true);
+    expect(spoilersOn(shieldFor(NOW, "2026-10-13T15:00:00.000Z"), [])).toBe(true);
+    expect(spoilersOn(shieldFor(NOW, "2026-10-12T20:00:00.000Z"), [])).toBe(true);
   });
 
   it("lets a catch-up from before last night's slate lapse", () => {
-    expect(spoilersOn(shieldFor(NOW, "2026-10-11T20:00:00.000Z"))).toBe(false);
+    expect(spoilersOn(shieldFor(NOW, "2026-10-11T20:00:00.000Z"), [])).toBe(false);
   });
 
   it("ignores junk and future timestamps", () => {
-    expect(spoilersOn(shieldFor(NOW, "nonsense"))).toBe(false);
-    expect(spoilersOn(shieldFor(NOW, "2026-10-14T00:00:00.000Z"))).toBe(false);
+    expect(spoilersOn(shieldFor(NOW, "nonsense"), [])).toBe(false);
+    expect(spoilersOn(shieldFor(NOW, "2026-10-14T00:00:00.000Z"), [])).toBe(false);
   });
 });
 
@@ -135,6 +136,35 @@ describe("standingsThrough", () => {
 
   it("ignores preseason games, which don't count in the standings", () => {
     expect(standingsThrough(league([{ gameType: 1 }]), shieldFor(NOW, null))).toBeNull();
+  });
+});
+
+describe("the spoiler switch", () => {
+  const league = (games: Partial<LeagueGame>[]): LeagueGame[] => games.map((g, i) => ({ ...game({ id: i }), ...g }));
+  const caughtUp = shieldFor(NOW, "2026-10-13T15:00:00.000Z");
+  const tonight = { gameDate: "2026-10-13", startTimeUTC: "2026-10-13T23:00:00Z", phase: "upcoming" as const };
+
+  it("stays on while everything that started is caught up", () => {
+    expect(spoilersOn(caughtUp, league([{}, tonight]))).toBe(true);
+  });
+
+  it("flips back off once a game starts after the catch-up", () => {
+    expect(spoilersOn(caughtUp, league([{}, { ...tonight, phase: "live" }]))).toBe(false);
+  });
+
+  it("is due off at the next puck drop", () => {
+    const games = league([{}, tonight, { ...tonight, startTimeUTC: "2026-10-14T01:30:00Z" }]);
+    expect(spoilersOffAt(caughtUp, games, NOW)).toBe("2026-10-13T23:00:00.000Z");
+  });
+
+  it("looks again in a minute at a game past its start time that hasn't begun", () => {
+    const late = league([{ ...tonight, startTimeUTC: "2026-10-13T15:30:00Z" }]);
+    expect(spoilersOffAt(caughtUp, late, NOW)).toBe("2026-10-13T16:01:00.000Z");
+  });
+
+  it("has nothing due while spoilers are off or no game is coming", () => {
+    expect(spoilersOffAt(shieldFor(NOW, null), league([tonight]), NOW)).toBeNull();
+    expect(spoilersOffAt(caughtUp, league([{}]), NOW)).toBeNull();
   });
 });
 

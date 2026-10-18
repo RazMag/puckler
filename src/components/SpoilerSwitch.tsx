@@ -1,17 +1,49 @@
 "use client";
 
-import { useOptimistic, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useOptimistic, useTransition } from "react";
 import { setSpoilers } from "@/lib/spoilers/actions";
 
 const HELP = {
-  on: "Spoilers on: everything that started before you flipped this shows. Later games stay taped over until you flip it again.",
-  off: "Spoilers off: last night's games and anything since are taped over. Flip this on once you're caught up.",
+  on: "Spoilers on: everything that started before you flipped this shows. It flips back off when the next game starts.",
+  off: "Spoilers off: games you haven't caught up on are taped over. Flip this on once you're caught up.",
 };
 
-/** The header switch: off keeps last night's results taped over, on means "I'm caught up". */
-export function SpoilerSwitch({ on, disabled = false }: { on: boolean; disabled?: boolean }) {
+/** setTimeout's longest delay; anything further out waits for the tab to come back instead. */
+const MAX_DELAY = 2 ** 31 - 1;
+
+/**
+ * The header switch: off keeps last night's results taped over, on means "I'm caught up".
+ * The layout it sits in isn't refetched on navigation, so once `offAt` passes it
+ * refreshes itself rather than reading on above newly taped-over games.
+ */
+export function SpoilerSwitch({
+  on,
+  offAt = null,
+  disabled = false,
+}: {
+  on: boolean;
+  offAt?: string | null;
+  disabled?: boolean;
+}) {
   const [shown, setShown] = useOptimistic(on);
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (offAt === null) return;
+    const due = Date.parse(offAt);
+    const check = () => {
+      if (Date.now() >= due) router.refresh();
+    };
+    // Timers stall in a background tab or a sleeping phone, so check again on the way back too.
+    const timer = setTimeout(check, Math.min(Math.max(due - Date.now(), 0), MAX_DELAY));
+    document.addEventListener("visibilitychange", check);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("visibilitychange", check);
+    };
+  }, [offAt, router]);
 
   const toggle = () =>
     startTransition(async () => {
