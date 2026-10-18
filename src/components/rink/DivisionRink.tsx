@@ -1,5 +1,5 @@
 import type { CrewMember } from "@/lib/crew/types";
-import { initials } from "@/lib/domain/crew-standings";
+import { shorthand } from "@/lib/domain/crew-standings";
 import type { DivisionTable } from "@/lib/domain/division";
 import { teamMeta } from "@/lib/nhl/teams";
 import { TeamLogo } from "../TeamLogo";
@@ -76,7 +76,7 @@ export function DivisionRink({
               </TeamTooltip>
               {owner && (
                 <span className="absolute top-1/2 left-full ml-1 -translate-y-1/2 -skew-x-12 bg-boards px-1 font-display text-[clamp(8px,2.2cqw,12px)] leading-tight text-white">
-                  {initials(owner.name)}
+                  {shorthand(owner)}
                 </span>
               )}
             </li>

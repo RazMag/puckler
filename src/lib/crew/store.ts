@@ -45,19 +45,21 @@ function assertTeamFree(members: CrewMember[], team: string, exceptId?: string) 
   if (owner) throw new CrewConflictError(`${owner.name} already drafted ${team}.`);
 }
 
-export function addMember(name: string, team: string): Promise<CrewMember> {
+export type MemberFields = Omit<CrewMember, "id">;
+
+export function addMember(fields: MemberFields): Promise<CrewMember> {
   return mutate((members) => {
-    assertTeamFree(members, team);
-    const member = { id: randomUUID(), name, team };
+    assertTeamFree(members, fields.team);
+    const member = { id: randomUUID(), ...fields };
     return { members: [...members, member], result: member };
   });
 }
 
-export function updateMember(id: string, name: string, team: string): Promise<void> {
+export function updateMember(id: string, fields: MemberFields): Promise<void> {
   return mutate((members) => {
     if (!members.some((m) => m.id === id)) throw new CrewConflictError("That player left the bench.");
-    assertTeamFree(members, team, id);
-    return { members: members.map((m) => (m.id === id ? { ...m, name, team } : m)), result: undefined };
+    assertTeamFree(members, fields.team, id);
+    return { members: members.map((m) => (m.id === id ? { id, ...fields } : m)), result: undefined };
   });
 }
 

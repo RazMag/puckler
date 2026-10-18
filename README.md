@@ -7,7 +7,7 @@ A hockey-loud scoreboard for a crew of friends who each picked an NHL team. It s
 - **Divisions**: all four divisions drawn as rinks, with your teams highlighted and the playoff cut line marked.
 - **Faceoffs**: every game where two crew picks play each other, plus each team's recent results and next games.
 - **Players**: who's carrying each crew team. The crew's "three stars" over the last five games, each team's top scorers with their recent form, its goalies, and its injury report with key players flagged.
-- **Draft Room**: add, rename or remove crew members and their teams. Editing needs the crew password.
+- **Draft Room**: add, rename or remove crew members and their teams, and give each a shorthand of up to 3 letters for the spots where a full name won't fit (initials when left blank). Editing needs the crew password.
 - **Spoiler shield**: for watching on delay. By default, scores from last night's games onward (NHL Eastern time) are taped over, and standings and player stats rewind to before them. The **Spoilers** switch in the header means "I'm caught up": it reveals everything that has started so far, while games that start later stay hidden until you flip it again. The setting is per browser.
 
 Data comes from the public NHL web API (`api-web.nhle.com`). The server fetches it and caches it for about a minute, so no API key is needed. The NHL API has no injury data, so the injury report comes from ESPN's public site API, refreshed every 15 minutes. If ESPN is unreachable, the Players page still loads and says the injury report is unavailable.

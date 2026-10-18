@@ -4,7 +4,8 @@ import { useActionState } from "react";
 import { Jersey } from "@/components/Jersey";
 import { TeamLogo } from "@/components/TeamLogo";
 import { addMemberAction, removeMemberAction, updateMemberAction, type CrewFormState } from "@/lib/crew/actions";
-import { MAX_NAME_LENGTH, type CrewMember } from "@/lib/crew/types";
+import { MAX_NAME_LENGTH, MAX_SHORTHAND_LENGTH, type CrewMember } from "@/lib/crew/types";
+import { initials } from "@/lib/domain/crew-standings";
 import { ALL_TEAMS } from "@/lib/nhl/teams";
 
 const initial: CrewFormState = { error: null, ok: false };
@@ -40,16 +41,25 @@ function AddMember({ owners }: { owners: ReadonlyMap<string, CrewMember> }) {
   return (
     <form action={action} className="rounded-sm bg-white/80 p-5 shadow-md ring-1 ring-black/5">
       <h2 className="font-display text-2xl">Draft a team</h2>
-      <label className="mt-4 block max-w-sm">
-        <span className="text-xs font-extrabold tracking-[0.2em] text-ink-soft uppercase">Name on the jersey</span>
-        <input
-          name="name"
-          required
-          maxLength={MAX_NAME_LENGTH}
-          placeholder="e.g. Raz"
-          className={`mt-1 ${inputClass}`}
-        />
-      </label>
+      <div className="mt-4 flex max-w-md flex-wrap gap-4">
+        <label className="block min-w-48 flex-1">
+          <span className="text-xs font-extrabold tracking-[0.2em] text-ink-soft uppercase">Name on the jersey</span>
+          <input
+            name="name"
+            required
+            maxLength={MAX_NAME_LENGTH}
+            placeholder="e.g. Raz"
+            className={`mt-1 ${inputClass}`}
+          />
+        </label>
+        <label className="block w-28">
+          <span className="text-xs font-extrabold tracking-[0.2em] text-ink-soft uppercase">Shorthand</span>
+          <ShorthandInput placeholder="Initials" className="mt-1" />
+        </label>
+      </div>
+      <p className="mt-1 text-xs font-semibold text-ink-soft">
+        Shorthand shows where a full name won&apos;t fit. Leave it blank to use initials.
+      </p>
 
       <fieldset className="mt-5">
         <legend className="text-xs font-extrabold tracking-[0.2em] text-ink-soft uppercase">Pick a team</legend>
@@ -99,6 +109,28 @@ function AddMember({ owners }: { owners: ReadonlyMap<string, CrewMember> }) {
   );
 }
 
+function ShorthandInput({
+  className = "",
+  ...props
+}: {
+  defaultValue?: string;
+  placeholder: string;
+  "aria-label"?: string;
+  className?: string;
+}) {
+  return (
+    <input
+      name="short"
+      maxLength={MAX_SHORTHAND_LENGTH}
+      pattern="[\p{L}\p{N}]*"
+      title="Letters and numbers only"
+      autoComplete="off"
+      className={`uppercase placeholder:normal-case ${inputClass} ${className}`}
+      {...props}
+    />
+  );
+}
+
 function MemberCard({
   member,
   number,
@@ -125,6 +157,11 @@ function MemberCard({
             defaultValue={member.name}
             aria-label="Name"
             className={inputClass}
+          />
+          <ShorthandInput
+            defaultValue={member.short}
+            placeholder={`Shorthand: ${initials(member.name)}`}
+            aria-label="Shorthand"
           />
           <select name="team" defaultValue={member.team} aria-label="Team" className={inputClass}>
             {TEAMS_BY_NAME.map((team) => {

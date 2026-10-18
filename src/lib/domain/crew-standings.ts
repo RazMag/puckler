@@ -48,3 +48,8 @@ export function initials(name: string): string {
   const letters = parts.length > 1 ? parts[0]!.charAt(0) + parts.at(-1)!.charAt(0) : name.trim().slice(0, 2);
   return letters.toUpperCase();
 }
+
+/** What a member goes by where a full name won't fit: the shorthand they set, or their initials. */
+export function shorthand(member: Pick<CrewMember, "name" | "short">): string {
+  return member.short || initials(member.name);
+}
