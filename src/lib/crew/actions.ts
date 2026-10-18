@@ -4,11 +4,11 @@ import { refresh } from "next/cache";
 import { z } from "zod";
 import { NotEditorError, requireEditor } from "@/lib/auth/session";
 import * as store from "./store";
-import { memberNameSchema, teamAbbrevSchema } from "./types";
+import { memberNameSchema, shorthandSchema, teamAbbrevSchema } from "./types";
 
 export type CrewFormState = { error: string | null; ok: boolean };
 
-const memberForm = z.object({ name: memberNameSchema, team: teamAbbrevSchema });
+const memberForm = z.object({ name: memberNameSchema, team: teamAbbrevSchema, short: shorthandSchema });
 
 function failure(err: unknown): CrewFormState {
   if (err instanceof NotEditorError || err instanceof store.CrewConflictError) {
@@ -18,7 +18,11 @@ function failure(err: unknown): CrewFormState {
 }
 
 function parseMember(formData: FormData) {
-  return memberForm.safeParse({ name: formData.get("name"), team: formData.get("team") });
+  return memberForm.safeParse({
+    name: formData.get("name"),
+    team: formData.get("team"),
+    short: formData.get("short") ?? "",
+  });
 }
 
 export async function addMemberAction(_prev: CrewFormState, formData: FormData): Promise<CrewFormState> {
@@ -26,7 +30,7 @@ export async function addMemberAction(_prev: CrewFormState, formData: FormData):
     await requireEditor();
     const parsed = parseMember(formData);
     if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Invalid entry.", ok: false };
-    await store.addMember(parsed.data.name, parsed.data.team);
+    await store.addMember(parsed.data);
   } catch (err) {
     return failure(err);
   }
@@ -41,7 +45,7 @@ export async function updateMemberAction(_prev: CrewFormState, formData: FormDat
     const parsed = parseMember(formData);
     if (typeof id !== "string") return { error: "Missing player.", ok: false };
     if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Invalid entry.", ok: false };
-    await store.updateMember(id, parsed.data.name, parsed.data.team);
+    await store.updateMember(id, parsed.data);
   } catch (err) {
     return failure(err);
   }

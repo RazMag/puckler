@@ -7,7 +7,7 @@ import { clubScheduleResponseSchema, standingsResponseSchema } from "@/lib/nhl/s
 import type { CrewMember } from "@/lib/crew/types";
 import type { Game } from "@/lib/nhl/types";
 import { SEASON_GAMES } from "@/lib/nhl/league";
-import { initials, rankCrew } from "./crew-standings";
+import { initials, rankCrew, shorthand } from "./crew-standings";
 import { conferenceTables, playoffStatus } from "./division";
 import { benchReports, onDeck, resultFor, rivalries, seriesText } from "./faceoffs";
 import { compactHighlights, highlightsFor } from "@/lib/nhl/highlights";
@@ -61,6 +61,13 @@ describe("initials", () => {
   it("uses first and last name, or first two letters", () => {
     expect(initials("Dana Cohen")).toBe("DC");
     expect(initials("raz")).toBe("RA");
+  });
+});
+
+describe("shorthand", () => {
+  it("prefers the member's own shorthand over initials", () => {
+    expect(shorthand({ name: "Doron", short: "DOR" })).toBe("DOR");
+    expect(shorthand({ name: "Doron" })).toBe("DO");
   });
 });
 

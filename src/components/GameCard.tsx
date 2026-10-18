@@ -1,5 +1,5 @@
 import type { CrewMember } from "@/lib/crew/types";
-import { initials } from "@/lib/domain/crew-standings";
+import { shorthand } from "@/lib/domain/crew-standings";
 import { resultFor } from "@/lib/domain/faceoffs";
 import { highlightsFor } from "@/lib/nhl/highlights";
 import type { Game, GameSide } from "@/lib/nhl/types";
@@ -69,7 +69,7 @@ export function GameCard({
         </span>
         {owner && (
           <span className="-skew-x-12 bg-red-line px-1 font-display text-[10px] leading-tight text-white">
-            {initials(owner.name)}
+            {shorthand(owner)}
           </span>
         )}
         {showScores && (

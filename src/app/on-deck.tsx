@@ -8,7 +8,7 @@ import { TeamTooltip } from "@/components/TeamTooltip";
 import { Term } from "@/components/Term";
 import type { CrewMember } from "@/lib/crew/types";
 import { loadUpcoming } from "@/lib/data";
-import { initials } from "@/lib/domain/crew-standings";
+import { shorthand } from "@/lib/domain/crew-standings";
 import { onDeck, seriesText, type Deck, type DeckGame } from "@/lib/domain/faceoffs";
 import { inkOn, teamMeta } from "@/lib/nhl/teams";
 import type { Game, GameSide } from "@/lib/nhl/types";
@@ -108,8 +108,8 @@ function DeckBoard({
         <p className="led py-6 text-center text-2xl">{empty}</p>
       ) : (
         <div className="grid xl:grid-cols-[1fr_8rem_1fr]">
-          <BoardHeader className="xl:col-start-1 xl:row-start-1" />
-          {split && <BoardHeader hidden className="hidden xl:col-start-3 xl:row-start-1 xl:grid" />}
+          <BoardHeader side={split ? "left" : undefined} className="xl:col-start-1 xl:row-start-1" />
+          {split && <BoardHeader hidden side="right" className="hidden xl:col-start-3 xl:row-start-1 xl:grid" />}
           <ol className="xl:col-start-1 xl:row-start-2">
             {left.map((entry, i) => (
               <DeckRow key={entry.game.id} entry={entry} after={left[i - 1]?.game} side={split ? "left" : undefined} />
@@ -131,7 +131,7 @@ function DeckBoard({
       )}
       {nextFaceoff && (
         <>
-          <p className="led border-t-2 border-led/30 pt-1.5 text-center text-lg leading-none tracking-[0.3em] uppercase">
+          <p className="led -mx-3 border-t-2 border-led/30 px-3 pt-1.5 text-center text-lg leading-none tracking-[0.3em] uppercase sm:-mx-5 sm:px-5">
             ▼ Next crew faceoff ▼
           </p>
           <ol>
@@ -144,11 +144,20 @@ function DeckBoard({
   );
 }
 
-function BoardHeader({ className = "", hidden = false }: { className?: string; hidden?: boolean }) {
+/** Column labels over the rows, its rule running as far as the row lines below it. */
+function BoardHeader({
+  side,
+  className = "",
+  hidden = false,
+}: {
+  side?: "left" | "right";
+  className?: string;
+  hidden?: boolean;
+}) {
   return (
     <div
       aria-hidden={hidden || undefined}
-      className={`grid grid-cols-[5.5rem_1fr] gap-3 border-b-2 border-led/30 pb-1 text-[11px] font-bold tracking-[0.2em] text-white/45 uppercase sm:grid-cols-[9rem_1fr] ${className}`}
+      className={`-mx-3 grid grid-cols-[5.5rem_1fr] gap-3 border-b-2 border-led/30 px-3 pb-1 text-[11px] font-bold tracking-[0.2em] text-white/45 uppercase sm:-mx-5 sm:grid-cols-[9rem_1fr] sm:px-5 ${SIDE_INSET[side ?? "none"]} ${className}`}
     >
       <span>Puck drop</span>
       <span>Matchup</span>
@@ -229,15 +238,17 @@ function Route({ rows, endRows }: { rows: number; endRows: number }) {
   );
 }
 
+// Side by side, rows and headers stop at the gutter so the route stays clear.
+const SIDE_INSET = { left: "xl:mr-0 xl:pr-3", right: "xl:ml-0 xl:pl-4", none: "" } as const;
+
 /** `after` is the game listed before this one, so a day's date only shows on its first game. */
 function DeckRow({ entry, after, side }: { entry: DeckGame; after?: Game; side?: "left" | "right" }) {
   const { game, away, home, faceoff, series } = entry;
+  // A live score beside a single pick should stay on the matchup's line.
+  const tight = game.phase === "live" && !faceoff;
   return (
     <li
-      className={`relative -mx-3 grid grid-cols-[5.5rem_1fr] items-center gap-x-3 border-b border-white/10 px-3 py-1.5 last:border-b-0 sm:-mx-5 sm:grid-cols-[9rem_1fr] sm:px-5 ${
-        // Side by side, rows stop at the gutter so the route stays clear.
-        side === "left" ? "xl:mr-0 xl:pr-3" : side === "right" ? "xl:ml-0 xl:pl-4" : ""
-      } ${
+      className={`relative -mx-3 grid grid-cols-[5.5rem_1fr] items-center gap-x-3 border-b border-white/10 px-3 py-1.5 last:border-b-0 sm:-mx-5 sm:grid-cols-[9rem_1fr] sm:px-5 ${SIDE_INSET[side ?? "none"]} ${
         faceoff
           ? "bg-[linear-gradient(90deg,rgb(212_23_42/0.45),rgb(212_23_42/0.12)_55%,transparent)] shadow-[inset_6px_0_0_0_var(--color-red-line),inset_0_1px_0_0_rgb(212_23_42/0.8),inset_0_-1px_0_0_rgb(212_23_42/0.8)]"
           : ""
@@ -245,14 +256,16 @@ function DeckRow({ entry, after, side }: { entry: DeckGame; after?: Game; side?:
     >
       <When game={game} after={after} />
 
-      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 sm:gap-x-3">
-        <Plate side={game.away} owners={away} />
+      <div
+        className={`@container flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 sm:gap-x-3 ${tight ? "sm:flex-nowrap" : ""}`}
+      >
+        <Plate side={game.away} owners={away} tight={tight} />
         {faceoff ? (
           <FaceoffDot className="-my-1 size-7 shrink-0 drop-shadow-[0_0_8px_rgb(212_23_42/0.8)] sm:size-8" />
         ) : (
           <span className="font-display text-xs text-white/35 sm:text-base">@</span>
         )}
-        <Plate side={game.home} owners={home} />
+        <Plate side={game.home} owners={home} tight={tight} />
         {(faceoff || game.phase === "live") && (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 sm:ml-auto">
             {game.phase === "live" && <LiveScore game={game} />}
@@ -304,8 +317,11 @@ function When({ game, after }: { game: Game; after?: Game }) {
   );
 }
 
-/** One side of the matchup: logo, abbreviation and a name bar in team colors for each crew pick. */
-function Plate({ side, owners }: { side: GameSide; owners: readonly CrewMember[] }) {
+/**
+ * One side of the matchup: logo, abbreviation and a name bar in team colors for each crew pick.
+ * `tight` rows switch to shorthand by the matchup's width rather than the screen's.
+ */
+function Plate({ side, owners, tight }: { side: GameSide; owners: readonly CrewMember[]; tight: boolean }) {
   const crew = owners.length > 0;
   const { primary } = teamMeta(side.abbrev);
   return (
@@ -325,12 +341,12 @@ function Plate({ side, owners }: { side: GameSide; owners: readonly CrewMember[]
       {owners.map((member) => (
         <span
           key={member.id}
-          className="inline-block max-w-28 shrink-0 -skew-x-12 truncate px-1.5 font-display text-[11px] leading-5 shadow-[2px_2px_0_0_#000]"
+          className="inline-block max-w-28 min-w-0 -skew-x-12 truncate px-1.5 font-display text-[11px] leading-5 shadow-[2px_2px_0_0_#000]"
           style={{ backgroundColor: primary, color: inkOn(primary) }}
         >
-          {/* Initials on a phone, so both teams fit on one line. */}
-          <span className="sm:hidden">{initials(member.name)}</span>
-          <span className="hidden sm:inline">{member.name}</span>
+          {/* Shorthand on a phone, so both teams fit on one line. */}
+          <span className={tight ? "@sm:hidden" : "sm:hidden"}>{shorthand(member)}</span>
+          <span className={tight ? "hidden @sm:inline" : "hidden sm:inline"}>{member.name}</span>
         </span>
       ))}
     </div>
