@@ -42,9 +42,29 @@ export function shieldFor(now: Date, caughtUpAt: string | null | undefined): Shi
   return { since, caughtUpAt: valid ? at.toISOString() : null };
 }
 
-/** Spoilers are on: the viewer caught up recently enough for it to still count. */
-export function spoilersOn(shield: Shield): boolean {
-  return shield.caughtUpAt !== null;
+/**
+ * Spoilers are on: the viewer caught up recently enough for it to still count,
+ * and no game in `league` has started since. A game that starts after the flip
+ * turns the switch back off, so it never reads on above taped-over results.
+ */
+export function spoilersOn(shield: Shield, league: readonly LeagueGame[]): boolean {
+  return shield.caughtUpAt !== null && !league.some((game) => isHidden(game, shield));
+}
+
+/** How soon to look again at a game that is past its start time but not under way yet. */
+const RECHECK_MS = 60 * 1000;
+
+/**
+ * When the switch is next due to flip off on its own (ISO): the next puck drop
+ * the viewer hasn't caught up on. Null while spoilers are off or nothing is coming.
+ */
+export function spoilersOffAt(shield: Shield, league: readonly LeagueGame[], now: Date): string | null {
+  if (!spoilersOn(shield, league)) return null;
+  const caughtUpAt = Date.parse(shield.caughtUpAt!);
+  const due = league
+    .filter((g) => g.phase === "upcoming" && g.gameDate >= shield.since && Date.parse(g.startTimeUTC) >= caughtUpAt)
+    .map((g) => Math.max(Date.parse(g.startTimeUTC), now.getTime() + RECHECK_MS));
+  return due.length === 0 ? null : new Date(Math.min(...due)).toISOString();
 }
 
 /** A game whose score the viewer shouldn't see yet: under way or over, from last night on, and newer than their catch-up. */
