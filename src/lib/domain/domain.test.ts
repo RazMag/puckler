@@ -9,7 +9,7 @@ import type { Game } from "@/lib/nhl/types";
 import { SEASON_GAMES } from "@/lib/nhl/league";
 import { initials, rankCrew, shorthand } from "./crew-standings";
 import { conferenceTables, playoffStatus } from "./division";
-import { benchReports, onDeck, resultFor, rivalries, seriesText } from "./faceoffs";
+import { benchReports, onDeck, played, recordIn, resultFor, rivalries, seriesText } from "./faceoffs";
 import { compactHighlights, highlightsFor } from "@/lib/nhl/highlights";
 
 const { teams } = normalizeStandings(standingsResponseSchema.parse(standingsJson));
@@ -195,6 +195,63 @@ describe("on deck", () => {
     expect(seriesText({ ...rivalry, games: pending, winsA: 0, winsB: 0 })).toBe(
       `${pending.length} meetings this season`,
     );
+  });
+});
+
+describe("played", () => {
+  const final = (game: Game, away: number, home: number, periodType = "REG"): Game => ({
+    ...game,
+    phase: "final",
+    away: { ...game.away, score: away },
+    home: { ...game.home, score: home },
+    periodType,
+  });
+
+  it("lists each finished crew game once, oldest first, preseason only before opening night", () => {
+    const games = played(crew, schedules);
+    expect(games.length).toBeGreaterThan(0);
+    expect(games.every((d) => d.game.phase === "final")).toBe(true);
+    const ids = games.map((d) => d.game.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    const times = games.map((d) => d.game.startTimeUTC);
+    expect(times).toEqual([...times].sort());
+
+    expect(games.every((d) => d.game.gameType === 2)).toBe(true);
+
+    const notYet = (games: readonly Game[]) =>
+      games.map((g) => (g.gameType === 2 ? { ...g, phase: "upcoming" as const } : g));
+    const preseason = played(crew, new Map([...schedules].map(([team, games]) => [team, notYet(games)])));
+    expect(preseason.length).toBeGreaterThan(0);
+    expect(preseason.every((d) => d.game.gameType === 1)).toBe(true);
+  });
+
+  it("marks finished crew faceoffs", () => {
+    const meeting = rivalries(crew, schedules)[0]!.games[0]!;
+    const finished = final(meeting, 2, 3);
+    const swap = (games: readonly Game[]) => games.map((g) => (g.id === meeting.id ? finished : g));
+    const games = played(crew, new Map([...schedules].map(([team, games]) => [team, swap(games)])));
+    expect(games.find((d) => d.game.id === meeting.id)?.faceoff).toBe(true);
+  });
+
+  it("tallies a record and counts taped finals without scoring them", () => {
+    const [a, b, c, d] = schedules.get("TOR")!.filter((g) => g.gameType === 2);
+    const side = (g: Game) => (g.home.abbrev === "TOR" ? "home" : "away");
+    const win = (g: Game) => (side(g) === "home" ? final(g, 1, 3) : final(g, 3, 1));
+    const otLoss = (g: Game) => (side(g) === "home" ? final(g, 3, 2, "OT") : final(g, 2, 3, "OT"));
+    const loss = (g: Game) => (side(g) === "home" ? final(g, 5, 0) : final(g, 0, 5));
+    const taped: Game = {
+      ...final(d!, 0, 0),
+      hidden: true,
+      away: { ...d!.away, score: null },
+      home: { ...d!.home, score: null },
+    };
+    expect(recordIn([win(a!), otLoss(b!), loss(c!), taped], "TOR")).toEqual({
+      wins: 1,
+      losses: 1,
+      otLosses: 1,
+      taped: 1,
+    });
+    expect(recordIn([win(a!)], "BOS")).toEqual({ wins: 0, losses: 0, otLosses: 0, taped: 0 });
   });
 });
 
