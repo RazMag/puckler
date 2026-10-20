@@ -51,12 +51,20 @@ export async function OnDeck({ crew, range }: { crew: readonly CrewMember[]; ran
               : `${shown} crew game${shown === 1 ? "" : "s"} in the next ${range.days} days`}{" "}
             · times in your time zone
           </span>
-          <Link
-            href="/schedule"
-            className="-skew-x-12 bg-red-line px-2.5 py-1 font-display text-xs tracking-wider text-white normal-case shadow-[3px_3px_0_0_#000] hover:brightness-110"
-          >
-            <span className="inline-block skew-x-12">Full schedule →</span>
-          </Link>
+          <span className="flex items-center gap-2">
+            <Link
+              href="/schedule?when=played"
+              className="-skew-x-12 px-2.5 py-1 font-display text-xs tracking-wider text-white/80 normal-case ring-1 ring-white/30 hover:text-white hover:ring-white"
+            >
+              <span className="inline-block skew-x-12">← Results</span>
+            </Link>
+            <Link
+              href="/schedule"
+              className="-skew-x-12 bg-red-line px-2.5 py-1 font-display text-xs tracking-wider text-white normal-case shadow-[3px_3px_0_0_#000] hover:brightness-110"
+            >
+              <span className="inline-block skew-x-12">Full schedule →</span>
+            </Link>
+          </span>
         </div>
       )}
     </DeckBoard>

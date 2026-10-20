@@ -130,6 +130,34 @@ export type Deck = {
 };
 
 /**
+ * Every crew game that passes `keep`, each listed once however many picks play in it, in start order.
+ * Preseason only counts while there's nothing bigger in the pool.
+ */
+function crewGames(
+  crew: readonly CrewMember[],
+  schedules: ReadonlyMap<string, readonly Game[]>,
+  keep: (game: Game) => boolean,
+): DeckGame[] {
+  const games = new Map<number, Game>();
+  for (const team of new Set(crew.map((m) => m.team))) {
+    for (const game of schedules.get(team) ?? []) {
+      if (keep(game)) games.set(game.id, game);
+    }
+  }
+  const all = [...games.values()];
+  const pool = all.some((g) => g.gameType !== PRESEASON) ? all.filter((g) => g.gameType !== PRESEASON) : all;
+  const meetings = new Map(rivalries(crew, schedules).flatMap((r) => r.games.map((g) => [g.id, r] as const)));
+
+  return pool
+    .sort((x, y) => x.startTimeUTC.localeCompare(y.startTimeUTC))
+    .map((game): DeckGame => {
+      const away = crew.filter((m) => m.team === game.away.abbrev);
+      const home = crew.filter((m) => m.team === game.home.abbrev);
+      return { game, away, home, faceoff: away.length > 0 && home.length > 0, series: meetings.get(game.id) ?? null };
+    });
+}
+
+/**
  * The crew's upcoming games in order, each listed once however many picks play in it:
  * the next `count`, or with `until`, every game that starts before then.
  */
@@ -138,28 +166,9 @@ export function onDeck(
   schedules: ReadonlyMap<string, readonly Game[]>,
   { count = 12, until }: { count?: number; until?: Date } = {},
 ): Deck {
-  const games = new Map<number, Game>();
-  for (const team of new Set(crew.map((m) => m.team))) {
-    for (const game of schedules.get(team) ?? []) {
-      if (game.phase !== "final") games.set(game.id, game);
-    }
-  }
-  const pending = [...games.values()];
-  // Preseason only counts while there's nothing bigger left to play.
-  const pool = pending.some((g) => g.gameType !== PRESEASON)
-    ? pending.filter((g) => g.gameType !== PRESEASON)
-    : pending;
-  const meetings = new Map(rivalries(crew, schedules).flatMap((r) => r.games.map((g) => [g.id, r] as const)));
-
-  const deck = pool
-    .sort(
-      (x, y) => Number(y.phase === "live") - Number(x.phase === "live") || x.startTimeUTC.localeCompare(y.startTimeUTC),
-    )
-    .map((game): DeckGame => {
-      const away = crew.filter((m) => m.team === game.away.abbrev);
-      const home = crew.filter((m) => m.team === game.home.abbrev);
-      return { game, away, home, faceoff: away.length > 0 && home.length > 0, series: meetings.get(game.id) ?? null };
-    });
+  const deck = crewGames(crew, schedules, (g) => g.phase !== "final").sort(
+    (x, y) => Number(y.game.phase === "live") - Number(x.game.phase === "live"),
+  );
   const shown = until
     ? deck.filter((d) => d.game.phase === "live" || Date.parse(d.game.startTimeUTC) < until.getTime())
     : deck.slice(0, count);
@@ -168,4 +177,31 @@ export function onDeck(
     nextFaceoff: shown.some((d) => d.faceoff) ? null : (deck.slice(shown.length).find((d) => d.faceoff) ?? null),
     left: deck.length,
   };
+}
+
+/** Every crew game played to a final, oldest first. Before opening night, that's the preseason. */
+export function played(crew: readonly CrewMember[], schedules: ReadonlyMap<string, readonly Game[]>): DeckGame[] {
+  return crewGames(crew, schedules, (g) => g.phase === "final");
+}
+
+export type TeamRecord = {
+  wins: number;
+  losses: number;
+  otLosses: number;
+  /** Finals behind the spoiler shield, left out of the record. */
+  taped: number;
+};
+
+/** `abbrev`'s wins, losses and OT losses in `games`, with taped finals counted but not scored. */
+export function recordIn(games: readonly Game[], abbrev: string): TeamRecord {
+  const record: TeamRecord = { wins: 0, losses: 0, otLosses: 0, taped: 0 };
+  for (const game of games) {
+    if (game.away.abbrev !== abbrev && game.home.abbrev !== abbrev) continue;
+    if (game.phase === "final" && game.hidden) record.taped++;
+    const result = resultFor(game, abbrev);
+    if (result === "W") record.wins++;
+    else if (result === "L") record.losses++;
+    else if (result === "OTL") record.otLosses++;
+  }
+  return record;
 }

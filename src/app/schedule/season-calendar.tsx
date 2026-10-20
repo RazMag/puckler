@@ -2,19 +2,31 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { EmptyCrew } from "@/components/EmptyCrew";
 import { FaceoffDot } from "@/components/FaceoffDot";
+import { SpoilerTape } from "@/components/SpoilerTape";
 import { TeamLogo } from "@/components/TeamLogo";
 import { TeamTooltip } from "@/components/TeamTooltip";
 import type { CrewMember } from "@/lib/crew/types";
 import { loadCalendar } from "@/lib/data";
-import { onDeck, type DeckGame } from "@/lib/domain/faceoffs";
+import { shorthand } from "@/lib/domain/crew-standings";
+import { onDeck, played, recordIn, resultFor, type DeckGame, type Result } from "@/lib/domain/faceoffs";
 import { monthLabel } from "@/lib/format";
+import { highlightsFor } from "@/lib/nhl/highlights";
 import { inkOn, teamMeta } from "@/lib/nhl/teams";
-import type { GameSide } from "@/lib/nhl/types";
+import type { Game, GameSide } from "@/lib/nhl/types";
 import { addDays, easternDate } from "@/lib/spoilers/shield";
 
 type Params = Awaited<PageProps<"/schedule">["searchParams"]>;
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+/** Which part of the season the calendar hangs: what's left, what's been played, or all of it. */
+const VIEWS = [
+  { key: "ahead", label: "Ahead", empty: "NOTHING LEFT ON THE SCHEDULE" },
+  { key: "played", label: "Played", empty: "NO CREW GAMES PLAYED YET" },
+  { key: "season", label: "Whole season", empty: "NO CREW GAMES THIS SEASON" },
+] as const;
+
+type View = (typeof VIEWS)[number]["key"];
 
 const weekday = (day: string) => new Date(`${day}T00:00:00Z`).getUTCDay();
 
@@ -22,27 +34,41 @@ function plays(entry: DeckGame, team: string): boolean {
   return entry.game.away.abbrev === team || entry.game.home.abbrev === team;
 }
 
-/** Every crew game left this season as month calendars, filtered by `?team=` and `?faceoffs=1`. */
+/** The crew's season as month calendars: `?when=` picks the part of it, filtered by `?team=` and `?faceoffs=1`. */
 export async function SeasonCalendar({ searchParams }: { searchParams: PageProps<"/schedule">["searchParams"] }) {
   const [{ crew, schedules, now }, params] = await Promise.all([loadCalendar(), searchParams]);
   if (crew.length === 0) return <EmptyCrew />;
 
+  const view = VIEWS.find((v) => v.key === params.when) ?? VIEWS[0];
   const team = crew.find((m) => m.team === params.team)?.team ?? null;
   const faceoffsOnly = params.faceoffs === "1";
-  const { games } = onDeck(crew, schedules, { count: Infinity });
+  const games = [
+    ...(view.key === "ahead" ? [] : played(crew, schedules)),
+    ...(view.key === "played" ? [] : onDeck(crew, schedules, { count: Infinity }).games),
+  ];
   const shown = games.filter((d) => (!team || plays(d, team)) && (!faceoffsOnly || d.faceoff));
 
   // Days follow the NHL's Eastern-time calendar, the one `gameDate` is filed under.
   const today = easternDate(now);
+  const thisWeek = addDays(today, -weekday(today));
+  // Weeks that are already over drop off the top of what's ahead; weeks still to come drop off what's played.
+  const span = {
+    from: view.key === "ahead" ? thisWeek : null,
+    to: view.key === "played" ? addDays(thisWeek, 6) : null,
+  };
   const byDay = new Map<string, DeckGame[]>();
   for (const entry of shown) byDay.set(entry.game.gameDate, [...(byDay.get(entry.game.gameDate) ?? []), entry]);
   const months = [...new Set(games.map((d) => d.game.gameDate.slice(0, 7)))].map((month) => ({
     month,
     games: shown.filter((d) => d.game.gameDate.startsWith(month)),
   }));
+  // Results read newest first; the schedule reads from the next game on.
+  if (view.key === "played") months.reverse();
+  const finals = shown.filter((d) => d.game.phase === "final");
 
   return (
     <>
+      <ViewSwitch params={params} current={view.key} />
       <Filters crew={crew} params={params} team={team} faceoffsOnly={faceoffsOnly} />
       <nav aria-label="Months" className="mt-4 flex [scrollbar-width:none] gap-1 overflow-x-auto pb-1">
         {months.map(({ month, games }) =>
@@ -61,16 +87,37 @@ export async function SeasonCalendar({ searchParams }: { searchParams: PageProps
           ),
         )}
       </nav>
-      <Legend />
+      <Legend results={view.key !== "ahead"} />
+      {finals.length > 0 && (
+        <section
+          aria-label={faceoffsOnly ? "Crew faceoff records" : "Records so far"}
+          className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2"
+        >
+          <span className="text-xs font-bold tracking-[0.2em] text-ink-soft uppercase">
+            {faceoffsOnly ? "In crew faceoffs" : "So far"}
+          </span>
+          <Records crew={crew} games={finals} team={team} />
+        </section>
+      )}
       {shown.length === 0 ? (
         <section className="jumbotron mt-8 px-5 py-8">
-          <p className="led text-center text-2xl">NOTHING LEFT ON THE SCHEDULE</p>
+          <p className="led text-center text-2xl">{view.empty}</p>
         </section>
       ) : (
         months
           .filter(({ games }) => games.length > 0)
           .map(({ month, games }) => (
-            <MonthGrid key={month} month={month} games={games} byDay={byDay} today={today} follow={team} />
+            <MonthGrid
+              key={month}
+              month={month}
+              games={games}
+              byDay={byDay}
+              today={today}
+              span={span}
+              view={view.key}
+              crew={crew}
+              follow={team}
+            />
           ))
       )}
     </>
@@ -94,6 +141,27 @@ function scheduleHref(params: Params, patch: Params): string {
   }
   const search = query.toString();
   return search ? `/schedule?${search}` : "/schedule";
+}
+
+/** Scoreboard tabs over the filters that pick which part of the season hangs on the wall. */
+function ViewSwitch({ params, current }: { params: Params; current: View }) {
+  return (
+    <nav aria-label="Which games" className="mb-3 flex gap-1">
+      {VIEWS.map((view) => (
+        <Link
+          key={view.key}
+          href={scheduleHref(params, { when: view === VIEWS[0] ? undefined : view.key })}
+          scroll={false}
+          aria-current={view.key === current ? "true" : undefined}
+          className={`-skew-x-12 px-2.5 py-1 font-display text-sm tracking-wider whitespace-nowrap uppercase sm:px-3 sm:text-base ${
+            view.key === current ? "bg-boards text-led shadow-[3px_3px_0_0_var(--color-red-line)]" : "hover:bg-black/10"
+          }`}
+        >
+          <span className="inline-block skew-x-12">{view.label}</span>
+        </Link>
+      ))}
+    </nav>
+  );
 }
 
 function Filters({
@@ -213,7 +281,7 @@ function FaceoffSwitch({ href, on }: { href: string; on: boolean }) {
   );
 }
 
-function Legend() {
+function Legend({ results }: { results: boolean }) {
   return (
     <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold text-ink-soft">
       <span className="flex items-center gap-2">
@@ -222,8 +290,58 @@ function Legend() {
       <span className="flex items-center gap-2">
         <span className="size-4 bg-boards ring-2 ring-led ring-inset" /> Today
       </span>
+      {results && <span>Scores link to highlights on nhl.com.</span>}
       <span>Days follow the NHL&apos;s Eastern-time calendar.</span>
     </div>
+  );
+}
+
+const RESULT_TEXT = { W: "text-goal", L: "text-white/60", OTL: "text-white/60" } as const satisfies Record<
+  Result,
+  string
+>;
+
+/** Each pick's W-L-OT across `games`, or just the followed one's; picks with nothing played are left out. */
+function Records({
+  crew,
+  games,
+  team,
+}: {
+  crew: readonly CrewMember[];
+  games: readonly DeckGame[];
+  team: string | null;
+}) {
+  const teams = team ? [team] : [...new Set(crew.map((m) => m.team))];
+  const records = teams
+    .map((abbrev) => ({
+      abbrev,
+      record: recordIn(
+        games.map((d) => d.game),
+        abbrev,
+      ),
+    }))
+    .filter(({ record }) => record.wins + record.losses + record.otLosses + record.taped > 0);
+  return (
+    <ul className="flex flex-wrap gap-2">
+      {records.map(({ abbrev, record }) => {
+        const owners = crew.filter((m) => m.team === abbrev);
+        return (
+          <li
+            key={abbrev}
+            className="flex items-center gap-1.5 bg-boards py-0.5 pr-2 pl-0.5 text-white shadow-[2px_2px_0_0_var(--color-red-line)]"
+          >
+            <span className="grid size-6 place-items-center rounded-full bg-white">
+              <TeamLogo team={abbrev} size={18} />
+            </span>
+            <span className="font-display text-xs tracking-wider">{owners.map(shorthand).join(" & ")}</span>
+            <span className="led text-lg leading-none" title="Wins, regulation losses and OT/shootout losses">
+              {record.wins}-{record.losses}-{record.otLosses}
+            </span>
+            {record.taped > 0 && <SpoilerTape label={`+${record.taped} taped`} />}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -232,24 +350,37 @@ function MonthGrid({
   games,
   byDay,
   today,
+  span,
+  view,
+  crew,
   follow,
 }: {
   month: string;
   games: DeckGame[];
   byDay: ReadonlyMap<string, DeckGame[]>;
   today: string;
+  /** First and last day the view shows, when it stops short of the whole month. */
+  span: { from: string | null; to: string | null };
+  view: View;
+  crew: readonly CrewMember[];
   follow: string | null;
 }) {
   const first = `${month}-01`;
   const last = addDays(`${addDays(first, 32).slice(0, 7)}-01`, -1);
-  // Weeks that are already over drop off the top.
-  const thisWeek = addDays(today, -weekday(today));
   const start = addDays(first, -weekday(first));
+  const end = addDays(last, 6 - weekday(last));
   const days: string[] = [];
-  for (let day = start < thisWeek ? thisWeek : start; day <= addDays(last, 6 - weekday(last)); day = addDays(day, 1)) {
+  for (
+    let day = span.from && span.from > start ? span.from : start;
+    day <= (span.to && span.to < end ? span.to : end);
+    day = addDays(day, 1)
+  ) {
     days.push(day);
   }
   const faceoffs = games.filter((d) => d.faceoff).length;
+  const finals = games.filter((d) => d.game.phase === "final");
+  // Past days fade on the schedule ahead, days still to come on the results.
+  const faded = (day: string) => (view === "ahead" ? day < today : view === "played" ? day > today : false);
 
   return (
     <section id={`month-${month}`} className="mt-10 scroll-mt-24">
@@ -258,6 +389,11 @@ function MonthGrid({
         <span className="text-sm font-semibold text-ink-soft">
           {games.length} game{games.length === 1 ? "" : "s"} · {faceoffs} crew faceoff{faceoffs === 1 ? "" : "s"}
         </span>
+        {view !== "ahead" && finals.length > 0 && (
+          <div className="w-full">
+            <Records crew={crew} games={finals} team={follow} />
+          </div>
+        )}
       </div>
       <div className="jumbotron px-1.5 pt-5 pb-1.5 sm:px-3 sm:pb-3">
         <div className="grid grid-cols-7 gap-px pb-1 text-center text-[11px] font-bold tracking-[0.2em] text-white/45 uppercase">
@@ -276,6 +412,7 @@ function MonthGrid({
               entries={byDay.get(day) ?? []}
               outside={!day.startsWith(month)}
               today={today}
+              faded={faded(day)}
               follow={follow}
             />
           ))}
@@ -290,12 +427,14 @@ function Day({
   entries,
   outside,
   today,
+  faded,
   follow,
 }: {
   day: string;
   entries: DeckGame[];
   outside: boolean;
   today: string;
+  faded: boolean;
   follow: string | null;
 }) {
   return (
@@ -306,9 +445,7 @@ function Day({
     >
       {!outside && (
         <>
-          <span className={`led block text-lg leading-none ${day < today ? "opacity-40" : ""}`}>
-            {Number(day.slice(8))}
-          </span>
+          <span className={`led block text-lg leading-none ${faded ? "opacity-40" : ""}`}>{Number(day.slice(8))}</span>
           <ul className="mt-1 flex flex-wrap gap-0.5 lg:flex-col lg:gap-px">
             {entries.map((entry) => (
               <CalendarGame key={entry.game.id} entry={entry} follow={follow} />
@@ -320,9 +457,16 @@ function Day({
   );
 }
 
+const EDGE = {
+  W: "lg:border-l-goal",
+  L: "lg:border-l-ink-soft",
+  OTL: "lg:border-l-blue-line",
+} as const satisfies Record<Result, string>;
+
 /**
- * The full matchup from lg up. Below that, just logos: the crew teams playing,
- * or the opponent when following one pick. Every logo shows the team's nameplate on hover.
+ * The full matchup from lg up, with the score between the teams once it's final.
+ * Below that, just logos: the crew teams playing, or the opponent when following one pick,
+ * and once it's final, how it went. Every logo shows the team's nameplate on hover.
  */
 function CalendarGame({ entry, follow }: { entry: DeckGame; follow: string | null }) {
   const { game, away, home, faceoff } = entry;
@@ -333,27 +477,81 @@ function CalendarGame({ entry, follow }: { entry: DeckGame; follow: string | nul
   const logos = follow
     ? sides.filter(({ side }) => side.abbrev !== follow)
     : sides.filter(({ owners }) => owners.length > 0);
+  const final = game.phase === "final";
+  // Whose result the row tells: the followed pick, or the only crew pick playing.
+  const subject = follow ?? (faceoff ? null : (logos[0]?.side.abbrev ?? null));
+  const result = subject ? resultFor(game, subject) : null;
+  // A faceoff on the whole crew's calendar has two picks to answer for, so its loser's logo fades instead.
+  const loser =
+    final && !subject && !game.hidden ? sides.find(({ side }) => resultFor(game, side.abbrev) !== "W") : null;
   return (
     <li
       className={`flex items-center gap-1 rounded-full px-0.5 text-[11px] leading-5 font-bold tracking-wide lg:rounded-none lg:px-1 ${
         faceoff ? "bg-red-line shadow-[2px_2px_0_0_#000]" : "lg:bg-white/5"
-      }`}
+      } ${follow && result ? `lg:border-l-2 ${EDGE[result]}` : ""}`}
     >
-      <span className="flex gap-0.5 lg:hidden">
+      <span className="flex items-center gap-0.5 lg:hidden">
         {logos.map(({ side, owners }) => (
           <TeamTooltip key={side.abbrev} team={side.abbrev} detail={pickOf(owners)} underline={false}>
-            <span className="grid size-4 place-items-center rounded-full bg-white">
+            <span
+              className={`grid size-4 place-items-center rounded-full bg-white ${side === loser?.side ? "opacity-40" : ""}`}
+            >
               <TeamLogo team={side.abbrev} size={13} />
             </span>
           </TeamTooltip>
         ))}
+        {final && game.hidden && (
+          <span role="img" aria-label="Score taped" className="spoiler-tape inline-block h-2.5 w-3 -rotate-6" />
+        )}
+        {result && (
+          <span className={`pr-0.5 text-[9px] leading-none ${RESULT_TEXT[result]}`}>
+            <span className="sr-only">{subject} </span>
+            {result}
+          </span>
+        )}
       </span>
       <span className="hidden min-w-0 items-center gap-1 lg:flex">
         <Side side={game.away} owners={away} />
-        <span className="text-white/40">@</span>
+        {final ? <Score game={game} /> : <span className="text-white/40">@</span>}
         <Side side={game.home} owners={home} />
       </span>
     </li>
+  );
+}
+
+/** "3–2" with the winner's goals lit, linked to the best highlights there are; taped while it could spoil. */
+function Score({ game }: { game: Game }) {
+  if (game.hidden) return <SpoilerTape label="Taped" />;
+  const [away, home] = [game.away.score ?? 0, game.home.score ?? 0];
+  const ending = game.periodType === "OT" || game.periodType === "SO" ? `/${game.periodType}` : "";
+  const best = highlightsFor(game)[0];
+  const digits = (
+    <>
+      <span className={away > home ? "text-led" : "text-white/55"}>{away}</span>
+      <span className="text-white/40">–</span>
+      <span className={home > away ? "text-led" : "text-white/55"}>{home}</span>
+      {ending && <span className="ml-px align-super text-[8px] text-white/55">{game.periodType}</span>}
+    </>
+  );
+  const label = `${game.away.abbrev} ${away}, ${game.home.abbrev} ${home}, final${ending}`;
+  if (!best) {
+    return (
+      <span aria-label={label} className="font-led text-sm leading-none whitespace-nowrap">
+        {digits}
+      </span>
+    );
+  }
+  return (
+    <a
+      href={best.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={`${best.label}: ${best.description} on nhl.com`}
+      aria-label={`${label}. ${best.label} on nhl.com`}
+      className="rounded-sm px-0.5 font-led text-sm leading-none whitespace-nowrap hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-led"
+    >
+      {digits}
+    </a>
   );
 }
 

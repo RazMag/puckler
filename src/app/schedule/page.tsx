@@ -10,8 +10,9 @@ export default function SchedulePage({ searchParams }: PageProps<"/schedule">) {
   return (
     <>
       <Jumbotron kicker="▶ The long haul" title="Season Calendar">
-        Every game the crew&apos;s picks have left this season, a month to a wall, with crew faceoffs in red. Follow one
-        pick or show only the faceoffs.
+        Every game the crew&apos;s picks play this season, a month to a wall, with crew faceoffs in red. See what&apos;s
+        ahead, or what&apos;s been played with the scores and each pick&apos;s record. Follow one pick or show only the
+        faceoffs.
       </Jumbotron>
       <Suspense fallback={<BoardSkeleton label="Hanging the calendar…" />}>
         <SeasonCalendar searchParams={searchParams} />
