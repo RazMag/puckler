@@ -288,6 +288,9 @@ function Legend({ results }: { results: boolean }) {
         <span className="size-4 bg-red-line shadow-[2px_2px_0_0_#000]" /> Crew faceoff
       </span>
       <span className="flex items-center gap-2">
+        <span className="size-4 rounded-full bg-white ring-2 ring-led" /> Crew pick
+      </span>
+      <span className="flex items-center gap-2">
         <span className="size-4 bg-boards ring-2 ring-led ring-inset" /> Today
       </span>
       {results && <span>Scores link to highlights on nhl.com.</span>}
@@ -295,11 +298,6 @@ function Legend({ results }: { results: boolean }) {
     </div>
   );
 }
-
-const RESULT_TEXT = { W: "text-goal", L: "text-white/60", OTL: "text-white/60" } as const satisfies Record<
-  Result,
-  string
->;
 
 /** Each pick's W-L-OT across `games`, or just the followed one's; picks with nothing played are left out. */
 function Records({
@@ -439,14 +437,14 @@ function Day({
 }) {
   return (
     <li
-      className={`min-h-16 min-w-0 p-1 sm:min-h-24 sm:p-1.5 ${outside ? "bg-boards/60" : "bg-boards"} ${
+      className={`min-h-16 min-w-0 p-0.5 sm:min-h-24 sm:p-1.5 ${outside ? "bg-boards/60" : "bg-boards"} ${
         day === today ? "ring-2 ring-led ring-inset" : ""
       }`}
     >
       {!outside && (
         <>
           <span className={`led block text-lg leading-none ${faded ? "opacity-40" : ""}`}>{Number(day.slice(8))}</span>
-          <ul className="mt-1 flex flex-wrap gap-0.5 lg:flex-col lg:gap-px">
+          <ul className="mt-1 flex flex-col gap-0.5 lg:gap-px">
             {entries.map((entry) => (
               <CalendarGame key={entry.game.id} entry={entry} follow={follow} />
             ))}
@@ -458,57 +456,36 @@ function Day({
 }
 
 const EDGE = {
-  W: "lg:border-l-goal",
-  L: "lg:border-l-ink-soft",
-  OTL: "lg:border-l-blue-line",
+  W: "border-l-goal",
+  L: "border-l-ink-soft",
+  OTL: "border-l-blue-line",
 } as const satisfies Record<Result, string>;
 
 /**
- * The full matchup from lg up, with the score between the teams once it's final.
- * Below that, just logos: the crew teams playing, or the opponent when following one pick,
- * and once it's final, how it went. Every logo shows the team's nameplate on hover.
+ * Both teams, away @ home, with the score in place of the @ once it's final. From lg up each side
+ * carries its abbreviation; below that the logos stand alone, and on a phone the score drops under them.
+ * Crew picks are ringed, and every logo shows the team's nameplate on hover.
+ * Following one pick, the edge tells how each of its games went.
  */
 function CalendarGame({ entry, follow }: { entry: DeckGame; follow: string | null }) {
   const { game, away, home, faceoff } = entry;
-  const sides = [
-    { side: game.away, owners: away },
-    { side: game.home, owners: home },
-  ];
-  const logos = follow
-    ? sides.filter(({ side }) => side.abbrev !== follow)
-    : sides.filter(({ owners }) => owners.length > 0);
   const final = game.phase === "final";
-  // Whose result the row tells: the followed pick, or the only crew pick playing.
-  const subject = follow ?? (faceoff ? null : (logos[0]?.side.abbrev ?? null));
-  const result = subject ? resultFor(game, subject) : null;
-  // A faceoff on the whole crew's calendar has two picks to answer for, so its loser's logo fades instead.
-  const loser =
-    final && !subject && !game.hidden ? sides.find(({ side }) => resultFor(game, side.abbrev) !== "W") : null;
+  const result = follow ? resultFor(game, follow) : null;
   return (
     <li
-      className={`flex items-center gap-1 rounded-full px-0.5 text-[11px] leading-5 font-bold tracking-wide lg:rounded-none lg:px-1 ${
-        faceoff ? "bg-red-line shadow-[2px_2px_0_0_#000]" : "lg:bg-white/5"
-      } ${follow && result ? `lg:border-l-2 ${EDGE[result]}` : ""}`}
+      className={`flex min-w-0 items-center text-[11px] leading-5 font-bold tracking-wide sm:px-0.5 lg:px-1 ${
+        faceoff ? "bg-red-line shadow-[2px_2px_0_0_#000]" : "bg-white/5"
+      } ${result ? `border-l-2 ${EDGE[result]}` : ""}`}
     >
-      <span className="flex items-center gap-0.5 lg:hidden">
-        {logos.map(({ side, owners }) => (
-          <TeamTooltip key={side.abbrev} team={side.abbrev} detail={pickOf(owners)} underline={false}>
-            <span
-              className={`grid size-4 place-items-center rounded-full bg-white ${side === loser?.side ? "opacity-40" : ""}`}
-            >
-              <TeamLogo team={side.abbrev} size={13} />
-            </span>
-          </TeamTooltip>
-        ))}
-        {final && game.hidden && (
-          <span role="img" aria-label="Score taped" className="spoiler-tape inline-block h-2.5 w-3 -rotate-6" />
-        )}
-        {result && (
-          <span className={`pr-0.5 text-[9px] leading-none ${RESULT_TEXT[result]}`}>
-            <span className="sr-only">{subject} </span>
-            {result}
+      <span className="flex w-full flex-wrap items-center justify-center gap-x-0.5 py-0.5 lg:hidden">
+        <Logo side={game.away} owners={away} />
+        <span className={`text-[9px] leading-none text-white/40 ${final ? "sm:hidden" : ""}`}>@</span>
+        {final && (
+          <span className="order-last basis-full text-center sm:order-none sm:basis-auto">
+            <Score game={game} compact />
           </span>
         )}
+        <Logo side={game.home} owners={home} />
       </span>
       <span className="hidden min-w-0 items-center gap-1 lg:flex">
         <Side side={game.away} owners={away} />
@@ -519,9 +496,30 @@ function CalendarGame({ entry, follow }: { entry: DeckGame; follow: string | nul
   );
 }
 
+function Logo({ side, owners }: { side: GameSide; owners: readonly CrewMember[] }) {
+  const crew = owners.length > 0;
+  return (
+    <TeamTooltip team={side.abbrev} detail={pickOf(owners)} underline={false}>
+      <span
+        className={`grid size-3.5 shrink-0 place-items-center rounded-full bg-white sm:size-5 md:size-6 ${
+          crew ? "ring-1 ring-led" : "opacity-60"
+        }`}
+      >
+        <TeamLogo team={side.abbrev} size={18} className="size-3 sm:size-4 md:size-5" />
+      </span>
+    </TeamTooltip>
+  );
+}
+
 /** "3–2" with the winner's goals lit, linked to the best highlights there are; taped while it could spoil. */
-function Score({ game }: { game: Game }) {
-  if (game.hidden) return <SpoilerTape label="Taped" />;
+function Score({ game, compact = false }: { game: Game; compact?: boolean }) {
+  if (game.hidden) {
+    return compact ? (
+      <span role="img" aria-label="Score taped" className="spoiler-tape inline-block h-2.5 w-4 -rotate-6" />
+    ) : (
+      <SpoilerTape label="Taped" />
+    );
+  }
   const [away, home] = [game.away.score ?? 0, game.home.score ?? 0];
   const ending = game.periodType === "OT" || game.periodType === "SO" ? `/${game.periodType}` : "";
   const best = highlightsFor(game)[0];
@@ -530,13 +528,13 @@ function Score({ game }: { game: Game }) {
       <span className={away > home ? "text-led" : "text-white/55"}>{away}</span>
       <span className="text-white/40">–</span>
       <span className={home > away ? "text-led" : "text-white/55"}>{home}</span>
-      {ending && <span className="ml-px align-super text-[8px] text-white/55">{game.periodType}</span>}
+      {ending && !compact && <span className="ml-px align-super text-[8px] text-white/55">{game.periodType}</span>}
     </>
   );
   const label = `${game.away.abbrev} ${away}, ${game.home.abbrev} ${home}, final${ending}`;
   if (!best) {
     return (
-      <span aria-label={label} className="font-led text-sm leading-none whitespace-nowrap">
+      <span aria-label={label} className={`font-led leading-none whitespace-nowrap ${compact ? "text-xs" : "text-sm"}`}>
         {digits}
       </span>
     );
@@ -548,7 +546,7 @@ function Score({ game }: { game: Game }) {
       rel="noopener noreferrer"
       title={`${best.label}: ${best.description} on nhl.com`}
       aria-label={`${label}. ${best.label} on nhl.com`}
-      className="rounded-sm px-0.5 font-led text-sm leading-none whitespace-nowrap hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-led"
+      className={`rounded-sm px-0.5 font-led leading-none whitespace-nowrap hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-led ${compact ? "text-xs" : "text-sm"}`}
     >
       {digits}
     </a>
@@ -568,7 +566,9 @@ function Side({ side, owners }: { side: GameSide; owners: readonly CrewMember[] 
       underline={false}
       className={`flex items-center gap-0.5 ${crew ? "text-white" : "text-white/45"}`}
     >
-      <span className={`grid size-4 shrink-0 place-items-center rounded-full bg-white ${crew ? "" : "opacity-60"}`}>
+      <span
+        className={`grid size-4 shrink-0 place-items-center rounded-full bg-white ${crew ? "ring-1 ring-led" : "opacity-60"}`}
+      >
         <TeamLogo team={side.abbrev} size={13} />
       </span>
       {side.abbrev}
