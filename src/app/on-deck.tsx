@@ -222,10 +222,25 @@ function ScoreTile({ entry }: { entry: DeckGame }) {
           href={best.url}
           target="_blank"
           rel="noopener noreferrer"
-          title={`${best.description} on nhl.com`}
-          className="self-start text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase hover:text-white"
+          title={`${best.label}: ${best.description} on nhl.com`}
+          aria-label={`${best.label}, ${best.description}: ${game.away.abbrev} at ${game.home.abbrev} (opens nhl.com)`}
+          className={`mt-0.5 -skew-x-12 self-start px-1.5 py-0.5 text-[10px] font-extrabold tracking-wider whitespace-nowrap text-white uppercase shadow-[2px_2px_0_0_#000] ${
+            faceoff ? "bg-boards hover:bg-black" : "bg-red-line hover:bg-goal"
+          }`}
         >
-          ▶ {best.label}
+          <span className="flex skew-x-12 items-center gap-1">
+            {best.kind === "gameCenter" ? (
+              "Game center"
+            ) : (
+              <>
+                <VideoIcon />
+                Watch {best.kind === "recap" ? "recap" : "condensed"}
+              </>
+            )}
+            <span aria-hidden="true" className="text-white/70">
+              ↗
+            </span>
+          </span>
         </a>
       )}
     </li>
@@ -253,6 +268,16 @@ function TileSide({ side, owners, won }: { side: GameSide; owners: readonly Crew
         <span className="truncate font-display text-[10px] text-white/55">{owners.map(shorthand).join(" & ")}</span>
       )}
     </div>
+  );
+}
+
+/** A video camera, so the link reads as something to watch rather than something to open up. */
+function VideoIcon() {
+  return (
+    <svg viewBox="0 0 16 12" className="size-3 shrink-0" aria-hidden="true">
+      <rect x="0.5" y="1.5" width="10" height="9" rx="1.5" fill="currentColor" />
+      <path d="M11.5 5 15.5 2.5v7L11.5 7z" fill="currentColor" />
+    </svg>
   );
 }
 
