@@ -9,11 +9,15 @@ import { Term } from "@/components/Term";
 import type { CrewMember } from "@/lib/crew/types";
 import { loadUpcoming } from "@/lib/data";
 import { shorthand } from "@/lib/domain/crew-standings";
-import { onDeck, seriesText, type Deck, type DeckGame } from "@/lib/domain/faceoffs";
+import { onDeck, played, seriesText, type Deck, type DeckGame } from "@/lib/domain/faceoffs";
+import { highlightsFor } from "@/lib/nhl/highlights";
 import { inkOn, teamMeta } from "@/lib/nhl/teams";
 import type { Game, GameSide } from "@/lib/nhl/types";
 
 export const ON_DECK_COUNT = 12;
+
+/** How many of the crew's most recent finals ride along the top of the board. */
+export const LATEST_COUNT = 6;
 
 /** How far ahead the board looks: the next dozen games, or every game in the next few days. */
 export const DECK_RANGES = [
@@ -41,8 +45,13 @@ export async function OnDeck({ crew, range }: { crew: readonly CrewMember[]; ran
     range.days === null ? { count: ON_DECK_COUNT } : { until: new Date(now.getTime() + range.days * DAY_MS) },
   );
   const shown = deck.games.length;
+  const latest = played(crew, schedules).slice(-LATEST_COUNT).reverse();
   return (
-    <DeckBoard deck={deck} empty={deck.left > 0 ? `NO CREW GAMES IN THE NEXT ${range.days} DAYS` : undefined}>
+    <DeckBoard
+      deck={deck}
+      latest={latest}
+      empty={deck.left > 0 ? `NO CREW GAMES IN THE NEXT ${range.days} DAYS` : undefined}
+    >
       {deck.left > 0 && (
         <div className="-mx-3 mt-1 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t-2 border-led/30 px-3 pt-2 pb-1.5 text-[11px] font-bold tracking-[0.2em] text-white/45 uppercase sm:-mx-5 sm:px-5">
           <span>
@@ -94,13 +103,15 @@ export function DeckRangeSwitch({ current }: { current: DeckRange }) {
   );
 }
 
-/** The schedule board for any run of games; `children` go along the bottom edge. */
+/** The schedule board for any run of games, the `latest` finals across the top; `children` go along the bottom edge. */
 function DeckBoard({
   deck: { games, nextFaceoff },
+  latest = [],
   empty = "SEASON'S OVER · SEE YOU IN OCTOBER",
   children,
 }: {
   deck: Deck;
+  latest?: readonly DeckGame[];
   empty?: string;
   children?: ReactNode;
 }) {
@@ -112,6 +123,7 @@ function DeckBoard({
 
   return (
     <section className="jumbotron px-3 pt-6 pb-1 sm:px-5">
+      {latest.length > 0 && <LatestScores games={latest} />}
       {games.length === 0 ? (
         <p className="led py-6 text-center text-2xl">{empty}</p>
       ) : (
@@ -149,6 +161,104 @@ function DeckBoard({
       )}
       {children}
     </section>
+  );
+}
+
+/** The crew's latest finals, newest first, as a strip of little scoreboards above what's next. */
+function LatestScores({ games }: { games: readonly DeckGame[] }) {
+  return (
+    <div className="-mx-3 mb-4 border-b-2 border-led/30 px-3 pb-3 sm:-mx-5 sm:px-5">
+      <div className="flex items-baseline justify-between gap-3 pb-1.5 text-[11px] font-bold tracking-[0.2em] text-white/45 uppercase">
+        <span>Latest scores</span>
+        <Link href="/schedule?when=played" className="hover:text-white">
+          All results →
+        </Link>
+      </div>
+      <ol className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6">
+        {games.map((entry) => (
+          <ScoreTile key={entry.game.id} entry={entry} />
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/**
+ * One final: day and how it ended on top, then each side with its goals, the winner lit.
+ * Behind the spoiler shield one strip of tape covers both scores and how it ended.
+ */
+function ScoreTile({ entry }: { entry: DeckGame }) {
+  const { game, away, home, faceoff } = entry;
+  const ending = game.periodType === "OT" || game.periodType === "SO" ? `Final/${game.periodType}` : "Final";
+  const best = game.hidden ? undefined : highlightsFor(game)[0];
+  const [awayGoals, homeGoals] = [game.away.score ?? 0, game.home.score ?? 0];
+  return (
+    <li
+      className={`flex flex-col gap-1 px-2 py-1.5 ring-1 ${
+        faceoff
+          ? "bg-[linear-gradient(160deg,rgb(212_23_42/0.45),rgb(212_23_42/0.12))] shadow-[inset_0_3px_0_0_var(--color-red-line)] ring-red-line/70"
+          : "bg-white/5 ring-white/10"
+      }`}
+    >
+      <div className="flex items-baseline justify-between gap-2 text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase">
+        <span className="flex items-center gap-1">
+          {faceoff && <FaceoffDot className="size-3.5 shrink-0" />}
+          <LocalTime iso={game.startTimeUTC} format="day" />
+        </span>
+        {!game.hidden && <span className="text-led/80">{ending}</span>}
+      </div>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 gap-y-0.5">
+        <TileSide side={game.away} owners={away} won={!game.hidden && awayGoals > homeGoals} />
+        {game.hidden ? (
+          <SpoilerTape label="Taped" className="row-span-2" />
+        ) : (
+          <TileGoals goals={awayGoals} won={awayGoals > homeGoals} />
+        )}
+        <TileSide side={game.home} owners={home} won={!game.hidden && homeGoals > awayGoals} />
+        {!game.hidden && <TileGoals goals={homeGoals} won={homeGoals > awayGoals} />}
+      </div>
+      {best && (
+        <a
+          href={best.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`${best.description} on nhl.com`}
+          className="self-start text-[10px] font-bold tracking-[0.15em] text-white/50 uppercase hover:text-white"
+        >
+          ▶ {best.label}
+        </a>
+      )}
+    </li>
+  );
+}
+
+function TileSide({ side, owners, won }: { side: GameSide; owners: readonly CrewMember[]; won: boolean }) {
+  const crew = owners.length > 0;
+  return (
+    <div className="flex min-w-0 items-center gap-1.5">
+      <span
+        className={`grid size-5 shrink-0 place-items-center rounded-full bg-white ${crew ? "ring-2 ring-led/70" : "opacity-70"}`}
+      >
+        <TeamLogo team={side.abbrev} size={16} />
+      </span>
+      <TeamTooltip
+        team={side.abbrev}
+        detail={crew && `${owners.map((m) => m.name).join(" & ")}'s pick`}
+        underline={false}
+        className={`text-sm font-bold tracking-wide ${won ? "text-white" : crew ? "text-white/75" : "text-white/50"}`}
+      >
+        {side.abbrev}
+      </TeamTooltip>
+      {owners.length > 0 && (
+        <span className="truncate font-display text-[10px] text-white/55">{owners.map(shorthand).join(" & ")}</span>
+      )}
+    </div>
+  );
+}
+
+function TileGoals({ goals, won }: { goals: number; won: boolean }) {
+  return (
+    <span className={`text-right font-led text-2xl leading-none ${won ? "text-led" : "text-white/45"}`}>{goals}</span>
   );
 }
 
