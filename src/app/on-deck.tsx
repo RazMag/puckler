@@ -5,12 +5,13 @@ import { LocalDay, LocalTime } from "@/components/LocalTime";
 import { SpoilerTape } from "@/components/SpoilerTape";
 import { TeamLogo } from "@/components/TeamLogo";
 import { TeamTooltip } from "@/components/TeamTooltip";
+import { WatchIcon } from "@/components/WatchIcons";
 import { Term } from "@/components/Term";
 import type { CrewMember } from "@/lib/crew/types";
 import { loadUpcoming } from "@/lib/data";
 import { shorthand } from "@/lib/domain/crew-standings";
 import { onDeck, played, seriesText, type Deck, type DeckGame } from "@/lib/domain/faceoffs";
-import { highlightsFor } from "@/lib/nhl/highlights";
+import { fullGameOf, watchHighlights } from "@/lib/nhl/highlights";
 import { inkOn, teamMeta } from "@/lib/nhl/teams";
 import type { Game, GameSide } from "@/lib/nhl/types";
 
@@ -185,12 +186,14 @@ function LatestScores({ games }: { games: readonly DeckGame[] }) {
 
 /**
  * One final: day and how it ended on top, then each side with its goals, the winner lit.
- * Behind the spoiler shield one strip of tape covers both scores and how it ended.
+ * Behind the spoiler shield one strip of tape covers both scores and how it ended,
+ * and only the full game (which can't spoil it) stays linked.
  */
 function ScoreTile({ entry }: { entry: DeckGame }) {
   const { game, away, home, faceoff } = entry;
   const ending = game.periodType === "OT" || game.periodType === "SO" ? `Final/${game.periodType}` : "Final";
-  const best = game.hidden ? undefined : highlightsFor(game)[0];
+  // The full game can't spoil anything, so it's the one link that stays up under the tape.
+  const links = game.hidden ? [fullGameOf(game)].filter((h) => h !== undefined) : watchHighlights(game);
   const [awayGoals, homeGoals] = [game.away.score ?? 0, game.home.score ?? 0];
   return (
     <li
@@ -217,31 +220,26 @@ function ScoreTile({ entry }: { entry: DeckGame }) {
         <TileSide side={game.home} owners={home} won={!game.hidden && homeGoals > awayGoals} />
         {!game.hidden && <TileGoals goals={homeGoals} won={homeGoals > awayGoals} />}
       </div>
-      {best && (
-        <a
-          href={best.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={`${best.label}: ${best.description} on nhl.com`}
-          aria-label={`${best.label}, ${best.description}: ${game.away.abbrev} at ${game.home.abbrev} (opens nhl.com)`}
-          className={`mt-0.5 -skew-x-12 self-start px-1.5 py-0.5 text-[10px] font-extrabold tracking-wider whitespace-nowrap text-white uppercase shadow-[2px_2px_0_0_#000] ${
-            faceoff ? "bg-boards hover:bg-black" : "bg-red-line hover:bg-goal"
-          }`}
-        >
-          <span className="flex skew-x-12 items-center gap-1">
-            {best.kind === "gameCenter" ? (
-              "Game center"
-            ) : (
-              <>
-                <VideoIcon />
-                Watch {best.kind === "recap" ? "recap" : "condensed"}
-              </>
-            )}
-            <span aria-hidden="true" className="text-white/70">
-              ↗
-            </span>
-          </span>
-        </a>
+      {links.length > 0 && (
+        // One strip, split by what each half plays: the scoreboard-lit full game, then nhl.com's clip.
+        <div className="mt-auto flex -skew-x-12 self-start shadow-[2px_2px_0_0_#000]">
+          {links.map((h) => (
+            <a
+              key={h.kind}
+              href={h.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`${h.label}: ${h.description} on ${h.site}`}
+              aria-label={`${h.label}, ${h.description}: ${game.away.abbrev} at ${game.home.abbrev} (opens ${h.site})`}
+              className={`px-1.5 py-0.5 text-[10px] font-extrabold tracking-wider whitespace-nowrap uppercase ${TILE_LINK[h.kind === "fullGame" ? "fullGame" : faceoff ? "faceoff" : "clip"]}`}
+            >
+              <span className="flex skew-x-12 items-center gap-1">
+                {h.kind !== "gameCenter" && <WatchIcon kind={h.kind} />}
+                {h.label}
+              </span>
+            </a>
+          ))}
+        </div>
       )}
     </li>
   );
@@ -271,15 +269,12 @@ function TileSide({ side, owners, won }: { side: GameSide; owners: readonly Crew
   );
 }
 
-/** A video camera, so the link reads as something to watch rather than something to open up. */
-function VideoIcon() {
-  return (
-    <svg viewBox="0 0 16 12" className="size-3 shrink-0" aria-hidden="true">
-      <rect x="0.5" y="1.5" width="10" height="9" rx="1.5" fill="currentColor" />
-      <path d="M11.5 5 15.5 2.5v7L11.5 7z" fill="currentColor" />
-    </svg>
-  );
-}
+const TILE_LINK = {
+  fullGame: "bg-led text-boards hover:bg-gold",
+  clip: "bg-red-line text-white hover:bg-goal",
+  // The red line would vanish into a faceoff tile's red.
+  faceoff: "bg-boards text-white hover:bg-black",
+} as const;
 
 function TileGoals({ goals, won }: { goals: number; won: boolean }) {
   return (

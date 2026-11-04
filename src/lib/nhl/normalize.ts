@@ -94,6 +94,7 @@ export function normalizeGame(raw: RawGame): Game {
       raw.gameOutcome?.lastPeriodType ?? (phase === "live" ? (raw.periodDescriptor?.periodType ?? null) : null),
     period: phase === "live" ? (raw.periodDescriptor?.number ?? null) : null,
     links: {
+      fullGame: null,
       recap: nhlUrl(raw.threeMinRecap),
       condensed: nhlUrl(raw.condensedGame),
       gameCenter: nhlUrl(raw.gameCenterLink),
