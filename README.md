@@ -3,7 +3,7 @@
 A hockey-loud scoreboard for a crew of friends who each picked an NHL team. It shows:
 
 - **Standings**: your picks ranked against each other (jersey podium, stick-race bars and a full stat table), plus **On Deck**: one arena-style board with the crew's next 12 games in order, live games first. Crew faceoffs light up in red with their season series, and if none of those 12 is a faceoff, the next one is pinned underneath. A switch beside it stretches the board to every crew game in the next 7, 14 or 30 days.
-- **Schedule**: the crew's season as month calendars, crew faceoffs in red. **Ahead** shows every game left, **Played** the games already played (newest month first) and **Whole season** both. Every game shows both teams, away @ home with crew picks ringed. Finished games put the score between them, linked to the best highlights on nhl.com (or the full game, marked ▶, when it's in Jellyfin), and each pick's W-L-OT record shows for the season so far and for each month. Follow one pick to see its result on every game, or show only the faceoffs to see the crew's head-to-head records. In the nav, and linked from **Full schedule** and **Results** under On Deck.
+- **Schedule**: the crew's season as month calendars, crew faceoffs in red. **Ahead** shows every game left, **Played** the games already played (newest month first) and **Whole season** both. Every game shows both teams, away @ home with crew picks ringed. Finished games put the score between them, linked to the best highlights on nhl.com, and each pick's W-L-OT record shows for the season so far and for each month. Follow one pick to see its result on every game, or show only the faceoffs to see the crew's head-to-head records. In the nav, and linked from **Full schedule** and **Results** under On Deck.
 - **Divisions**: all four divisions drawn as rinks, with your teams highlighted and the playoff cut line marked.
 - **Faceoffs**: every game where two crew picks play each other, plus each team's recent results and next games.
 - **Players**: who's carrying each crew team. The crew's "three stars" over the last five games, each team's top scorers with their recent form, its goalies, and its injury report with key players flagged.
@@ -109,7 +109,7 @@ Then set `Image=localhost/puckler:latest` in the unit, remove `AutoUpdate=regist
 
 ### Full games from Jellyfin
 
-Optional. When Sportarr downloads games into Jellyfin, Puckler links each one from the scores, calendar and faceoffs. It looks for episodes of the `NHL` series named the way Sportarr names them (`Home Team vs Away Team (YYYY-MM-DD)`) and matches them to NHL games by both teams and the day. Games Sportarr hasn't grabbed, or has already cleaned up, keep their nhl.com links.
+Optional. When Sportarr downloads games into Jellyfin, Puckler links each one from the latest scores, the faceoffs and the bench report, beside nhl.com's recap. It looks for episodes of the `NHL` series named the way Sportarr names them (`Home Team vs Away Team (YYYY-MM-DD)`) and matches them to NHL games by both teams and the day. Games Sportarr hasn't grabbed, or has already cleaned up, keep their nhl.com links.
 
 Create an API key in Jellyfin (Dashboard → API Keys), store it as a secret and add these lines to the unit's `[Container]` section:
 

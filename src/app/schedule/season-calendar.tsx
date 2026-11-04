@@ -10,7 +10,7 @@ import { loadCalendar } from "@/lib/data";
 import { shorthand } from "@/lib/domain/crew-standings";
 import { onDeck, played, recordIn, resultFor, type DeckGame, type Result } from "@/lib/domain/faceoffs";
 import { monthLabel } from "@/lib/format";
-import { fullGameOf, highlightsFor, type Highlight } from "@/lib/nhl/highlights";
+import { highlightsFor } from "@/lib/nhl/highlights";
 import { inkOn, teamMeta } from "@/lib/nhl/teams";
 import type { Game, GameSide } from "@/lib/nhl/types";
 import { addDays, easternDate } from "@/lib/spoilers/shield";
@@ -87,7 +87,7 @@ export async function SeasonCalendar({ searchParams }: { searchParams: PageProps
           ),
         )}
       </nav>
-      <Legend results={view.key !== "ahead"} fullGames={finals.some((d) => d.game.links.fullGame)} />
+      <Legend results={view.key !== "ahead"} />
       {finals.length > 0 && (
         <section
           aria-label={faceoffsOnly ? "Crew faceoff records" : "Records so far"}
@@ -281,7 +281,7 @@ function FaceoffSwitch({ href, on }: { href: string; on: boolean }) {
   );
 }
 
-function Legend({ results, fullGames }: { results: boolean; fullGames: boolean }) {
+function Legend({ results }: { results: boolean }) {
   return (
     <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold text-ink-soft">
       <span className="flex items-center gap-2">
@@ -294,14 +294,6 @@ function Legend({ results, fullGames }: { results: boolean; fullGames: boolean }
         <span className="size-4 bg-boards ring-2 ring-led ring-inset" /> Today
       </span>
       {results && <span>Scores link to highlights on nhl.com.</span>}
-      {fullGames && (
-        <span className="flex items-center gap-1.5">
-          <span aria-hidden="true" className="text-[10px] text-red-line">
-            ▶
-          </span>{" "}
-          Full game in Jellyfin
-        </span>
-      )}
       <span>Days follow the NHL&apos;s Eastern-time calendar.</span>
     </div>
   );
@@ -519,29 +511,19 @@ function Logo({ side, owners }: { side: GameSide; owners: readonly CrewMember[] 
   );
 }
 
-/**
- * "3–2" with the winner's goals lit, linked to the best video there is; taped while it could spoil.
- * A ▶ marks a full game waiting in Jellyfin, and it stays linked under the tape since it can't spoil anything.
- */
+/** "3–2" with the winner's goals lit, linked to the best highlights there are; taped while it could spoil. */
 function Score({ game, compact = false }: { game: Game; compact?: boolean }) {
   if (game.hidden) {
-    const tape = compact ? (
+    return compact ? (
       <span role="img" aria-label="Score taped" className="spoiler-tape inline-block h-2.5 w-4 -rotate-6" />
     ) : (
       <SpoilerTape label="Taped" />
     );
-    const full = fullGameOf(game);
-    if (!full) return tape;
-    return (
-      <VideoLink highlight={full} label={`${game.away.abbrev} at ${game.home.abbrev}, score taped`}>
-        {tape}
-        <FullGameMark />
-      </VideoLink>
-    );
   }
   const [away, home] = [game.away.score ?? 0, game.home.score ?? 0];
   const ending = game.periodType === "OT" || game.periodType === "SO" ? `/${game.periodType}` : "";
-  const best = highlightsFor(game)[0];
+  // The full game stays off the calendar: a cell this small has room for one clear link.
+  const best = highlightsFor(game).find((h) => h.site === "nhl.com");
   const digits = (
     <>
       <span className={away > home ? "text-led" : "text-white/55"}>{away}</span>
@@ -559,47 +541,16 @@ function Score({ game, compact = false }: { game: Game; compact?: boolean }) {
     );
   }
   return (
-    <VideoLink
-      highlight={best}
-      label={label}
-      className={`rounded-sm px-0.5 font-led leading-none whitespace-nowrap hover:bg-white/15 ${compact ? "text-xs" : "text-sm"}`}
-    >
-      {digits}
-      {best.kind === "fullGame" && <FullGameMark />}
-    </VideoLink>
-  );
-}
-
-function VideoLink({
-  highlight,
-  label,
-  className = "",
-  children,
-}: {
-  highlight: Highlight;
-  label: string;
-  className?: string;
-  children: ReactNode;
-}) {
-  return (
     <a
-      href={highlight.url}
+      href={best.url}
       target="_blank"
       rel="noopener noreferrer"
-      title={`${highlight.label}: ${highlight.description} on ${highlight.site}`}
-      aria-label={`${label}. ${highlight.label} on ${highlight.site}`}
-      className={`relative focus-visible:outline-2 focus-visible:outline-led ${className}`}
+      title={`${best.label}: ${best.description} on nhl.com`}
+      aria-label={`${label}. ${best.label} on nhl.com`}
+      className={`rounded-sm px-0.5 font-led leading-none whitespace-nowrap hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-led ${compact ? "text-xs" : "text-sm"}`}
     >
-      {children}
+      {digits}
     </a>
-  );
-}
-
-function FullGameMark() {
-  return (
-    <span aria-hidden="true" className="absolute -top-1.5 -right-1 font-sans text-[7px] leading-none text-led">
-      ▶
-    </span>
   );
 }
 
