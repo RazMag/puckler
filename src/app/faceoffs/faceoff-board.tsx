@@ -227,7 +227,7 @@ function MeetingRow({ game }: { game: Game }) {
         <SpoilerTape label="Taped" />
         <TeamLogo team={game.home.abbrev} size={20} />
         <span className="ml-auto">
-          <HighlightLinks game={game} variant="light" max={1} />
+          <HighlightLinks game={game} variant="light" watch />
         </span>
       </li>
     );
@@ -252,7 +252,7 @@ function MeetingRow({ game }: { game: Game }) {
         <span className="text-xs font-bold text-ink-soft">{game.periodType}</span>
       )}
       <span className="ml-auto">
-        <HighlightLinks game={game} variant="light" max={1} />
+        <HighlightLinks game={game} variant="light" watch />
       </span>
     </li>
   );

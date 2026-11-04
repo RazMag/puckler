@@ -105,7 +105,7 @@ describe("faceoffs", () => {
       home: { abbrev: "TOR", score: 2 },
       away: { abbrev: "MTL", score: 3 },
       periodType: "OT",
-      links: { recap: null, condensed: null, gameCenter: null },
+      links: { fullGame: null, recap: null, condensed: null, gameCenter: null },
       hidden: false,
     };
     expect(resultFor(game, "MTL")).toBe("W");
@@ -294,7 +294,10 @@ describe("highlights", () => {
     const noRecap = finals.find((g) => !g.links.recap)!;
     expect(highlightsFor(noRecap)[0]?.kind).toBe("condensed");
 
-    const bare = { ...noRecap, links: { recap: null, condensed: null, gameCenter: noRecap.links.gameCenter } };
+    const bare = {
+      ...noRecap,
+      links: { fullGame: null, recap: null, condensed: null, gameCenter: noRecap.links.gameCenter },
+    };
     expect(highlightsFor(bare).map((h) => h.kind)).toEqual(["gameCenter"]);
   });
 
@@ -305,7 +308,10 @@ describe("highlights", () => {
     const noRecap = finals.find((g) => !g.links.recap)!;
     expect(compactHighlights(noRecap).map((h) => h.kind)).toEqual(["condensed", "gameCenter"]);
 
-    const bare = { ...noRecap, links: { recap: null, condensed: null, gameCenter: noRecap.links.gameCenter } };
+    const bare = {
+      ...noRecap,
+      links: { fullGame: null, recap: null, condensed: null, gameCenter: noRecap.links.gameCenter },
+    };
     expect(compactHighlights(bare).map((h) => h.kind)).toEqual(["gameCenter"]);
   });
 
@@ -317,7 +323,7 @@ describe("highlights", () => {
       condensedGame: "//evil.example/video",
       gameCenterLink: "javascript:alert(1)",
     });
-    expect(game.links).toEqual({ recap: null, condensed: null, gameCenter: null });
+    expect(game.links).toEqual({ fullGame: null, recap: null, condensed: null, gameCenter: null });
   });
 
   it("has nothing for games that haven't been played", () => {

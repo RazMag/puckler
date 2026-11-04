@@ -38,8 +38,10 @@ export type GamePhase = "upcoming" | "live" | "final";
 
 export type GameSide = { abbrev: string; score: number | null };
 
-/** Absolute nhl.com URLs; null until the NHL publishes them. */
+/** Absolute URLs; null until the NHL publishes them, or Sportarr downloads the game. */
 export type GameLinks = {
+  /** The whole broadcast in Jellyfin, from Sportarr. */
+  fullGame: string | null;
   recap: string | null;
   condensed: string | null;
   gameCenter: string | null;

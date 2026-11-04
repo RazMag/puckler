@@ -39,7 +39,7 @@ function game(overrides: Partial<Game>): Game {
     home: { abbrev: "TOR", score: 2 },
     periodType: "OT",
     period: null,
-    links: { recap: "https://www.nhl.com/video/recap", condensed: null, gameCenter: null },
+    links: { fullGame: null, recap: "https://www.nhl.com/video/recap", condensed: null, gameCenter: null },
     hidden: false,
     ...overrides,
   };
@@ -107,7 +107,7 @@ describe("applyShield", () => {
       away: { score: null },
       home: { score: null },
       periodType: null,
-      links: { recap: "https://www.nhl.com/video/recap" },
+      links: { fullGame: null, recap: "https://www.nhl.com/video/recap" },
     });
   });
 

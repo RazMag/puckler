@@ -4,6 +4,8 @@ import { readCrew } from "@/lib/crew/store";
 import { recentFinals } from "@/lib/domain/faceoffs";
 import { RECENT_GAMES, type TeamPlayers } from "@/lib/domain/players";
 import { getInjuries } from "@/lib/espn/api";
+import { getDownloads } from "@/lib/jellyfin/api";
+import { withDownloads } from "@/lib/jellyfin/downloads";
 import {
   getBoxScore,
   getLeagueWeek,
@@ -51,11 +53,11 @@ export async function loadFaceoffs() {
   return { crew, schedules: await loadSchedules(crew.map((m) => m.team)) };
 }
 
-/** Club schedules for `teams`, with the viewer's spoiler shield applied. */
+/** Club schedules for `teams`, linked to any full games in Jellyfin, with the viewer's spoiler shield applied. */
 export async function loadSchedules(teams: readonly string[]) {
   await connection();
-  const [shield, schedules] = await Promise.all([readShield(), getSchedules(teams)]);
-  return new Map([...schedules].map(([team, games]) => [team, applyShield(games, shield)]));
+  const [shield, schedules, downloads] = await Promise.all([readShield(), getSchedules(teams), getDownloads()]);
+  return new Map([...schedules].map(([team, games]) => [team, applyShield(withDownloads(games, downloads), shield)]));
 }
 
 /** Club schedules for `teams` and the moment they were read, for views that look days ahead. */

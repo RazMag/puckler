@@ -8,6 +8,7 @@ A hockey-loud scoreboard for a crew of friends who each picked an NHL team. It s
 - **Faceoffs**: every game where two crew picks play each other, plus each team's recent results and next games.
 - **Players**: who's carrying each crew team. The crew's "three stars" over the last five games, each team's top scorers with their recent form, its goalies, and its injury report with key players flagged.
 - **Draft Room**: add, rename or remove crew members and their teams, and give each a shorthand of up to 3 letters for the spots where a full name won't fit (initials when left blank). Editing needs the crew password.
+- **Full games** (optional): if you record games with [Sportarr](https://sportarr.net) into Jellyfin, finished games link straight to the full broadcast there, ahead of nhl.com's highlights. The link stays up under the spoiler shield, since Jellyfin shows nothing but the matchup. See [Full games from Jellyfin](#full-games-from-jellyfin).
 - **Spoiler shield**: for watching on delay. By default, scores from last night's games onward (NHL Eastern time) are taped over, and standings and player stats rewind to before them. The **Spoilers** switch in the header means "I'm caught up": it reveals everything that has started so far, while games that start later stay hidden until you flip it again. The setting is per browser.
 
 Data comes from the public NHL web API (`api-web.nhle.com`). The server fetches it and caches it for about a minute, so no API key is needed. The NHL API has no injury data, so the injury report comes from ESPN's public site API, refreshed every 15 minutes. If ESPN is unreachable, the Players page still loads and says the injury report is unavailable.
@@ -22,6 +23,7 @@ src/
   components/       hockey UI: Jersey, StickBar, Puck, rink/…, GameCard
   lib/nhl/          API client, zod schemas, normalization, team colors
   lib/espn/         injury report (the one feed that isn't from the NHL)
+  lib/jellyfin/     full games Sportarr downloaded into Jellyfin (optional)
   lib/crew/         crew store (JSON file) + guarded server actions
   lib/auth/         signed editor cookie, login/logout actions
   lib/spoilers/     spoiler shield: which games are hidden, rewinding standings and stats
@@ -104,6 +106,23 @@ just image   # podman build -t puckler -f Containerfile .
 ```
 
 Then set `Image=localhost/puckler:latest` in the unit, remove `AutoUpdate=registry`, and restart with `systemctl --user restart puckler` after each rebuild.
+
+### Full games from Jellyfin
+
+Optional. When Sportarr downloads games into Jellyfin, Puckler links each one from the latest scores, the faceoffs and the bench report, beside nhl.com's recap. It looks for episodes of the `NHL` series named the way Sportarr names them (`Home Team vs Away Team (YYYY-MM-DD)`) and matches them to NHL games by both teams and the day. Games Sportarr hasn't grabbed, or has already cleaned up, keep their nhl.com links.
+
+Create an API key in Jellyfin (Dashboard → API Keys), store it as a secret and add these lines to the unit's `[Container]` section:
+
+```bash
+printf '%s' 'your jellyfin api key' | podman secret create puckler-jellyfin -
+```
+
+```ini
+Environment=JELLYFIN_URL=https://jellyfin.example.org
+Secret=puckler-jellyfin,type=env,target=JELLYFIN_API_KEY
+```
+
+If Puckler reaches Jellyfin by an address the crew's browsers can't use, set that address as `JELLYFIN_URL` and the one browsers use as `JELLYFIN_PUBLIC_URL`. `JELLYFIN_SERIES` changes the series name if yours isn't `NHL`. Puckler checks for new games every couple of minutes; if Jellyfin is down, pages still load, with nhl.com links only.
 
 ### Notes
 

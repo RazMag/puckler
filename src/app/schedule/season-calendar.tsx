@@ -522,7 +522,8 @@ function Score({ game, compact = false }: { game: Game; compact?: boolean }) {
   }
   const [away, home] = [game.away.score ?? 0, game.home.score ?? 0];
   const ending = game.periodType === "OT" || game.periodType === "SO" ? `/${game.periodType}` : "";
-  const best = highlightsFor(game)[0];
+  // The full game stays off the calendar: a cell this small has room for one clear link.
+  const best = highlightsFor(game).find((h) => h.site === "nhl.com");
   const digits = (
     <>
       <span className={away > home ? "text-led" : "text-white/55"}>{away}</span>
