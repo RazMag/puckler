@@ -196,6 +196,30 @@ describe("on deck", () => {
       `${pending.length} meetings this season`,
     );
   });
+
+  it("counts played meetings against the season total once there's a score", () => {
+    const rivalry = rivalries(crew, schedules)[0]!;
+    const total = 4;
+    const games = Array.from({ length: total }, (_, i) => ({
+      ...rivalry.games[0]!,
+      id: i,
+      phase: i < 3 ? ("final" as const) : ("upcoming" as const),
+    }));
+    const { a, b } = rivalry;
+
+    expect(seriesText({ ...rivalry, games, winsA: 2, winsB: 1 })).toBe(`${a.name} leads 2–1 · 3 of 4 played`);
+    expect(seriesText({ ...rivalry, games, winsA: 1, winsB: 2 })).toBe(`${b.name} leads 2–1 · 3 of 4 played`);
+    expect(seriesText({ ...rivalry, games: games.slice(0, 2), winsA: 1, winsB: 1 })).toBe(
+      "Series tied 1–1 · 2 of 2 played",
+    );
+    expect(seriesText({ ...rivalry, games, winsA: 2, winsB: 1 }, { short: true })).toBe(`${a.name} leads 2–1 · 3 of 4`);
+  });
+
+  it("leaves taped finals out of the played count", () => {
+    const rivalry = rivalries(crew, schedules)[0]!;
+    const games = [0, 1, 2].map((i) => ({ ...rivalry.games[0]!, id: i, phase: "final" as const, hidden: i === 2 }));
+    expect(seriesText({ ...rivalry, games, winsA: 1, winsB: 1 })).toBe("Series tied 1–1 · 2 of 3 played");
+  });
 });
 
 describe("played", () => {

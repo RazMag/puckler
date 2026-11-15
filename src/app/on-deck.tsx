@@ -10,7 +10,7 @@ import { Term } from "@/components/Term";
 import type { CrewMember } from "@/lib/crew/types";
 import { loadUpcoming } from "@/lib/data";
 import { shorthand } from "@/lib/domain/crew-standings";
-import { onDeck, played, seriesText, type Deck, type DeckGame } from "@/lib/domain/faceoffs";
+import { onDeck, played, seriesParts, type Deck, type DeckGame, type Rivalry } from "@/lib/domain/faceoffs";
 import { fullGameOf, watchHighlights } from "@/lib/nhl/highlights";
 import { inkOn, teamMeta } from "@/lib/nhl/teams";
 import type { Game, GameSide } from "@/lib/nhl/types";
@@ -414,7 +414,7 @@ function DeckRow({ entry, after, side }: { entry: DeckGame; after?: Game; side?:
                 </span>
                 {series && (
                   <Term term="series" className="text-xs font-bold tracking-wider text-white/75 uppercase">
-                    {seriesText(series)}
+                    <SeriesLine series={series} />
                   </Term>
                 )}
               </>
@@ -423,6 +423,17 @@ function DeckRow({ entry, after, side }: { entry: DeckGame; after?: Game; side?:
         )}
       </div>
     </li>
+  );
+}
+
+/** The series score, with how many meetings are played in a dimmer tone. */
+function SeriesLine({ series }: { series: Rivalry }) {
+  const { score, count } = seriesParts(series, { short: true });
+  return (
+    <>
+      {score}
+      {count && <span className="text-white/50"> · {count}</span>}
+    </>
   );
 }
 

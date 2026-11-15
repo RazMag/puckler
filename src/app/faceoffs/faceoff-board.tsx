@@ -22,7 +22,7 @@ import {
   resultFor,
   rivalries,
   scoreFor,
-  seriesText,
+  seriesParts,
   type BenchReport,
   type Result,
   type Rivalry,
@@ -86,7 +86,9 @@ function RivalryCard({ rivalry, owners }: { rivalry: Rivalry; owners: ReadonlyMa
         <Jersey team={b.team} name={b.name} number={winsB} className="w-full max-w-36" />
       </div>
       <p className="mt-2 text-center font-display text-lg">
-        <Term term="series">{seriesText(rivalry)}</Term>
+        <Term term="series">
+          <SeriesLine rivalry={rivalry} />
+        </Term>
       </p>
       <p className="text-center text-xs font-semibold tracking-wider text-ink-soft uppercase">
         Jersey number = series wins
@@ -120,6 +122,17 @@ function RivalryCard({ rivalry, owners }: { rivalry: Rivalry; owners: ReadonlyMa
         </section>
       )}
     </article>
+  );
+}
+
+/** The series score, with how many meetings are played in a softer tone. */
+function SeriesLine({ rivalry }: { rivalry: Rivalry }) {
+  const { score, count } = seriesParts(rivalry);
+  return (
+    <>
+      {score}
+      {count && <span className="text-ink-soft"> · {count}</span>}
+    </>
   );
 }
 

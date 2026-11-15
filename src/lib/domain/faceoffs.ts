@@ -101,12 +101,34 @@ export function rivalries(crew: readonly CrewMember[], schedules: ReadonlyMap<st
     .sort((x, y) => (x.next?.startTimeUTC ?? "9999").localeCompare(y.next?.startTimeUTC ?? "9999"));
 }
 
-/** "Raz leads 2–1", "Series tied 1–1", or how many meetings are left before the first one. */
-export function seriesText({ a, b, winsA, winsB, games }: Rivalry): string {
+/**
+ * The series line in two parts: the score ("Raz leads 2–1", "Series tied 1–1") and how many meetings
+ * are played ("3 of 4 played"). Before the first one there's no score yet, just how many meetings there are.
+ * `short` drops the trailing "played" for tight spots.
+ * Taped finals count as neither played nor scored, so the line can't give away a result.
+ */
+export function seriesParts(
+  { a, b, winsA, winsB, games }: Rivalry,
+  { short = false } = {},
+): { score: string; count: string | null } {
   const played = games.filter((g) => g.phase === "final" && !g.hidden).length;
-  if (played === 0) return `${games.length} meeting${games.length === 1 ? "" : "s"} this season`;
-  if (winsA === winsB) return `Series tied ${winsA}–${winsB}`;
-  return winsA > winsB ? `${a.name} leads ${winsA}–${winsB}` : `${b.name} leads ${winsB}–${winsA}`;
+  if (played === 0)
+    return { score: `${games.length} meeting${games.length === 1 ? "" : "s"} this season`, count: null };
+  return {
+    score:
+      winsA === winsB
+        ? `Series tied ${winsA}–${winsB}`
+        : winsA > winsB
+          ? `${a.name} leads ${winsA}–${winsB}`
+          : `${b.name} leads ${winsB}–${winsA}`,
+    count: `${played} of ${games.length}${short ? "" : " played"}`,
+  };
+}
+
+/** The whole series line: "Raz leads 2–1 · 3 of 4 played", or "4 meetings this season" before the first. */
+export function seriesText(rivalry: Rivalry, options: { short?: boolean } = {}): string {
+  const { score, count } = seriesParts(rivalry, options);
+  return count ? `${score} · ${count}` : score;
 }
 
 export type DeckGame = {
