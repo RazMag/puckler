@@ -67,7 +67,7 @@ export const GLOSSARY = {
   },
   series: {
     title: "Season series",
-    text: "Head-to-head wins in the regular-season games between these two crew teams.",
+    text: "Head-to-head wins in the regular-season games between these two crew teams, and how many of those games are played.",
   },
   finalOt: {
     title: "Decided in overtime",
